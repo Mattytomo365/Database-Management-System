@@ -6,7 +6,7 @@
 
 This is a project I am completing as part of my role as a Junior Business Systems Developer at HARTS (Hospital Arts, Liverpool). I'm currently building my `Student-Planner` project simultaneously to this, so I chose to reuse Python and Tkinter for this project, improving my efficiency and the quality of work I produce for the organisation.
 
-This application will connect to and manage an SQLite database storing information about all volunteers currenrly working for HARTS, reducing manual workload associated with managing this data.
+This application will connect to and manage an SQLite database storing administrative information, such as volunteers currently working for HARTS, universities where HARTS offers placement opportunities, roles available within the foundation, and information regarding artists HARTS sources from, reducing manual workload associated with managing this data.
 
 This application is designed to manage and stored information related to all volunteers working for HARTS. It automates data entry and reduces the workload associated with managing this data.
 
