@@ -16,11 +16,31 @@ style.configure("Blue.TButton",
                 padding=6)
 
 header = tk.Label(root, text="Welcome", font=("Arial", 60), bg="white", fg="dark blue")
-header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=40)
+header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)
 
 
 def view_options_popup():
-    pass
+    view_options_popup = tk.Toplevel(root)
+    view_options_popup.title("View Options")
+    view_options_popup.geometry("500x300")
+    view_options_popup.configure(bg="white")
+    view_options_popup.resizable(False, False)
+
+    view_options_popup_label = tk.Label(view_options_popup, text="What would you like to view?", font=("Arial", 30), bg="white", fg="dark blue")
+    view_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=55, pady=20)
+
+    view_volunteers_button = ttk.Button(view_options_popup, text="Volunteers", style="Blue.TButton", command=lambda: view_volunteers())
+    view_volunteers_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
+
+    view_universities_button = ttk.Button(view_options_popup, text="Universities", style="Blue.TButton", command=lambda: view_universities())
+    view_universities_button.grid(row=1, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
+
+    view_roles_button = ttk.Button(view_options_popup, text="Roles", style="Blue.TButton", command=lambda: view_roles())
+    view_roles_button.grid(row=2, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
+
+    view_artists_button = ttk.Button(view_options_popup, text="Artists", style="Blue.TButton", command=lambda: view_artists())
+    view_artists_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
+
 
 def add_options_popup():
     pass
