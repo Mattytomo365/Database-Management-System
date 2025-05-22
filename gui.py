@@ -93,7 +93,26 @@ def edit_options_popup():
     edit_artist_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 def delete_options_popup():
-    pass
+    delete_options_popup = tk.Toplevel(root)
+    delete_options_popup.title("Delete Options")
+    delete_options_popup.geometry("500x300")
+    delete_options_popup.configure(bg="white")
+    delete_options_popup.resizable(False, False)
+
+    delete_options_popup_label = tk.Label(delete_options_popup, text="What would you like to delete?", font=("Arial", 30), bg="white", fg="dark blue")
+    delete_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=55, pady=20)
+
+    delete_volunteer_button = ttk.Button(delete_options_popup, text="Volunteer", style="Blue.TButton", command=lambda: delete_volunteer_popup())
+    delete_volunteer_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
+
+    delete_institution_button = ttk.Button(delete_options_popup, text="Institution", style="Blue.TButton", command=lambda: delete_institution_popup())
+    delete_institution_button.grid(row=1, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
+
+    delete_role_button = ttk.Button(delete_options_popup, text="Role", style="Blue.TButton", command=lambda: delete_role_popup())
+    delete_role_button.grid(row=2, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
+
+    delete_artist_button = ttk.Button(delete_options_popup, text="Artist", style="Blue.TButton", command=lambda: delete_artist_popup())
+    delete_artist_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 def view_volunteers_popup():
     pass
