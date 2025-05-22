@@ -38,7 +38,7 @@ def view_options_popup():
     view_volunteers_button = ttk.Button(view_options_popup, text="Volunteers", style="Blue.TButton", command=lambda: view_volunteers_popup())
     view_volunteers_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
 
-    view_universities_button = ttk.Button(view_options_popup, text="Institution", style="Blue.TButton", command=lambda: view_institutions_popup())
+    view_universities_button = ttk.Button(view_options_popup, text="Institutions", style="Blue.TButton", command=lambda: view_institutions_popup())
     view_universities_button.grid(row=1, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
     view_roles_button = ttk.Button(view_options_popup, text="Roles", style="Blue.TButton", command=lambda: view_roles_popup())
@@ -78,7 +78,7 @@ def edit_options_popup():
     edit_options_popup.resizable(False, False)
 
     edit_options_popup_label = tk.Label(edit_options_popup, text="What would you like to edit?", font=("Arial", 30), bg="white", fg="dark blue")
-    edit_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=55, pady=20)
+    edit_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=65, pady=20)
 
     edit_volunteer_button = ttk.Button(edit_options_popup, text="Volunteer", style="Blue.TButton", command=lambda: edit_volunteer_popup())
     edit_volunteer_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
@@ -100,7 +100,7 @@ def delete_options_popup():
     delete_options_popup.resizable(False, False)
 
     delete_options_popup_label = tk.Label(delete_options_popup, text="What would you like to delete?", font=("Arial", 30), bg="white", fg="dark blue")
-    delete_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=55, pady=20)
+    delete_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=45, pady=20)
 
     delete_volunteer_button = ttk.Button(delete_options_popup, text="Volunteer", style="Blue.TButton", command=lambda: delete_volunteer_popup())
     delete_volunteer_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
