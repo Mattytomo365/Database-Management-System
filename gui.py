@@ -215,7 +215,34 @@ def add_institution_popup():
     add_institution_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def add_role_popup():
-    pass
+    add_role_popup = tk.Toplevel(root)
+    add_role_popup.title("Add Role")
+    add_role_popup.geometry("400x300")
+    add_role_popup.configure(bg="white")
+    add_role_popup.resizable(False, False)
+
+    header = tk.Label(add_role_popup, text= "Add Role", font=('Arial', 30), bg="white", fg="dark blue")
+    header.grid(row=0, column=0, padx=140, pady=10, columnspan=2)
+
+    name_label = tk.Label(add_role_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_entry = tk.Entry(add_role_popup, font=('Arial', 15), bg="white", fg="black")
+    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+
+    description_label = tk.Label(add_role_popup, text="Description", font=('Arial', 15), bg="white", fg="black")
+    description_label.place(x=100, y=150, anchor=tk.CENTER)
+    description_entry = tk.Entry(add_role_popup, font=('Arial', 15), bg="white", fg="black")
+    description_entry.place(x=250, y=150, anchor=tk.CENTER)
+
+    institution_dropdown_label = tk.Label(add_role_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label.place(x=100, y=200, anchor=tk.CENTER)
+    institution_var = tk.StringVar(add_role_popup)
+    institution_chosen = ttk.Combobox(add_role_popup, width=19, textvariable=institution_var)
+    institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_chosen.place(x=250, y=200, anchor=tk.CENTER)
+
+    add_institution_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(), add_role_popup.destroy()])
+    add_institution_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def add_artist_popup():
     pass
