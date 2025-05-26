@@ -39,6 +39,8 @@ def create_role_table():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             description TEXT
+            institution_id INTEGER,
+            FOREIGN KEY (institution_id) REFERENCES institutions(id)
         )
     ''')
     connection.commit()
@@ -66,6 +68,22 @@ def add_institution(name, type, postcode):
         , (name, type, postcode))
     connection.commit()
 
+def add_role(name, description, institution_name):
+    cursor.execute('''
+        SELECT id FROM institutions WHERE name = ?
+    ''', (institution_name,))
+    
+    institution_id = cursor.fetchone()
+
+    if institution_id:
+        cursor.execute('''
+            INSERT INTO roles (name, description, institution_id)
+            VALUES (?, ?, ?)
+        ''', (name, description, institution_id[0]))
+        connection.commit()
+    else:
+        print("Institution not found.")
+
 def add_artist():
     pass
 
@@ -77,6 +95,9 @@ def edit_volunteer():
 def edit_institution():
     pass
 
+def edit_role():
+    pass
+
 def edit_artist():
     pass
 
@@ -86,6 +107,9 @@ def delete_volunteer():
     pass
 
 def delete_institution():
+    pass
+
+def delete_role():
     pass
 
 def delete_artist():
@@ -105,7 +129,7 @@ def retrieve_universities():
 def retrieve_colleges():
     pass
 
-def retrieve_roles(institution_name):
+def retrieve_roles():
     pass
 
 def retrieve_artists():
