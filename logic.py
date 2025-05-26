@@ -84,8 +84,12 @@ def add_role(name, description, institution_name):
     else:
         print("Institution not found.")
 
-def add_artist():
-    pass
+def add_artist(name, email, phone):
+    cursor.execute('''
+        INSERT INTO artists (name, email, phone)
+        VALUES (?, ?, ?)
+    ''', (name, email, phone))
+    connection.commit()
 
 # Edit functions
 

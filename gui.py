@@ -125,7 +125,7 @@ def view_roles_popup():
 def view_artists_popup():
     pass
 
-def add_volunteer_popup():
+def add_volunteer_popup():  # ADD STATUS???
     add_volunteer_popup = tk.Toplevel(root)
     add_volunteer_popup.title("Add Volunteer")
     add_volunteer_popup.geometry("400x550")
@@ -269,7 +269,7 @@ def add_artist_popup():
     phone_entry = tk.Entry(add_artist_popup, font=('Arial', 15), bg="white", fg="black")
     phone_entry.place(x=250, y=200, anchor=tk.CENTER)
 
-    add_artist_button = ttk.Button(add_artist_popup, text="Add", style="Blue.TButton", command=lambda: [add_artist(), add_artist_popup.destroy()])
+    add_artist_button = ttk.Button(add_artist_popup, text="Add", style="Blue.TButton", command=lambda: [add_artist(name_entry.get(), email_entry.get(), phone_entry.get()), add_artist_popup.destroy()])
     add_artist_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def edit_volunteer_popup():
