@@ -8,7 +8,7 @@ cursor = connection.cursor() # A mechanism that enables traversal of records in 
 def create_volunteer_table():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS volunteers (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             phone TEXT,
@@ -25,10 +25,10 @@ def create_volunteer_table():
 def create_institution_table():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS institutions (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             type TEXT NOT NULL,
-            location TEXT
+            postcode TEXT
         )
     ''')
     connection.commit()
@@ -36,7 +36,7 @@ def create_institution_table():
 def create_role_table():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS roles (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             description TEXT
         )
@@ -46,7 +46,7 @@ def create_role_table():
 def create_artist_table():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS artists (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL UNIQUE,
             phone TEXT
@@ -59,8 +59,12 @@ def create_artist_table():
 def add_volunteer():
     pass
 
-def add_institution():
-    pass
+def add_institution(name, type, postcode):
+    cursor.execute('''
+        INSERT INTO institutions (name, type, postcode)
+        VALUES (?, ?, ?)'''
+        , (name, type, postcode))
+    connection.commit()
 
 def add_artist():
     pass
@@ -106,5 +110,24 @@ def retrieve_roles(institution_name):
 
 def retrieve_artists():
     pass
+
+# Other functions
+
+def get_institution_names():
+    cursor.execute('SELECT name FROM institutions')
+    connection.commit()
+    institution_names = [row[0] for row in cursor.fetchall()]
+    return institution_names
+
+def get_role_names():
+    cursor.execute('SELECT name FROM roles')
+    connection.commit()
+    return cursor.fetchall()
+
+def initialise_database():
+    create_volunteer_table()
+    create_institution_table()
+    create_role_table()
+    create_artist_table()
 
 

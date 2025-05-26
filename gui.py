@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from logic import *
+from tkcalendar import DateEntry
 
 root = tk.Tk()
 root.title("Volunteer Management System")
@@ -8,10 +9,8 @@ root.geometry("500x400")
 root.configure(bg="white")
 root.resizable(False, False)
 
-create_volunteer_table()
-create_institution_table()
-create_role_table()
-create_artist_table()
+initialise_database()
+
 
 style = ttk.Style(root)
 style.theme_use("clam")  # Change theme to allow background color changes
@@ -48,7 +47,7 @@ def view_options_popup():
     view_artists_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 
-def add_options_popup():
+def add_options_popup():  # Can only add role after institutions have been added
     add_options_popup = tk.Toplevel(root)
     add_options_popup.title("Add Options")
     add_options_popup.geometry("500x300")
@@ -127,10 +126,93 @@ def view_artists_popup():
     pass
 
 def add_volunteer_popup():
-    pass
+    add_volunteer_popup = tk.Toplevel(root)
+    add_volunteer_popup.title("Add Volunteer")
+    add_volunteer_popup.geometry("400x550")
+    add_volunteer_popup.configure(bg="white")
+    add_volunteer_popup.resizable(False, False)
+
+    header = tk.Label(add_volunteer_popup, text= "Add Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
+    header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
+
+    name_label = tk.Label(add_volunteer_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+
+    email_label = tk.Label(add_volunteer_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
+    email_label.place(x=100, y=150, anchor=tk.CENTER)
+    email_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+
+    phone_label = tk.Label(add_volunteer_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
+    phone_label.place(x=100, y=200, anchor=tk.CENTER)
+    phone_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+
+    type_dropdown_label = tk.Label(add_volunteer_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
+    type_dropdown_label.place(x=100, y=250, anchor=tk.CENTER)
+    type_var = tk.StringVar(add_volunteer_popup)
+    type_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=type_var)
+    type_chosen['values'] = ("Student", "Volunteer")
+    type_chosen.place(x=250, y=250, anchor=tk.CENTER)
+
+    role_dropdown_label = tk.Label(add_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
+    role_dropdown_label.place(x=100, y=300, anchor=tk.CENTER)
+    role_var = tk.StringVar(add_volunteer_popup)
+    role_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=role_var)
+    role_chosen['values'] = ("Student", "Volunteer")
+    role_chosen.place(x=250, y=300, anchor=tk.CENTER)
+
+    institution_dropdown_label = tk.Label(add_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label.place(x=100, y=350, anchor=tk.CENTER)
+    institution_var = tk.StringVar(add_volunteer_popup)
+    institution_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=institution_var)
+    institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_chosen.place(x=250, y=350, anchor=tk.CENTER)
+
+    start_date_label = tk.Label(add_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
+    start_date_label.place(x=100, y=400, anchor=tk.CENTER)
+    start_date_chooser = DateEntry(add_volunteer_popup, width=19, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
+    start_date_chooser.place(x=250, y=400, anchor=tk.CENTER)
+
+    contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
+    contract_length_label.place(x=100, y=450, anchor=tk.CENTER)
+    contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    contract_length_entry.place(x=250, y=450, anchor=tk.CENTER)
+
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: add_volunteer())
+    add_volunteer_button.place(x=200, y=500, anchor=tk.CENTER)
 
 def add_institution_popup():
-    pass
+    add_institution_popup = tk.Toplevel(root)
+    add_institution_popup.title("Add Institution")
+    add_institution_popup.geometry("400x300")
+    add_institution_popup.configure(bg="white")
+    add_institution_popup.resizable(False, False)
+
+    header = tk.Label(add_institution_popup, text= "Add Institution", font=('Arial', 30), bg="white", fg="dark blue")
+    header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
+
+    name_label = tk.Label(add_institution_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
+    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+
+    type_label = tk.Label(add_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
+    type_label.place(x=100, y=150, anchor=tk.CENTER)
+    type_var = tk.StringVar(add_institution_popup)
+    type_chosen = ttk.Combobox(add_institution_popup, width=19, textvariable=type_var)
+    type_chosen['values'] = ("University", "College")
+    type_chosen.place(x=250, y=150, anchor=tk.CENTER)
+
+    postcode_label = tk.Label(add_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
+    postcode_label.place(x=100, y=200, anchor=tk.CENTER)
+    postcode_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
+    postcode_entry.place(x=250, y=200, anchor=tk.CENTER)
+
+    add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: [add_institution(name_entry.get(), type_var.get(), postcode_entry.get()), add_institution_popup.destroy()])
+    add_institution_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def add_role_popup():
     pass
