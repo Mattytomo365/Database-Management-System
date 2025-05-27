@@ -252,6 +252,7 @@ def add_role_popup():
         selected_indices = institutions.curselection()
         selected_values = [institutions.get(i) for i in selected_indices]
         institution_chosen.set(", ".join(selected_values))
+
     institutions.bind("<<ListboxSelect>>", lambda event: update_dropdown())
 
     add_institution_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), institution_chosen.get()), add_role_popup.destroy()])

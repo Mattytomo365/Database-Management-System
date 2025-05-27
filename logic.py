@@ -39,8 +39,18 @@ def create_role_table():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             description TEXT
+        )
+    ''')
+    connection.commit()
+
+def create_institution_role_table():
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS institution_roles (
             institution_id INTEGER,
-            FOREIGN KEY (institution_id) REFERENCES institutions(id)
+            role_id INTEGER,
+            FOREIGN KEY (institution_id) REFERENCES institutions(id),
+            FOREIGN KEY (role_id) REFERENCES roles(id),
+            PRIMARY KEY (institution_id, role_id)
         )
     ''')
     connection.commit()
@@ -68,21 +78,31 @@ def add_institution(name, type, postcode):
         , (name, type, postcode))
     connection.commit()
 
-def add_role(name, description, institution_name):
-    cursor.execute('''
-        SELECT id FROM institutions WHERE name = ?
-    ''', (institution_name,))
+def add_role(name, description, institution_names):
     
-    institution_id = cursor.fetchone()
+    institution_names = institution_names.split(', ')
 
-    if institution_id:
+    cursor.execute('''
+        INSERT INTO roles (name, description)
+        VALUES (?, ?)
+        ''', (name, description))
+    connection.commit()
+    
+    role_id = cursor.lastrowid
+    
+    for institution_name in institution_names:
+        print(f"Adding role '{name}' to institution '{institution_name}'")
         cursor.execute('''
-            INSERT INTO roles (name, description, institution_id)
-            VALUES (?, ?, ?)
-        ''', (name, description, institution_id[0]))
+            SELECT id FROM institutions WHERE name = ?
+        ''', (institution_name,))
+    
+        institution_id = cursor.fetchone()[0]
+
+        cursor.execute('''
+            INSERT INTO institution_roles (role_id, institution_id)
+            VALUES (?, ?)
+        ''', (role_id, institution_id))
         connection.commit()
-    else:
-        print("Institution not found.")
 
 def add_artist(name, email, phone):
     cursor.execute('''
@@ -156,6 +176,7 @@ def initialise_database():
     create_volunteer_table()
     create_institution_table()
     create_role_table()
+    create_institution_role_table()
     create_artist_table()
 
 
