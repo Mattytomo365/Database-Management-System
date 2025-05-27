@@ -217,7 +217,7 @@ def add_institution_popup():
 def add_role_popup():
     add_role_popup = tk.Toplevel(root)
     add_role_popup.title("Add Role")
-    add_role_popup.geometry("400x300")
+    add_role_popup.geometry("400x400")
     add_role_popup.configure(bg="white")
     add_role_popup.resizable(False, False)
 
@@ -237,12 +237,25 @@ def add_role_popup():
     institution_dropdown_label = tk.Label(add_role_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.place(x=100, y=200, anchor=tk.CENTER)
     institution_var = tk.StringVar(add_role_popup)
-    institution_chosen = ttk.Combobox(add_role_popup, width=19, textvariable=institution_var)
-    institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_chosen = ttk.Combobox(add_role_popup, width=19, state="readonly")
+    values = get_institution_names() if get_institution_names() else ("No Institutions Available")
     institution_chosen.place(x=250, y=200, anchor=tk.CENTER)
 
-    add_institution_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), institution_var.get()), add_role_popup.destroy()])
-    add_institution_button.place(x=200, y=250, anchor=tk.CENTER)
+    institutions_label = tk.Label(add_role_popup, text="Select Here:", font=('Arial', 12), bg="white", fg="black")
+    institutions_label.place(x=100, y=230, anchor=tk.CENTER)
+    institutions = tk.Listbox(add_role_popup, listvariable=institution_var, height=5, width=27, selectmode="multiple", bg="white", fg="black", font=('Arial', 12), exportselection=0, selectforeground="white", selectbackground="dark blue")
+    for value in values:
+        institutions.insert(tk.END, value)
+    institutions.place(x=250, y=260, anchor=tk.CENTER)
+
+    def update_dropdown():
+        selected_indices = institutions.curselection()
+        selected_values = [institutions.get(i) for i in selected_indices]
+        institution_chosen.set(", ".join(selected_values))
+    institutions.bind("<<ListboxSelect>>", lambda event: update_dropdown())
+
+    add_institution_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), institution_chosen.get()), add_role_popup.destroy()])
+    add_institution_button.place(x=200, y=350, anchor=tk.CENTER)
 
 def add_artist_popup():
     add_artist_popup = tk.Toplevel(root)
