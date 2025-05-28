@@ -500,7 +500,29 @@ def delete_institution_popup():
         no_institutions_label.place(x=200, y=100, anchor=tk.CENTER)
 
 def delete_role_popup():
-    pass
+    delete_role_popup = tk.Toplevel(root)
+    delete_role_popup.title("Delete Role")
+    delete_role_popup.geometry("400x200")
+    delete_role_popup.configure(bg="white")
+    delete_role_popup.resizable(False, False)
+    header = tk.Label(delete_role_popup, text= "Delete Role", font=('Arial', 30), bg="white", fg="dark blue")
+    header.place(x=200, y=30, anchor=tk.CENTER)
+
+    role_names = get_role_names()
+
+    if role_names:
+        dropdown_label = tk.Label(delete_role_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
+        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        role_var = tk.StringVar(delete_role_popup)
+        role_chosen = ttk.Combobox(delete_role_popup, width=19, textvariable=role_var)
+        role_chosen['values'] = role_names
+        role_chosen.place(x=250, y=100, anchor=tk.CENTER)
+
+        delete_role_button = ttk.Button(delete_role_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_role(), delete_role_popup.destroy()])
+        delete_role_button.place(x=200, y=170, anchor=tk.CENTER)
+    else:
+        no_roles_label = tk.Label(delete_role_popup, text="No roles to delete", font=('Arial', 15), bg="white", fg="black")
+        no_roles_label.place(x=200, y=100, anchor=tk.CENTER)
 
 def delete_artist_popup():
     pass
