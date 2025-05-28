@@ -23,6 +23,7 @@ style.configure("Blue.TButton",
 header = tk.Label(root, text="Welcome", font=("Arial", 60), bg="white", fg="dark blue")
 header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)
 
+# Popup functions
 
 def view_options_popup():
     view_options_popup = tk.Toplevel(root)
