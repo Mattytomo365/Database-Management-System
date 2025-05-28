@@ -13,10 +13,12 @@ def create_volunteer_table():
             email TEXT NOT NULL UNIQUE,
             phone TEXT,
             type TEXT,
-            institution TEXT,
-            role TEXT,
+            institution_id TEXT,
+            role_id TEXT,
             start_date TEXT,
-            contract_length TEXT
+            contract_length TEXT,
+            FOREIGN KEY (institution_id) REFERENCES institutions(id),
+            FOREIGN KEY (role_id) REFERENCES roles(id)
         )
     ''')
     connection.commit()
@@ -69,9 +71,21 @@ def create_artist_table():
 
 def add_volunteer(name, email, phone, type, institution, role, start_date, contract_length):
     cursor.execute('''
-        INSERT INTO volunteers (name, email, phone, type, institution, role, start_date, contract_length)
+        SELECT id FROM institutions WHERE name = ?
+        ''', (institution,))
+    
+    institution_id = cursor.fetchone()[0]
+
+    cursor.execute('''
+        SELECT id FROM roles WHERE name = ?
+        ''', (role,))
+    
+    role_id = cursor.fetchone()[0]
+    
+    cursor.execute('''
+        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, contract_length)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-        , (name, email, phone, type, institution, role, start_date, contract_length))
+        , (name, email, phone, type, institution_id, role_id, start_date, contract_length))
     connection.commit()
 
 def add_institution(name, type, postcode):
@@ -94,7 +108,6 @@ def add_role(name, description, institution_names):
     role_id = cursor.lastrowid
     
     for institution_name in institution_names:
-        print(f"Adding role '{name}' to institution '{institution_name}'")
         cursor.execute('''
             SELECT id FROM institutions WHERE name = ?
         ''', (institution_name,))
