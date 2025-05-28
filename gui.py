@@ -475,7 +475,29 @@ def delete_volunteer_popup():
         no_volunteers_label.place(x=200, y=100, anchor=tk.CENTER)
 
 def delete_institution_popup():
-    pass
+    delete_institution_popup = tk.Toplevel(root)
+    delete_institution_popup.title("Delete Institution")
+    delete_institution_popup.geometry("400x200")
+    delete_institution_popup.configure(bg="white")
+    delete_institution_popup.resizable(False, False)
+    header = tk.Label(delete_institution_popup, text= "Delete Institution", font=('Arial', 30), bg="white", fg="dark blue")
+    header.place(x=200, y=30, anchor=tk.CENTER)
+
+    institution_names = get_institution_names()
+
+    if institution_names:
+        dropdown_label = tk.Label(delete_institution_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
+        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        institution_var = tk.StringVar(delete_institution_popup)
+        institution_chosen = ttk.Combobox(delete_institution_popup, width=19, textvariable=institution_var)
+        institution_chosen['values'] = institution_names
+        institution_chosen.place(x=250, y=100, anchor=tk.CENTER)
+
+        delete_institution_button = ttk.Button(delete_institution_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_institution(), delete_institution_popup.destroy()])
+        delete_institution_button.place(x=200, y=170, anchor=tk.CENTER)
+    else:
+        no_institutions_label = tk.Label(delete_institution_popup, text="No institutions to delete", font=('Arial', 15), bg="white", fg="black")
+        no_institutions_label.place(x=200, y=100, anchor=tk.CENTER)
 
 def delete_role_popup():
     pass
