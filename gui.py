@@ -450,7 +450,29 @@ def edit_artist_popup():
     edit_artist_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def delete_volunteer_popup():
-    pass
+    delete_volunteer_popup = tk.Toplevel(root)
+    delete_volunteer_popup.title("Delete Volunteer")
+    delete_volunteer_popup.geometry("400x200")
+    delete_volunteer_popup.configure(bg="white")
+    delete_volunteer_popup.resizable(False, False)
+    header = tk.Label(delete_volunteer_popup, text= "Delete Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
+    header.place(x=200, y=30, anchor=tk.CENTER)
+
+    volunteer_names = get_volunteer_names()
+
+    if volunteer_names:
+        dropdown_label = tk.Label(delete_volunteer_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
+        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        volunteer_var = tk.StringVar(delete_volunteer_popup)
+        volunteer_chosen = ttk.Combobox(delete_volunteer_popup, width=19, textvariable=volunteer_var)
+        volunteer_chosen['values'] = volunteer_names
+        volunteer_chosen.place(x=250, y=100, anchor=tk.CENTER)
+
+        delete_volunteer_button = ttk.Button(delete_volunteer_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_volunteer(), delete_volunteer_popup.destroy()])
+        delete_volunteer_button.place(x=200, y=170, anchor=tk.CENTER)
+    else:
+        no_volunteers_label = tk.Label(delete_volunteer_popup, text="No volunteers to delete", font=('Arial', 15), bg="white", fg="black")
+        no_volunteers_label.place(x=200, y=100, anchor=tk.CENTER)
 
 def delete_institution_popup():
     pass
