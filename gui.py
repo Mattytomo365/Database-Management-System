@@ -288,7 +288,64 @@ def add_artist_popup(): # ADD STATUS ???
     add_artist_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def edit_volunteer_popup():
-    pass
+    edit_volunteer_popup = tk.Toplevel(root)
+    edit_volunteer_popup.title("Edit Volunteer")
+    edit_volunteer_popup.geometry("400x550")
+    edit_volunteer_popup.configure(bg="white")
+    edit_volunteer_popup.resizable(False, False)
+
+    header = tk.Label(edit_volunteer_popup, text= "Edit Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
+    header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
+
+    name_label = tk.Label(edit_volunteer_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+
+    email_label = tk.Label(edit_volunteer_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
+    email_label.place(x=100, y=150, anchor=tk.CENTER)
+    email_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+
+    phone_label = tk.Label(edit_volunteer_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
+    phone_label.place(x=100, y=200, anchor=tk.CENTER)
+    phone_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+
+    type_dropdown_label = tk.Label(edit_volunteer_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
+    type_dropdown_label.place(x=100, y=250, anchor=tk.CENTER)
+    type_var = tk.StringVar(edit_volunteer_popup)
+    type_chosen = ttk.Combobox(edit_volunteer_popup, width=19, textvariable=type_var)
+    type_chosen['values'] = ("Student", "Volunteer")
+    type_chosen.place(x=250, y=250, anchor=tk.CENTER)
+
+    start_date_label = tk.Label(edit_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
+    start_date_label.place(x=100, y=300, anchor=tk.CENTER)
+    start_date_chooser = DateEntry(edit_volunteer_popup, width=19, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
+    start_date_chooser.place(x=250, y=300, anchor=tk.CENTER)
+
+    role_dropdown_label = tk.Label(edit_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
+    role_dropdown_label.place(x=100, y=350, anchor=tk.CENTER)
+    role_var = tk.StringVar(edit_volunteer_popup)
+    role_chosen = ttk.Combobox(edit_volunteer_popup, width=19, textvariable=role_var)
+    role_chosen['values'] = get_role_names() if get_role_names() else ("No Roles Available")
+    role_chosen.place(x=250, y=350, anchor=tk.CENTER)
+
+    institution_dropdown_label = tk.Label(edit_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label.place(x=100, y=400, anchor=tk.CENTER)
+    institution_var = tk.StringVar(edit_volunteer_popup)
+    institution_chosen = ttk.Combobox(edit_volunteer_popup, width=19, textvariable=institution_var)
+    institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_chosen.place(x=250, y=400, anchor=tk.CENTER)
+
+    contract_length_label = tk.Label(edit_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
+    contract_length_label.place(x=100, y=450, anchor=tk.CENTER)
+    contract_length_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    contract_length_entry.place(x=250, y=450, anchor=tk.CENTER)
+
+    edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_chosen.get(), role_chosen.get(), start_date_chooser.get_date(), contract_length_entry.get()), edit_volunteer_popup.destroy()])
+    edit_volunteer_button.place(x=200, y=500, anchor=tk.CENTER)
+    
 
 def edit_institution_popup():
     pass
