@@ -175,7 +175,13 @@ def retrieve_roles():
 def retrieve_artists():
     pass
 
-# Other functions
+# Retrieval functions
+
+def get_volunteer_names():
+    cursor.execute('SELECT name FROM volunteers')
+    connection.commit()
+    volunteer_names = [row[0] for row in cursor.fetchall()]
+    return volunteer_names
 
 def get_institution_names():
     cursor.execute('SELECT name FROM institutions')
@@ -188,6 +194,20 @@ def get_role_names():
     connection.commit()
     role_names = [row[0] for row in cursor.fetchall()]
     return role_names
+
+def get_volunteer_names():
+    cursor.execute('SELECT name FROM volunteers')
+    connection.commit()
+    volunteer_names = [row[0] for row in cursor.fetchall()]
+    return volunteer_names
+
+def get_artist_names():
+    cursor.execute('SELECT name FROM artists')
+    connection.commit()
+    artist_names = [row[0] for row in cursor.fetchall()]
+    return artist_names
+
+# Initialisation of database function
 
 def initialise_database():
     create_volunteer_table()
