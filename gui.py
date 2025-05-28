@@ -256,8 +256,8 @@ def add_role_popup():
 
     institutions.bind("<<ListboxSelect>>", lambda event: update_dropdown())
 
-    add_institution_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), institution_chosen.get()), add_role_popup.destroy()])
-    add_institution_button.place(x=200, y=350, anchor=tk.CENTER)
+    add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), institution_chosen.get()), add_role_popup.destroy()])
+    add_role_button.place(x=200, y=350, anchor=tk.CENTER)
 
 def add_artist_popup(): # ADD STATUS ???
     add_artist_popup = tk.Toplevel(root)
@@ -378,7 +378,48 @@ def edit_institution_popup():
     edit_institution_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def edit_role_popup():
-    pass
+    edit_role_popup = tk.Toplevel(root)
+    edit_role_popup.title("Edit Role")
+    edit_role_popup.geometry("400x400")
+    edit_role_popup.configure(bg="white")
+    edit_role_popup.resizable(False, False)
+
+    header = tk.Label(edit_role_popup, text= "Edit Role", font=('Arial', 30), bg="white", fg="dark blue")
+    header.grid(row=0, column=0, padx=140, pady=10, columnspan=2)
+
+    name_label = tk.Label(edit_role_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_entry = tk.Entry(edit_role_popup, font=('Arial', 15), bg="white", fg="black")
+    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+
+    description_label = tk.Label(edit_role_popup, text="Description", font=('Arial', 15), bg="white", fg="black")
+    description_label.place(x=100, y=150, anchor=tk.CENTER)
+    description_entry = tk.Entry(edit_role_popup, font=('Arial', 15), bg="white", fg="black")
+    description_entry.place(x=250, y=150, anchor=tk.CENTER)
+
+    institution_dropdown_label = tk.Label(edit_role_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label.place(x=100, y=200, anchor=tk.CENTER)
+    institution_var = tk.StringVar(edit_role_popup)
+    institution_chosen = ttk.Combobox(edit_role_popup, width=19, state="readonly")
+    values = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_chosen.place(x=250, y=200, anchor=tk.CENTER)
+
+    institutions_label = tk.Label(edit_role_popup, text="Select Here:", font=('Arial', 12), bg="white", fg="black")
+    institutions_label.place(x=100, y=230, anchor=tk.CENTER)
+    institutions = tk.Listbox(edit_role_popup, listvariable=institution_var, height=5, width=27, selectmode="multiple", bg="white", fg="black", font=('Arial', 12), exportselection=0, selectforeground="white", selectbackground="dark blue")
+    for value in values:
+        institutions.insert(tk.END, value)
+    institutions.place(x=250, y=260, anchor=tk.CENTER)
+
+    def update_dropdown():
+        selected_indices = institutions.curselection()
+        selected_values = [institutions.get(i) for i in selected_indices]
+        institution_chosen.set(", ".join(selected_values))
+
+    institutions.bind("<<ListboxSelect>>", lambda event: update_dropdown())
+
+    edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(name_entry.get(), description_entry.get(), institution_chosen.get()), edit_role_popup.destroy()])
+    edit_role_button.place(x=200, y=350, anchor=tk.CENTER)
 
 def edit_artist_popup():
     pass
