@@ -161,7 +161,7 @@ def add_volunteer_popup():  # ADD STATUS???
     role_dropdown_label.place(x=100, y=300, anchor=tk.CENTER)
     role_var = tk.StringVar(add_volunteer_popup)
     role_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=role_var)
-    role_chosen['values'] = ("Student", "Volunteer")
+    role_chosen['values'] = get_role_names() if get_role_names() else ("No Roles Available")
     role_chosen.place(x=250, y=300, anchor=tk.CENTER)
 
     institution_dropdown_label = tk.Label(add_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
@@ -181,7 +181,7 @@ def add_volunteer_popup():  # ADD STATUS???
     contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
     contract_length_entry.place(x=250, y=450, anchor=tk.CENTER)
 
-    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: add_volunteer())
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), role_chosen.get(), institution_chosen.get(), start_date_chooser.get_date(), contract_length_entry.get()), add_volunteer_popup.destroy()])
     add_volunteer_button.place(x=200, y=500, anchor=tk.CENTER)
 
 def add_institution_popup():

@@ -16,8 +16,7 @@ def create_volunteer_table():
             institution TEXT,
             role TEXT,
             start_date TEXT,
-            contract_length TEXT,
-            status TEXT
+            contract_length TEXT
         )
     ''')
     connection.commit()
@@ -68,8 +67,12 @@ def create_artist_table():
 
 # Add functions
 
-def add_volunteer():
-    pass
+def add_volunteer(name, email, phone, type, institution, role, start_date, contract_length):
+    cursor.execute('''
+        INSERT INTO volunteers (name, email, phone, type, institution, role, start_date, contract_length)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        , (name, email, phone, type, institution, role, start_date, contract_length))
+    connection.commit()
 
 def add_institution(name, type, postcode):
     cursor.execute('''
@@ -170,7 +173,8 @@ def get_institution_names():
 def get_role_names():
     cursor.execute('SELECT name FROM roles')
     connection.commit()
-    return cursor.fetchall()
+    role_names = [row[0] for row in cursor.fetchall()]
+    return role_names
 
 def initialise_database():
     create_volunteer_table()
