@@ -422,7 +422,32 @@ def edit_role_popup():
     edit_role_button.place(x=200, y=350, anchor=tk.CENTER)
 
 def edit_artist_popup():
-    pass
+    edit_artist_popup = tk.Toplevel(root)
+    edit_artist_popup.title("Edit Artist")
+    edit_artist_popup.geometry("400x300")
+    edit_artist_popup.configure(bg="white")
+    edit_artist_popup.resizable(False, False)
+
+    header = tk.Label(edit_artist_popup, text= "Edit Artist", font=('Arial', 30), bg="white", fg="dark blue")
+    header.grid(row=0, column=0, padx=140, pady=10, columnspan=2)
+
+    name_label = tk.Label(edit_artist_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_entry = tk.Entry(edit_artist_popup, font=('Arial', 15), bg="white", fg="black")
+    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+
+    email_label = tk.Label(edit_artist_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
+    email_label.place(x=100, y=150, anchor=tk.CENTER)
+    email_entry = tk.Entry(edit_artist_popup, font=('Arial', 15), bg="white", fg="black")
+    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+
+    phone_label = tk.Label(edit_artist_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
+    phone_label.place(x=100, y=200, anchor=tk.CENTER)
+    phone_entry = tk.Entry(edit_artist_popup, font=('Arial', 15), bg="white", fg="black")
+    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+
+    edit_artist_button = ttk.Button(edit_artist_popup, text="Save", style="Blue.TButton", command=lambda: [edit_artist(name_entry.get(), email_entry.get(), phone_entry.get()), edit_artist_popup.destroy()])
+    edit_artist_button.place(x=200, y=250, anchor=tk.CENTER)
 
 def delete_volunteer_popup():
     pass
