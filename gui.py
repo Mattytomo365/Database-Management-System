@@ -5,7 +5,7 @@ from tkcalendar import DateEntry
 
 root = tk.Tk()
 root.title("Volunteer Management System")
-root.geometry("500x400")
+root.geometry("570x400")
 root.configure(bg="white")
 root.resizable(False, False)
 
@@ -28,7 +28,7 @@ header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)
 def view_options_popup():
     view_options_popup = tk.Toplevel(root)
     view_options_popup.title("View Options")
-    view_options_popup.geometry("500x300")
+    view_options_popup.geometry("600x330")
     view_options_popup.configure(bg="white")
     view_options_popup.resizable(False, False)
 
@@ -51,7 +51,7 @@ def view_options_popup():
 def add_options_popup():  # Can only add role after institutions have been added
     add_options_popup = tk.Toplevel(root)
     add_options_popup.title("Add Options")
-    add_options_popup.geometry("500x300")
+    add_options_popup.geometry("600x330")
     add_options_popup.configure(bg="white")
     add_options_popup.resizable(False, False)
 
@@ -73,7 +73,7 @@ def add_options_popup():  # Can only add role after institutions have been added
 def edit_options_popup():
     edit_options_popup = tk.Toplevel(root)
     edit_options_popup.title("Edit Options")
-    edit_options_popup.geometry("500x300")
+    edit_options_popup.geometry("600x330")
     edit_options_popup.configure(bg="white")
     edit_options_popup.resizable(False, False)
 
@@ -95,7 +95,7 @@ def edit_options_popup():
 def delete_options_popup():
     delete_options_popup = tk.Toplevel(root)
     delete_options_popup.title("Delete Options")
-    delete_options_popup.geometry("500x300")
+    delete_options_popup.geometry("600x330")
     delete_options_popup.configure(bg="white")
     delete_options_popup.resizable(False, False)
 
@@ -129,7 +129,7 @@ def view_artists_popup():
 def add_volunteer_popup():  # ADD STATUS???
     add_volunteer_popup = tk.Toplevel(root)
     add_volunteer_popup.title("Add Volunteer")
-    add_volunteer_popup.geometry("400x550")
+    add_volunteer_popup.geometry("470x550")
     add_volunteer_popup.configure(bg="white")
     add_volunteer_popup.resizable(False, False)
 
@@ -139,56 +139,56 @@ def add_volunteer_popup():  # ADD STATUS???
     name_label = tk.Label(add_volunteer_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     email_label = tk.Label(add_volunteer_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
     email_label.place(x=100, y=150, anchor=tk.CENTER)
     email_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+    email_entry.place(x=300, y=150, anchor=tk.CENTER)
 
     phone_label = tk.Label(add_volunteer_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
     phone_label.place(x=100, y=200, anchor=tk.CENTER)
     phone_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+    phone_entry.place(x=300, y=200, anchor=tk.CENTER)
 
     type_dropdown_label = tk.Label(add_volunteer_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
     type_dropdown_label.place(x=100, y=250, anchor=tk.CENTER)
     type_var = tk.StringVar(add_volunteer_popup)
-    type_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=type_var)
+    type_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=type_var)
     type_chosen['values'] = ("Student", "Volunteer")
-    type_chosen.place(x=250, y=250, anchor=tk.CENTER)
+    type_chosen.place(x=300, y=250, anchor=tk.CENTER)
 
     start_date_label = tk.Label(add_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
     start_date_label.place(x=100, y=300, anchor=tk.CENTER)
-    start_date_chooser = DateEntry(add_volunteer_popup, width=19, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
-    start_date_chooser.place(x=250, y=300, anchor=tk.CENTER)
+    start_date_chooser = DateEntry(add_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
+    start_date_chooser.place(x=300, y=300, anchor=tk.CENTER)
 
     role_dropdown_label = tk.Label(add_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
     role_dropdown_label.place(x=100, y=350, anchor=tk.CENTER)
     role_var = tk.StringVar(add_volunteer_popup)
-    role_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=role_var)
+    role_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=role_var)
     role_chosen['values'] = get_role_names() if get_role_names() else ("No Roles Available")
-    role_chosen.place(x=250, y=350, anchor=tk.CENTER)
+    role_chosen.place(x=300, y=350, anchor=tk.CENTER)
 
     institution_dropdown_label = tk.Label(add_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.place(x=100, y=400, anchor=tk.CENTER)
     institution_var = tk.StringVar(add_volunteer_popup)
-    institution_chosen = ttk.Combobox(add_volunteer_popup, width=19, textvariable=institution_var)
+    institution_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=institution_var)
     institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
-    institution_chosen.place(x=250, y=400, anchor=tk.CENTER)
+    institution_chosen.place(x=300, y=400, anchor=tk.CENTER)
 
     contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
     contract_length_label.place(x=100, y=450, anchor=tk.CENTER)
     contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    contract_length_entry.place(x=250, y=450, anchor=tk.CENTER)
+    contract_length_entry.place(x=300, y=450, anchor=tk.CENTER)
 
     add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_chosen.get(), role_chosen.get(), start_date_chooser.get_date(), contract_length_entry.get()), add_volunteer_popup.destroy()])
-    add_volunteer_button.place(x=200, y=500, anchor=tk.CENTER)
+    add_volunteer_button.place(x=230, y=500, anchor=tk.CENTER)
 
 def add_institution_popup():
     add_institution_popup = tk.Toplevel(root)
     add_institution_popup.title("Add Institution")
-    add_institution_popup.geometry("400x300")
+    add_institution_popup.geometry("470x300")
     add_institution_popup.configure(bg="white")
     add_institution_popup.resizable(False, False)
 
@@ -198,27 +198,27 @@ def add_institution_popup():
     name_label = tk.Label(add_institution_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     type_label = tk.Label(add_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
     type_label.place(x=100, y=150, anchor=tk.CENTER)
     type_var = tk.StringVar(add_institution_popup)
-    type_chosen = ttk.Combobox(add_institution_popup, width=19, textvariable=type_var)
+    type_chosen = ttk.Combobox(add_institution_popup, width=34, textvariable=type_var)
     type_chosen['values'] = ("University", "College")
-    type_chosen.place(x=250, y=150, anchor=tk.CENTER)
+    type_chosen.place(x=300, y=150, anchor=tk.CENTER)
 
     postcode_label = tk.Label(add_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
     postcode_label.place(x=100, y=200, anchor=tk.CENTER)
     postcode_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    postcode_entry.place(x=250, y=200, anchor=tk.CENTER)
+    postcode_entry.place(x=300, y=200, anchor=tk.CENTER)
 
     add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: [add_institution(name_entry.get(), type_var.get(), postcode_entry.get()), add_institution_popup.destroy()])
-    add_institution_button.place(x=200, y=250, anchor=tk.CENTER)
+    add_institution_button.place(x=230, y=250, anchor=tk.CENTER)
 
 def add_role_popup():
     add_role_popup = tk.Toplevel(root)
     add_role_popup.title("Add Role")
-    add_role_popup.geometry("400x400")
+    add_role_popup.geometry("470x400")
     add_role_popup.configure(bg="white")
     add_role_popup.resizable(False, False)
 
@@ -228,26 +228,26 @@ def add_role_popup():
     name_label = tk.Label(add_role_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(add_role_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     description_label = tk.Label(add_role_popup, text="Description", font=('Arial', 15), bg="white", fg="black")
     description_label.place(x=100, y=150, anchor=tk.CENTER)
     description_entry = tk.Entry(add_role_popup, font=('Arial', 15), bg="white", fg="black")
-    description_entry.place(x=250, y=150, anchor=tk.CENTER)
+    description_entry.place(x=300, y=150, anchor=tk.CENTER)
 
     institution_dropdown_label = tk.Label(add_role_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.place(x=100, y=200, anchor=tk.CENTER)
     institution_var = tk.StringVar(add_role_popup)
-    institution_chosen = ttk.Combobox(add_role_popup, width=19, state="readonly")
+    institution_chosen = ttk.Combobox(add_role_popup, width=34, state="readonly")
     values = get_institution_names() if get_institution_names() else ("No Institutions Available")
-    institution_chosen.place(x=250, y=200, anchor=tk.CENTER)
+    institution_chosen.place(x=300, y=200, anchor=tk.CENTER)
 
     institutions_label = tk.Label(add_role_popup, text="Select Here:", font=('Arial', 12), bg="white", fg="black")
     institutions_label.place(x=100, y=230, anchor=tk.CENTER)
     institutions = tk.Listbox(add_role_popup, listvariable=institution_var, height=5, width=27, selectmode="multiple", bg="white", fg="black", font=('Arial', 12), exportselection=0, selectforeground="white", selectbackground="dark blue")
     for value in values:
         institutions.insert(tk.END, value)
-    institutions.place(x=250, y=260, anchor=tk.CENTER)
+    institutions.place(x=300, y=270, anchor=tk.CENTER)
 
     def update_dropdown():
         selected_indices = institutions.curselection()
@@ -257,12 +257,12 @@ def add_role_popup():
     institutions.bind("<<ListboxSelect>>", lambda event: update_dropdown())
 
     add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), institution_chosen.get()), add_role_popup.destroy()])
-    add_role_button.place(x=200, y=350, anchor=tk.CENTER)
+    add_role_button.place(x=230, y=350, anchor=tk.CENTER)
 
 def add_artist_popup(): # ADD STATUS ???
     add_artist_popup = tk.Toplevel(root)
     add_artist_popup.title("Add Artist")
-    add_artist_popup.geometry("400x300")
+    add_artist_popup.geometry("470x300")
     add_artist_popup.configure(bg="white")
     add_artist_popup.resizable(False, False)
 
@@ -272,25 +272,25 @@ def add_artist_popup(): # ADD STATUS ???
     name_label = tk.Label(add_artist_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(add_artist_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     email_label = tk.Label(add_artist_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
     email_label.place(x=100, y=150, anchor=tk.CENTER)
     email_entry = tk.Entry(add_artist_popup, font=('Arial', 15), bg="white", fg="black")
-    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+    email_entry.place(x=300, y=150, anchor=tk.CENTER)
 
     phone_label = tk.Label(add_artist_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
     phone_label.place(x=100, y=200, anchor=tk.CENTER)
     phone_entry = tk.Entry(add_artist_popup, font=('Arial', 15), bg="white", fg="black")
-    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+    phone_entry.place(x=300, y=200, anchor=tk.CENTER)
 
     add_artist_button = ttk.Button(add_artist_popup, text="Add", style="Blue.TButton", command=lambda: [add_artist(name_entry.get(), email_entry.get(), phone_entry.get()), add_artist_popup.destroy()])
-    add_artist_button.place(x=200, y=250, anchor=tk.CENTER)
+    add_artist_button.place(x=230, y=250, anchor=tk.CENTER)
 
 def edit_volunteer_popup():
     edit_volunteer_popup = tk.Toplevel(root)
     edit_volunteer_popup.title("Edit Volunteer")
-    edit_volunteer_popup.geometry("400x550")
+    edit_volunteer_popup.geometry("470x550")
     edit_volunteer_popup.configure(bg="white")
     edit_volunteer_popup.resizable(False, False)
 
@@ -300,57 +300,57 @@ def edit_volunteer_popup():
     name_label = tk.Label(edit_volunteer_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     email_label = tk.Label(edit_volunteer_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
     email_label.place(x=100, y=150, anchor=tk.CENTER)
     email_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+    email_entry.place(x=300, y=150, anchor=tk.CENTER)
 
     phone_label = tk.Label(edit_volunteer_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
     phone_label.place(x=100, y=200, anchor=tk.CENTER)
     phone_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+    phone_entry.place(x=300, y=200, anchor=tk.CENTER)
 
     type_dropdown_label = tk.Label(edit_volunteer_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
     type_dropdown_label.place(x=100, y=250, anchor=tk.CENTER)
     type_var = tk.StringVar(edit_volunteer_popup)
-    type_chosen = ttk.Combobox(edit_volunteer_popup, width=19, textvariable=type_var)
+    type_chosen = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=type_var)
     type_chosen['values'] = ("Student", "Volunteer")
-    type_chosen.place(x=250, y=250, anchor=tk.CENTER)
+    type_chosen.place(x=300, y=250, anchor=tk.CENTER)
 
     start_date_label = tk.Label(edit_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
     start_date_label.place(x=100, y=300, anchor=tk.CENTER)
-    start_date_chooser = DateEntry(edit_volunteer_popup, width=19, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
-    start_date_chooser.place(x=250, y=300, anchor=tk.CENTER)
+    start_date_chooser = DateEntry(edit_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
+    start_date_chooser.place(x=300, y=300, anchor=tk.CENTER)
 
     role_dropdown_label = tk.Label(edit_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
     role_dropdown_label.place(x=100, y=350, anchor=tk.CENTER)
     role_var = tk.StringVar(edit_volunteer_popup)
-    role_chosen = ttk.Combobox(edit_volunteer_popup, width=19, textvariable=role_var)
+    role_chosen = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=role_var)
     role_chosen['values'] = get_role_names() if get_role_names() else ("No Roles Available")
-    role_chosen.place(x=250, y=350, anchor=tk.CENTER)
+    role_chosen.place(x=300, y=350, anchor=tk.CENTER)
 
     institution_dropdown_label = tk.Label(edit_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.place(x=100, y=400, anchor=tk.CENTER)
     institution_var = tk.StringVar(edit_volunteer_popup)
-    institution_chosen = ttk.Combobox(edit_volunteer_popup, width=19, textvariable=institution_var)
+    institution_chosen = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=institution_var)
     institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
-    institution_chosen.place(x=250, y=400, anchor=tk.CENTER)
+    institution_chosen.place(x=300, y=400, anchor=tk.CENTER)
 
     contract_length_label = tk.Label(edit_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
     contract_length_label.place(x=100, y=450, anchor=tk.CENTER)
     contract_length_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    contract_length_entry.place(x=250, y=450, anchor=tk.CENTER)
+    contract_length_entry.place(x=300, y=450, anchor=tk.CENTER)
 
     edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_chosen.get(), role_chosen.get(), start_date_chooser.get_date(), contract_length_entry.get()), edit_volunteer_popup.destroy()])
-    edit_volunteer_button.place(x=200, y=500, anchor=tk.CENTER)
+    edit_volunteer_button.place(x=230, y=500, anchor=tk.CENTER)
     
 
 def edit_institution_popup():
     edit_institution_popup = tk.Toplevel(root)
     edit_institution_popup.title("Edit Institution")
-    edit_institution_popup.geometry("400x300")
+    edit_institution_popup.geometry("470x300")
     edit_institution_popup.configure(bg="white")
     edit_institution_popup.resizable(False, False)
 
@@ -360,27 +360,27 @@ def edit_institution_popup():
     name_label = tk.Label(edit_institution_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(edit_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     type_label = tk.Label(edit_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
     type_label.place(x=100, y=150, anchor=tk.CENTER)
     type_var = tk.StringVar(edit_institution_popup)
-    type_chosen = ttk.Combobox(edit_institution_popup, width=19, textvariable=type_var)
+    type_chosen = ttk.Combobox(edit_institution_popup, width=34, textvariable=type_var)
     type_chosen['values'] = ("University", "College")
-    type_chosen.place(x=250, y=150, anchor=tk.CENTER)
+    type_chosen.place(x=300, y=150, anchor=tk.CENTER)
 
     postcode_label = tk.Label(edit_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
     postcode_label.place(x=100, y=200, anchor=tk.CENTER)
     postcode_entry = tk.Entry(edit_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    postcode_entry.place(x=250, y=200, anchor=tk.CENTER)
+    postcode_entry.place(x=300, y=200, anchor=tk.CENTER)
 
     edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: [edit_institution(name_entry.get(), type_var.get(), postcode_entry.get()), edit_institution_popup.destroy()])
-    edit_institution_button.place(x=200, y=250, anchor=tk.CENTER)
+    edit_institution_button.place(x=230, y=250, anchor=tk.CENTER)
 
 def edit_role_popup():
     edit_role_popup = tk.Toplevel(root)
     edit_role_popup.title("Edit Role")
-    edit_role_popup.geometry("400x400")
+    edit_role_popup.geometry("470x400")
     edit_role_popup.configure(bg="white")
     edit_role_popup.resizable(False, False)
 
@@ -390,26 +390,26 @@ def edit_role_popup():
     name_label = tk.Label(edit_role_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(edit_role_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     description_label = tk.Label(edit_role_popup, text="Description", font=('Arial', 15), bg="white", fg="black")
     description_label.place(x=100, y=150, anchor=tk.CENTER)
     description_entry = tk.Entry(edit_role_popup, font=('Arial', 15), bg="white", fg="black")
-    description_entry.place(x=250, y=150, anchor=tk.CENTER)
+    description_entry.place(x=300, y=150, anchor=tk.CENTER)
 
     institution_dropdown_label = tk.Label(edit_role_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.place(x=100, y=200, anchor=tk.CENTER)
     institution_var = tk.StringVar(edit_role_popup)
-    institution_chosen = ttk.Combobox(edit_role_popup, width=19, state="readonly")
+    institution_chosen = ttk.Combobox(edit_role_popup, width=34, state="readonly")
     values = get_institution_names() if get_institution_names() else ("No Institutions Available")
-    institution_chosen.place(x=250, y=200, anchor=tk.CENTER)
+    institution_chosen.place(x=300, y=200, anchor=tk.CENTER)
 
     institutions_label = tk.Label(edit_role_popup, text="Select Here:", font=('Arial', 12), bg="white", fg="black")
     institutions_label.place(x=100, y=230, anchor=tk.CENTER)
     institutions = tk.Listbox(edit_role_popup, listvariable=institution_var, height=5, width=27, selectmode="multiple", bg="white", fg="black", font=('Arial', 12), exportselection=0, selectforeground="white", selectbackground="dark blue")
     for value in values:
         institutions.insert(tk.END, value)
-    institutions.place(x=250, y=260, anchor=tk.CENTER)
+    institutions.place(x=300, y=270, anchor=tk.CENTER)
 
     def update_dropdown():
         selected_indices = institutions.curselection()
@@ -419,12 +419,12 @@ def edit_role_popup():
     institutions.bind("<<ListboxSelect>>", lambda event: update_dropdown())
 
     edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(name_entry.get(), description_entry.get(), institution_chosen.get()), edit_role_popup.destroy()])
-    edit_role_button.place(x=200, y=350, anchor=tk.CENTER)
+    edit_role_button.place(x=230, y=350, anchor=tk.CENTER)
 
 def edit_artist_popup():
     edit_artist_popup = tk.Toplevel(root)
     edit_artist_popup.title("Edit Artist")
-    edit_artist_popup.geometry("400x300")
+    edit_artist_popup.geometry("470x300")
     edit_artist_popup.configure(bg="white")
     edit_artist_popup.resizable(False, False)
 
@@ -434,29 +434,29 @@ def edit_artist_popup():
     name_label = tk.Label(edit_artist_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.place(x=100, y=100, anchor=tk.CENTER)
     name_entry = tk.Entry(edit_artist_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=250, y=100, anchor=tk.CENTER)
+    name_entry.place(x=300, y=100, anchor=tk.CENTER)
 
     email_label = tk.Label(edit_artist_popup, text="E-Mail", font=('Arial', 15), bg="white", fg="black")
     email_label.place(x=100, y=150, anchor=tk.CENTER)
     email_entry = tk.Entry(edit_artist_popup, font=('Arial', 15), bg="white", fg="black")
-    email_entry.place(x=250, y=150, anchor=tk.CENTER)
+    email_entry.place(x=300, y=150, anchor=tk.CENTER)
 
     phone_label = tk.Label(edit_artist_popup, text="Phone", font=('Arial', 15), bg="white", fg="black")
     phone_label.place(x=100, y=200, anchor=tk.CENTER)
     phone_entry = tk.Entry(edit_artist_popup, font=('Arial', 15), bg="white", fg="black")
-    phone_entry.place(x=250, y=200, anchor=tk.CENTER)
+    phone_entry.place(x=300, y=200, anchor=tk.CENTER)
 
     edit_artist_button = ttk.Button(edit_artist_popup, text="Save", style="Blue.TButton", command=lambda: [edit_artist(name_entry.get(), email_entry.get(), phone_entry.get()), edit_artist_popup.destroy()])
-    edit_artist_button.place(x=200, y=250, anchor=tk.CENTER)
+    edit_artist_button.place(x=230, y=250, anchor=tk.CENTER)
 
 def delete_volunteer_popup():
     delete_volunteer_popup = tk.Toplevel(root)
     delete_volunteer_popup.title("Delete Volunteer")
-    delete_volunteer_popup.geometry("400x200")
+    delete_volunteer_popup.geometry("470x200")
     delete_volunteer_popup.configure(bg="white")
     delete_volunteer_popup.resizable(False, False)
     header = tk.Label(delete_volunteer_popup, text= "Delete Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=200, y=30, anchor=tk.CENTER)
+    header.place(x=240, y=30, anchor=tk.CENTER)
 
     volunteer_names = get_volunteer_names()
 
@@ -464,24 +464,24 @@ def delete_volunteer_popup():
         dropdown_label = tk.Label(delete_volunteer_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
         dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
         volunteer_var = tk.StringVar(delete_volunteer_popup)
-        volunteer_chosen = ttk.Combobox(delete_volunteer_popup, width=19, textvariable=volunteer_var)
+        volunteer_chosen = ttk.Combobox(delete_volunteer_popup, width=34, textvariable=volunteer_var)
         volunteer_chosen['values'] = volunteer_names
-        volunteer_chosen.place(x=250, y=100, anchor=tk.CENTER)
+        volunteer_chosen.place(x=300, y=100, anchor=tk.CENTER)
 
         delete_volunteer_button = ttk.Button(delete_volunteer_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_volunteer(), delete_volunteer_popup.destroy()])
-        delete_volunteer_button.place(x=200, y=170, anchor=tk.CENTER)
+        delete_volunteer_button.place(x=230, y=170, anchor=tk.CENTER)
     else:
         no_volunteers_label = tk.Label(delete_volunteer_popup, text="No volunteers to delete", font=('Arial', 15), bg="white", fg="black")
-        no_volunteers_label.place(x=200, y=100, anchor=tk.CENTER)
+        no_volunteers_label.place(x=230, y=100, anchor=tk.CENTER)
 
 def delete_institution_popup():
     delete_institution_popup = tk.Toplevel(root)
     delete_institution_popup.title("Delete Institution")
-    delete_institution_popup.geometry("400x200")
+    delete_institution_popup.geometry("470x200")
     delete_institution_popup.configure(bg="white")
     delete_institution_popup.resizable(False, False)
     header = tk.Label(delete_institution_popup, text= "Delete Institution", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=200, y=30, anchor=tk.CENTER)
+    header.place(x=240, y=30, anchor=tk.CENTER)
 
     institution_names = get_institution_names()
 
@@ -489,24 +489,24 @@ def delete_institution_popup():
         dropdown_label = tk.Label(delete_institution_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
         dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
         institution_var = tk.StringVar(delete_institution_popup)
-        institution_chosen = ttk.Combobox(delete_institution_popup, width=19, textvariable=institution_var)
+        institution_chosen = ttk.Combobox(delete_institution_popup, width=34, textvariable=institution_var)
         institution_chosen['values'] = institution_names
-        institution_chosen.place(x=250, y=100, anchor=tk.CENTER)
+        institution_chosen.place(x=300, y=100, anchor=tk.CENTER)
 
         delete_institution_button = ttk.Button(delete_institution_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_institution(), delete_institution_popup.destroy()])
-        delete_institution_button.place(x=200, y=170, anchor=tk.CENTER)
+        delete_institution_button.place(x=230, y=170, anchor=tk.CENTER)
     else:
         no_institutions_label = tk.Label(delete_institution_popup, text="No institutions to delete", font=('Arial', 15), bg="white", fg="black")
-        no_institutions_label.place(x=200, y=100, anchor=tk.CENTER)
+        no_institutions_label.place(x=230, y=100, anchor=tk.CENTER)
 
 def delete_role_popup():
     delete_role_popup = tk.Toplevel(root)
     delete_role_popup.title("Delete Role")
-    delete_role_popup.geometry("400x200")
+    delete_role_popup.geometry("470x200")
     delete_role_popup.configure(bg="white")
     delete_role_popup.resizable(False, False)
     header = tk.Label(delete_role_popup, text= "Delete Role", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=200, y=30, anchor=tk.CENTER)
+    header.place(x=240, y=30, anchor=tk.CENTER)
 
     role_names = get_role_names()
 
@@ -514,24 +514,24 @@ def delete_role_popup():
         dropdown_label = tk.Label(delete_role_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
         dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
         role_var = tk.StringVar(delete_role_popup)
-        role_chosen = ttk.Combobox(delete_role_popup, width=19, textvariable=role_var)
+        role_chosen = ttk.Combobox(delete_role_popup, width=34, textvariable=role_var)
         role_chosen['values'] = role_names
-        role_chosen.place(x=250, y=100, anchor=tk.CENTER)
+        role_chosen.place(x=300, y=100, anchor=tk.CENTER)
 
         delete_role_button = ttk.Button(delete_role_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_role(), delete_role_popup.destroy()])
-        delete_role_button.place(x=200, y=170, anchor=tk.CENTER)
+        delete_role_button.place(x=230, y=170, anchor=tk.CENTER)
     else:
         no_roles_label = tk.Label(delete_role_popup, text="No roles to delete", font=('Arial', 15), bg="white", fg="black")
-        no_roles_label.place(x=200, y=100, anchor=tk.CENTER)
+        no_roles_label.place(x=230, y=100, anchor=tk.CENTER)
 
 def delete_artist_popup():
     delete_artist_popup = tk.Toplevel(root)
     delete_artist_popup.title("Delete Artist")
-    delete_artist_popup.geometry("400x200")
+    delete_artist_popup.geometry("470x200")
     delete_artist_popup.configure(bg="white")
     delete_artist_popup.resizable(False, False)
     header = tk.Label(delete_artist_popup, text= "Delete Artist", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=200, y=30, anchor=tk.CENTER)
+    header.place(x=240, y=30, anchor=tk.CENTER)
 
     artist_names = get_artist_names()
 
@@ -539,15 +539,15 @@ def delete_artist_popup():
         dropdown_label = tk.Label(delete_artist_popup, text="Artist", font=('Arial', 15), bg="white", fg="black")
         dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
         artist_var = tk.StringVar(delete_artist_popup)
-        artist_chosen = ttk.Combobox(delete_artist_popup, width=19, textvariable=artist_var)
+        artist_chosen = ttk.Combobox(delete_artist_popup, width=34, textvariable=artist_var)
         artist_chosen['values'] = artist_names
-        artist_chosen.place(x=250, y=100, anchor=tk.CENTER)
+        artist_chosen.place(x=300, y=100, anchor=tk.CENTER)
 
         delete_role_button = ttk.Button(delete_artist_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_artist(), delete_artist_popup.destroy()])
-        delete_role_button.place(x=200, y=170, anchor=tk.CENTER)
+        delete_role_button.place(x=230, y=170, anchor=tk.CENTER)
     else:
         no_artists_label = tk.Label(delete_artist_popup, text="No artists to delete", font=('Arial', 15), bg="white", fg="black")
-        no_artists_label.place(x=200, y=100, anchor=tk.CENTER)
+        no_artists_label.place(x=230, y=100, anchor=tk.CENTER)
 
 
 view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: view_options_popup())
