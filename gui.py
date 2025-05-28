@@ -525,7 +525,29 @@ def delete_role_popup():
         no_roles_label.place(x=200, y=100, anchor=tk.CENTER)
 
 def delete_artist_popup():
-    pass
+    delete_artist_popup = tk.Toplevel(root)
+    delete_artist_popup.title("Delete Artist")
+    delete_artist_popup.geometry("400x200")
+    delete_artist_popup.configure(bg="white")
+    delete_artist_popup.resizable(False, False)
+    header = tk.Label(delete_artist_popup, text= "Delete Artist", font=('Arial', 30), bg="white", fg="dark blue")
+    header.place(x=200, y=30, anchor=tk.CENTER)
+
+    artist_names = get_artist_names()
+
+    if artist_names:
+        dropdown_label = tk.Label(delete_artist_popup, text="Artist", font=('Arial', 15), bg="white", fg="black")
+        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        artist_var = tk.StringVar(delete_artist_popup)
+        artist_chosen = ttk.Combobox(delete_artist_popup, width=19, textvariable=artist_var)
+        artist_chosen['values'] = artist_names
+        artist_chosen.place(x=250, y=100, anchor=tk.CENTER)
+
+        delete_role_button = ttk.Button(delete_artist_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_artist(), delete_artist_popup.destroy()])
+        delete_role_button.place(x=200, y=170, anchor=tk.CENTER)
+    else:
+        no_artists_label = tk.Label(delete_artist_popup, text="No artists to delete", font=('Arial', 15), bg="white", fg="black")
+        no_artists_label.place(x=200, y=100, anchor=tk.CENTER)
 
 
 view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: view_options_popup())
