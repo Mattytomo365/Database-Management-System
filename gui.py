@@ -126,7 +126,15 @@ def view_volunteers_popup():
     view_volunteers_popup_label = tk.Label(view_volunteers_popup, text="View Volunteers", font=("Arial", 30), bg="white", fg="dark blue")
     view_volunteers_popup_label.grid(row=0, column=0, sticky="nsw", padx=300, pady=20)
 
+    canvas = tk.Canvas(view_volunteers_popup, height=300)
+    canvas.grid(row=1, column=0, sticky='nsew')
 
+    scroll = tk.Scrollbar(view_volunteers_popup, orient="horizontal", command=canvas.xview)
+    scroll.grid(row=2, column=0, sticky='ew')
+    canvas.configure(xscrollcommand=scroll.set)
+
+    volunteer_data = tk.Frame(canvas)
+    canvas.create_window((0,0), window=volunteer_data, anchor='nw')
 
     columns = ["ID", "Name", "Email", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
     column_widths = [2, 20, 20, 10, 7, 20, 20, 10, 30, 15, 20]
