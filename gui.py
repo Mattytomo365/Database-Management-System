@@ -115,7 +115,8 @@ def delete_options_popup():
     delete_artist_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 def view_volunteers_popup():
-    pass
+    volunteers = get_volunteers()
+    
 
 def view_institutions_popup():
     pass

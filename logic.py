@@ -185,6 +185,12 @@ def get_volunteer_names():
     volunteer_names = [row[0] for row in cursor.fetchall()]
     return volunteer_names
 
+def get_volunteers():
+    cursor.execute('SELECT * FROM volunteers')
+    connection.commit()
+    volunteers = [row[0] for row in cursor.fetchall()]
+    return volunteers
+
 def get_institution_names():
     cursor.execute('SELECT name FROM institutions')
     connection.commit()
