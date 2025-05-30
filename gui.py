@@ -115,8 +115,34 @@ def delete_options_popup():
     delete_artist_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 def view_volunteers_popup():
+    view_volunteers_popup = tk.Toplevel(root)
+    view_volunteers_popup.title("View Volunteers")
+    view_volunteers_popup.geometry("1300x500")
+    view_volunteers_popup.configure(bg="white")
+    view_volunteers_popup.resizable(False, False)
+
     volunteers = get_volunteers()
-    
+
+    view_volunteers_popup_label = tk.Label(view_volunteers_popup, text="View Volunteers", font=("Arial", 30), bg="white", fg="dark blue")
+    view_volunteers_popup_label.grid(row=0, column=0, sticky="nsw", padx=300, pady=20)
+
+
+
+    columns = ["ID", "Name", "Email", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
+    column_widths = [2, 20, 20, 10, 7, 20, 20, 10, 30, 15, 20]
+
+    for col_index, col_name in enumerate(columns):
+        headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="dark blue", fg="white")
+        headers.grid(row=0, column=col_index)
+
+    for row_index, volunteer in enumerate(volunteers):
+        for col_index, value in enumerate(volunteer):
+            information = tk.Entry(volunteer_data, width=column_widths[col_index])
+            information.grid(row=row_index + 1, column=col_index)
+            information.insert(0, str(value))
+            information.configure(state="disabled")
+
+
 
 def view_institutions_popup():
     pass

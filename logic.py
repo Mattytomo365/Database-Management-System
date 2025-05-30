@@ -188,7 +188,7 @@ def get_volunteer_names():
 def get_volunteers():
     cursor.execute('SELECT * FROM volunteers')
     connection.commit()
-    volunteers = [row[0] for row in cursor.fetchall()]
+    volunteers = cursor.fetchall()
     return volunteers
 
 def get_institution_names():
@@ -202,12 +202,6 @@ def get_role_names():
     connection.commit()
     role_names = [row[0] for row in cursor.fetchall()]
     return role_names
-
-def get_volunteer_names():
-    cursor.execute('SELECT name FROM volunteers')
-    connection.commit()
-    volunteer_names = [row[0] for row in cursor.fetchall()]
-    return volunteer_names
 
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')
