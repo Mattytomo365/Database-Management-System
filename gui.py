@@ -129,7 +129,7 @@ def view_artists_popup():
 def add_volunteer_popup():  # ADD STATUS???
     add_volunteer_popup = tk.Toplevel(root)
     add_volunteer_popup.title("Add Volunteer")
-    add_volunteer_popup.geometry("470x550")
+    add_volunteer_popup.geometry("470x650")
     add_volunteer_popup.configure(bg="white")
     add_volunteer_popup.resizable(False, False)
 
@@ -177,13 +177,25 @@ def add_volunteer_popup():  # ADD STATUS???
     institution_chosen['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
     institution_chosen.place(x=300, y=400, anchor=tk.CENTER)
 
-    contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
-    contract_length_label.place(x=100, y=450, anchor=tk.CENTER)
-    contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    contract_length_entry.place(x=300, y=450, anchor=tk.CENTER)
+    attending_days_label = tk.Label(add_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
+    attending_days_label.place(x=100, y=450, anchor=tk.CENTER)
+    attending_days_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    attending_days_entry.place(x=300, y=450, anchor=tk.CENTER)
 
-    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_chosen.get(), role_chosen.get(), start_date_chooser.get_date(), contract_length_entry.get()), add_volunteer_popup.destroy()])
-    add_volunteer_button.place(x=230, y=500, anchor=tk.CENTER)
+    contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
+    contract_length_label.place(x=100, y=500, anchor=tk.CENTER)
+    contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    contract_length_entry.place(x=300, y=500, anchor=tk.CENTER)
+
+    status_dropdown_label = tk.Label(add_volunteer_popup, text="Status", font=('Arial', 15), bg="white", fg="black")
+    status_dropdown_label.place(x=100, y=550, anchor=tk.CENTER)
+    status_var = tk.StringVar(add_volunteer_popup)
+    status_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=status_var)
+    status_chosen['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
+    status_chosen.place(x=300, y=550, anchor=tk.CENTER)
+
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_chosen.get(), role_chosen.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_chosen.get()), add_volunteer_popup.destroy()])
+    add_volunteer_button.place(x=230, y=600, anchor=tk.CENTER)
 
 def add_institution_popup():
     add_institution_popup = tk.Toplevel(root)
@@ -549,6 +561,8 @@ def delete_artist_popup():
         no_artists_label = tk.Label(delete_artist_popup, text="No artists to delete", font=('Arial', 15), bg="white", fg="black")
         no_artists_label.place(x=230, y=100, anchor=tk.CENTER)
 
+
+# Main menu
 
 view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: view_options_popup())
 view_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")

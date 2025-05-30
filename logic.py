@@ -16,7 +16,9 @@ def create_volunteer_table():
             institution_id TEXT,
             role_id TEXT,
             start_date TEXT,
+            attending_days TEXT,
             contract_length TEXT,
+            status TEXT,
             FOREIGN KEY (institution_id) REFERENCES institutions(id),
             FOREIGN KEY (role_id) REFERENCES roles(id)
         )
@@ -69,7 +71,7 @@ def create_artist_table():
 
 # Add functions
 
-def add_volunteer(name, email, phone, type, institution, role, start_date, contract_length):
+def add_volunteer(name, email, phone, type, institution, role, start_date, attending_days, contract_length, status):
     cursor.execute('''
         SELECT id FROM institutions WHERE name = ?
         ''', (institution,))
@@ -83,9 +85,9 @@ def add_volunteer(name, email, phone, type, institution, role, start_date, contr
     role_id = cursor.fetchone()[0]
     
     cursor.execute('''
-        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, contract_length)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-        , (name, email, phone, type, institution_id, role_id, start_date, contract_length))
+        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status))
     connection.commit()
 
 def add_institution(name, type, postcode):
