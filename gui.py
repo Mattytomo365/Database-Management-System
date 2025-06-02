@@ -142,7 +142,7 @@ def view_volunteers_popup():
 
     volunteer_data.grid_rowconfigure(0, weight=5)
 
-    columns = ["ID", "Name", "Email", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
+    columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
     column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
 
     for col_index, col_name in enumerate(columns):
@@ -213,7 +213,6 @@ def view_institutions_popup():
             information.insert(0, str(value))
             information.configure(state="disabled")
 
-    # Update scrollregion to include the full width of the inner frame
     institution_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
 
@@ -255,14 +254,51 @@ def view_roles_popup():
             information.insert(0, str(value))
             information.configure(state="disabled")
 
-    # Update scrollregion to include the full width of the inner frame
     role_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
 
 def view_artists_popup():
-    pass
+    view_artists_popup = tk.Toplevel(root)
+    view_artists_popup.title("View Artists")
+    view_artists_popup.geometry("500x300")
+    view_artists_popup.configure(bg="white")
+    view_artists_popup.resizable(False, False)
 
-def add_volunteer_popup():  # ADD STATUS???
+    artists = get_artists()
+
+    view_artists_popup_label = tk.Label(view_artists_popup, text="View Artists", font=("Arial", 30), bg="white", fg="dark blue")
+    view_artists_popup_label.grid(row=0, column=0, sticky="ew", padx=0, pady=20)
+
+    canvas = tk.Canvas(view_artists_popup, height=205, width=480)
+    canvas.grid(row=1, column=0, sticky='nsew')
+
+    v_scroll = tk.Scrollbar(view_artists_popup, orient="vertical", command=canvas.yview)
+    v_scroll.grid(row=1, column=1, sticky='ns')
+    canvas.configure(yscrollcommand=v_scroll.set)
+
+    artist_data = tk.Frame(canvas, bg='dark blue')
+    canvas.create_window((0,0), window=artist_data, anchor='nw')
+
+    artist_data.grid_rowconfigure(0, weight=5)
+
+    columns = ["ID", "Name", "E-Mail", "Phone"]
+    column_widths = [3, 30, 30, 15]
+
+    for col_index, col_name in enumerate(columns):
+        headers = tk.Label(artist_data, text=col_name, bg="dark blue", fg="white")
+        headers.grid(row=0, column=col_index)
+
+    for row_index, artist in enumerate(artists):
+        for col_index, value in enumerate(artist):
+            information = tk.Entry(artist_data, width=column_widths[col_index], bg="white", fg="black")
+            information.grid(row=row_index + 1, column=col_index)
+            information.insert(0, str(value))
+            information.configure(state="disabled")
+
+    artist_data.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+def add_volunteer_popup():
     add_volunteer_popup = tk.Toplevel(root)
     add_volunteer_popup.title("Add Volunteer")
     add_volunteer_popup.geometry("470x650")
