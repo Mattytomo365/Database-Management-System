@@ -198,10 +198,10 @@ def get_institution_names():
     return institution_names
 
 def get_institution_name(id):
-    cursor.execute('SELECT name FROM institutions WHERE id = ?', (id))
+    cursor.execute('SELECT name FROM institutions WHERE id = ?', (id,))
     connection.commit()
-    institution_name = [row[0] for row in cursor.fetchall()]
-    return institution_name
+    institution_name = cursor.fetchone()
+    return institution_name[0]
 
 def get_role_names():
     cursor.execute('SELECT name FROM roles')
@@ -210,10 +210,10 @@ def get_role_names():
     return role_names
 
 def get_role_name(id):
-    cursor.execute('SELECT name FROM roles WHERE id = ?', (id))
+    cursor.execute('SELECT name FROM roles WHERE id = ?', (id,))
     connection.commit()
-    role_name = [row[0] for row in cursor.fetchall()]
-    return role_name
+    role_name = cursor.fetchone()
+    return role_name[0]
 
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')

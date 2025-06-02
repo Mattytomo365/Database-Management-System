@@ -144,10 +144,10 @@ def view_volunteers_popup():
     canvas.create_window((0,0), window=volunteer_data, anchor='nw')
 
     columns = ["ID", "Name", "Email", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
-    column_widths = [3, 25, 25, 15, 12, 25, 25, 15, 35, 20, 25]
+    column_widths = [3, 25, 25, 15, 12, 35, 25, 15, 35, 20, 25]
 
     for col_index, col_name in enumerate(columns):
-        headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="white", fg="black")
+        headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="white", fg="black", width=10)
         headers.grid(row=0, column=col_index)
 
     for row_index, volunteer in enumerate(volunteers):
