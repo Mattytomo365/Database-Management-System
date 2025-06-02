@@ -175,10 +175,47 @@ def view_volunteers_popup():
     canvas.configure(scrollregion=canvas.bbox("all"))
 
 
-
-
 def view_institutions_popup():
-    pass
+    view_institutions_popup = tk.Toplevel(root)
+    view_institutions_popup.title("View Institutions")
+    view_institutions_popup.geometry("400x300")
+    view_institutions_popup.configure(bg="white")
+    view_institutions_popup.resizable(False, False)
+
+    institutions = get_institutions()
+
+    view_institutions_popup_label = tk.Label(view_institutions_popup, text="View Institutions", font=("Arial", 30), bg="white", fg="dark blue")
+    view_institutions_popup_label.grid(row=0, column=0, sticky="ew", padx=0, pady=20)
+
+    canvas = tk.Canvas(view_institutions_popup, height=205)
+    canvas.grid(row=1, column=0, sticky='nsew')
+
+    v_scroll = tk.Scrollbar(view_institutions_popup, orient="vertical", command=canvas.yview)
+    v_scroll.grid(row=1, column=1, sticky='ns')
+    canvas.configure(yscrollcommand=v_scroll.set)
+
+    institution_data = tk.Frame(canvas, bg='dark blue')
+    canvas.create_window((0,0), window=institution_data, anchor='nw')
+
+    institution_data.grid_rowconfigure(0, weight=5)
+
+    columns = ["ID", "Name", "Type", "Postcode"]
+    column_widths = [3, 30, 15, 15]
+
+    for col_index, col_name in enumerate(columns):
+        headers = tk.Label(institution_data, text=col_name, bg="dark blue", fg="white")
+        headers.grid(row=0, column=col_index)
+
+    for row_index, institution in enumerate(institutions):
+        for col_index, value in enumerate(institution):
+            information = tk.Entry(institution_data, width=column_widths[col_index], bg="white", fg="black")
+            information.grid(row=row_index + 1, column=col_index)
+            information.insert(0, str(value))
+            information.configure(state="disabled")
+
+    # Update scrollregion to include the full width of the inner frame
+    institution_data.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 def view_roles_popup():
     pass
