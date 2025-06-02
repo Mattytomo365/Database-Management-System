@@ -136,7 +136,9 @@ def view_volunteers_popup():
     h_scroll.grid(row=2, column=0, sticky='ew')
     canvas.configure(xscrollcommand=h_scroll.set)
 
-
+    v_scroll = tk.Scrollbar(view_volunteers_popup, orient="vertical", command=canvas.yview)
+    v_scroll.grid(row=1, column=1, sticky='ns')
+    canvas.configure(yscrollcommand=v_scroll.set)
 
     volunteer_data = tk.Frame(canvas)
     canvas.create_window((0,0), window=volunteer_data, anchor='nw')
