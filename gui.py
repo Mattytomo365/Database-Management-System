@@ -117,17 +117,14 @@ def delete_options_popup():
 def view_volunteers_popup():
     view_volunteers_popup = tk.Toplevel(root)
     view_volunteers_popup.title("View Volunteers")
-    view_volunteers_popup.geometry("890x500")
+    view_volunteers_popup.geometry("905x415")
     view_volunteers_popup.configure(bg="white")
     view_volunteers_popup.resizable(False, False)
-
-    view_volunteers_popup.grid_rowconfigure(0, weight=1)
-    view_volunteers_popup.grid_columnconfigure(0, weight=1)
 
     volunteers = get_volunteers()
 
     view_volunteers_popup_label = tk.Label(view_volunteers_popup, text="View Volunteers", font=("Arial", 30), bg="white", fg="dark blue")
-    view_volunteers_popup_label.grid(row=0, column=0, sticky="nsw", padx=300, pady=20)
+    view_volunteers_popup_label.grid(row=0, column=0, sticky="ew", padx=300, pady=20)
 
     canvas = tk.Canvas(view_volunteers_popup, height=300)
     canvas.grid(row=1, column=0, sticky='nsew')
@@ -140,14 +137,16 @@ def view_volunteers_popup():
     v_scroll.grid(row=1, column=1, sticky='ns')
     canvas.configure(yscrollcommand=v_scroll.set)
 
-    volunteer_data = tk.Frame(canvas)
+    volunteer_data = tk.Frame(canvas, bg='dark blue')
     canvas.create_window((0,0), window=volunteer_data, anchor='nw')
 
+    volunteer_data.grid_rowconfigure(0, weight=5)
+
     columns = ["ID", "Name", "Email", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
-    column_widths = [3, 25, 25, 15, 12, 35, 25, 15, 35, 20, 25]
+    column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
 
     for col_index, col_name in enumerate(columns):
-        headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="white", fg="black", width=10)
+        headers = tk.Label(volunteer_data, text=col_name, bg="dark blue", fg="white")
         headers.grid(row=0, column=col_index)
 
     for row_index, volunteer in enumerate(volunteers):
