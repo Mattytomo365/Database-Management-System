@@ -147,14 +147,28 @@ def view_volunteers_popup():
     column_widths = [3, 25, 25, 15, 12, 25, 25, 15, 35, 20, 25]
 
     for col_index, col_name in enumerate(columns):
-        headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="dark blue", fg="white")
+        headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="white", fg="black")
         headers.grid(row=0, column=col_index)
 
     for row_index, volunteer in enumerate(volunteers):
+        institution_id = volunteer[5]
+        role_id = volunteer[6]
+        institution_name = get_institution_name(institution_id)
+        role_name = get_role_name(role_id)
         for col_index, value in enumerate(volunteer):
             information = tk.Entry(volunteer_data, width=column_widths[col_index], bg="white", fg="black")
             information.grid(row=row_index + 1, column=col_index)
-            information.insert(0, str(value))
+
+            if col_index == 5:
+                display_value = institution_name
+
+            elif col_index == 6:
+
+                display_value = role_name
+            else:
+                display_value = value
+
+            information.insert(0, str(display_value))
             information.configure(state="disabled")
 
     # Update scrollregion to include the full width of the inner frame

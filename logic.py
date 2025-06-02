@@ -197,11 +197,23 @@ def get_institution_names():
     institution_names = [row[0] for row in cursor.fetchall()]
     return institution_names
 
+def get_institution_name(id):
+    cursor.execute('SELECT name FROM institutions WHERE id = ?', (id))
+    connection.commit()
+    institution_name = [row[0] for row in cursor.fetchall()]
+    return institution_name
+
 def get_role_names():
     cursor.execute('SELECT name FROM roles')
     connection.commit()
     role_names = [row[0] for row in cursor.fetchall()]
     return role_names
+
+def get_role_name(id):
+    cursor.execute('SELECT name FROM roles WHERE id = ?', (id))
+    connection.commit()
+    role_name = [row[0] for row in cursor.fetchall()]
+    return role_name
 
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')
