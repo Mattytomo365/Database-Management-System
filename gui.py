@@ -117,9 +117,12 @@ def delete_options_popup():
 def view_volunteers_popup():
     view_volunteers_popup = tk.Toplevel(root)
     view_volunteers_popup.title("View Volunteers")
-    view_volunteers_popup.geometry("1300x500")
+    view_volunteers_popup.geometry("890x500")
     view_volunteers_popup.configure(bg="white")
     view_volunteers_popup.resizable(False, False)
+
+    view_volunteers_popup.grid_rowconfigure(0, weight=1)
+    view_volunteers_popup.grid_columnconfigure(0, weight=1)
 
     volunteers = get_volunteers()
 
@@ -129,15 +132,17 @@ def view_volunteers_popup():
     canvas = tk.Canvas(view_volunteers_popup, height=300)
     canvas.grid(row=1, column=0, sticky='nsew')
 
-    scroll = tk.Scrollbar(view_volunteers_popup, orient="horizontal", command=canvas.xview)
-    scroll.grid(row=2, column=0, sticky='ew')
-    canvas.configure(xscrollcommand=scroll.set)
+    h_scroll = tk.Scrollbar(view_volunteers_popup, orient="horizontal", command=canvas.xview)
+    h_scroll.grid(row=2, column=0, sticky='ew')
+    canvas.configure(xscrollcommand=h_scroll.set)
+
+
 
     volunteer_data = tk.Frame(canvas)
     canvas.create_window((0,0), window=volunteer_data, anchor='nw')
 
     columns = ["ID", "Name", "Email", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
-    column_widths = [2, 20, 20, 10, 7, 20, 20, 10, 30, 15, 20]
+    column_widths = [3, 25, 25, 15, 12, 25, 25, 15, 35, 20, 25]
 
     for col_index, col_name in enumerate(columns):
         headers = tk.Label(volunteer_data, text=col_name, padx=5, pady=5, bg="dark blue", fg="white")
@@ -145,10 +150,15 @@ def view_volunteers_popup():
 
     for row_index, volunteer in enumerate(volunteers):
         for col_index, value in enumerate(volunteer):
-            information = tk.Entry(volunteer_data, width=column_widths[col_index])
+            information = tk.Entry(volunteer_data, width=column_widths[col_index], bg="white", fg="black")
             information.grid(row=row_index + 1, column=col_index)
             information.insert(0, str(value))
             information.configure(state="disabled")
+
+    # Update scrollregion to include the full width of the inner frame
+    volunteer_data.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
 
 
 
