@@ -90,12 +90,14 @@ def add_volunteer(name, email, phone, type, institution, role, start_date, atten
         , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status))
     connection.commit()
 
+
 def add_institution(name, type, postcode):
     cursor.execute('''
         INSERT INTO institutions (name, type, postcode)
         VALUES (?, ?, ?)'''
         , (name, type, postcode))
     connection.commit()
+
 
 def add_role(name, description, institution_names):
     
@@ -121,6 +123,7 @@ def add_role(name, description, institution_names):
             VALUES (?, ?)
         ''', (role_id, institution_id))
         connection.commit()
+
 
 def add_artist(name, email, phone):
     cursor.execute('''
@@ -182,44 +185,53 @@ def retrieve_artists():
 def get_volunteer_names():
     cursor.execute('SELECT name FROM volunteers')
     connection.commit()
-    volunteer_names = [row[0] for row in cursor.fetchall()]
-    return volunteer_names
+    return [row[0] for row in cursor.fetchall()]
 
 def get_volunteers():
     cursor.execute('SELECT * FROM volunteers')
     connection.commit()
-    volunteers = cursor.fetchall()
-    return volunteers
+    return cursor.fetchall()
 
 def get_institution_names():
     cursor.execute('SELECT name FROM institutions')
     connection.commit()
-    institution_names = [row[0] for row in cursor.fetchall()]
-    return institution_names
+    return [row[0] for row in cursor.fetchall()]
 
 def get_institution_name(id):
     cursor.execute('SELECT name FROM institutions WHERE id = ?', (id,))
     connection.commit()
-    institution_name = cursor.fetchone()
-    return institution_name[0]
+    return cursor.fetchone()[0]
+
+def get_institutions():
+    cursor.execute('SELECT * FROM institutions')
+    connection.commit()
+    return cursor.fetchall()
 
 def get_role_names():
     cursor.execute('SELECT name FROM roles')
     connection.commit()
-    role_names = [row[0] for row in cursor.fetchall()]
-    return role_names
+    return [row[0] for row in cursor.fetchall()]
 
 def get_role_name(id):
     cursor.execute('SELECT name FROM roles WHERE id = ?', (id,))
     connection.commit()
-    role_name = cursor.fetchone()
-    return role_name[0]
+    return cursor.fetchone()[0]
+
+def get_roles():
+    cursor.execute('SELECT * FROM roles')
+    connection.commit()
+    return cursor.fetchall()
 
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')
     connection.commit()
     artist_names = [row[0] for row in cursor.fetchall()]
     return artist_names
+
+def get_artists():
+    cursor.execute('SELECT * FROM artists')
+    connection.commit()
+    return cursor.fetchall()
 
 # Initialisation of database function
 
