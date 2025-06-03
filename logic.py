@@ -213,7 +213,23 @@ def get_roles():
     return cursor.fetchall()
 
 def get_filtered_roles(institution):
-    pass
+    cursor.execute('SELECT id FROM institutions WHERE name = ?', (institution,))
+    connection.commit()
+    institution_id = cursor.fetchone()[0]
+
+    cursor.execute('SELECT role_id FROM institution_roles WHERE institution_id = ?', (institution_id,))
+    connection.commit()
+    role_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    roles = []
+
+    for role_id in role_ids:
+        cursor.execute('SELECT * FROM roles WHERE id = ?', (role_id,))
+        role = cursor.fetchone()
+        if role:
+            roles.append(role)
+
+    return roles
 
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')
