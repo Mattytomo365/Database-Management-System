@@ -160,26 +160,6 @@ def delete_role():
 def delete_artist():
     pass
 
-# View functions
-
-def retrieve_students():
-    pass
-
-def retrieve_volunteers():
-    pass
-
-def retrieve_universities():
-    pass
-
-def retrieve_colleges():
-    pass
-
-def retrieve_roles():
-    pass
-
-def retrieve_artists():
-    pass
-
 # Retrieval functions
 
 def get_volunteer_names():
@@ -213,7 +193,9 @@ def get_institutions():
     return cursor.fetchall()
 
 def get_filtered_institutions(type):
-    pass
+    cursor.execute('SELECT * FROM institutions WHERE type = ?', (type,))
+    connection.commit()
+    return cursor.fetchall()
 
 def get_role_names():
     cursor.execute('SELECT name FROM roles')

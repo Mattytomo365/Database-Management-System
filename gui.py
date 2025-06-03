@@ -166,7 +166,7 @@ def view_volunteers_popup():
 
         for col_index, col_name in enumerate(columns):
             headers = tk.Label(volunteer_data, text=col_name, bg="dark blue", fg="white")
-            headers.grid(row=2, column=col_index)
+            headers.grid(row=0, column=col_index)
 
         for row_index, volunteer in enumerate(volunteers):
             institution_id = volunteer[5]
@@ -262,22 +262,34 @@ def view_institutions_popup():
     institutions_table(institutions)
 
 def view_roles_popup():
+
+    def filtered_roles(selected):
+        institution = role_filter.get()
+        roles_filtered = get_filtered_roles(institution)
+        roles_table(roles_filtered)
+
     view_roles_popup = tk.Toplevel(root)
     view_roles_popup.title("View Roles")
     view_roles_popup.geometry("520x300")
     view_roles_popup.configure(bg="white")
     view_roles_popup.resizable(False, False)
 
-    roles = get_roles()
-
     view_roles_popup_label = tk.Label(view_roles_popup, text="View Roles", font=("Arial", 30), bg="white", fg="dark blue")
-    view_roles_popup_label.grid(row=0, column=0, sticky="ew", padx=0, pady=20)
+    view_roles_popup_label.grid(row=0, column=0, sticky="ew", padx=0, pady=20, columnspan=2)
+
+    role_filter_label = tk.Label(view_roles_popup, text="Filter", font=('Arial', 15), bg='white', fg='black')
+    role_filter_label.grid(row=1, column=0, sticky='e')
+    institution_var = tk.StringVar(view_roles_popup)
+    role_filter = ttk.Combobox(view_roles_popup, width=20, textvariable=institution_var, state='readonly')
+    role_filter['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    role_filter.grid(row=1, column=1, sticky='w')
+    role_filter.bind("<<ComboboxSelected>>", filtered_roles)
 
     canvas = tk.Canvas(view_roles_popup, height=205, width=500)
-    canvas.grid(row=1, column=0, sticky='nsew')
+    canvas.grid(row=2, column=0, sticky='nsew', columnspan=2)
 
     v_scroll = tk.Scrollbar(view_roles_popup, orient="vertical", command=canvas.yview)
-    v_scroll.grid(row=1, column=1, sticky='ns')
+    v_scroll.grid(row=2, column=2, sticky='ns')
     canvas.configure(yscrollcommand=v_scroll.set)
 
     role_data = tk.Frame(canvas, bg='dark blue')
@@ -285,22 +297,32 @@ def view_roles_popup():
 
     role_data.grid_rowconfigure(0, weight=5)
 
-    columns = ["ID", "Name", "Description"]
-    column_widths = [3, 30, 50]
+    def roles_table(roles):
+        nonlocal role_data
+        role_data.destroy()
+        role_data = tk.Frame(canvas, bg='dark blue')
+        canvas.create_window((0,0), window=role_data, anchor='nw')
+        role_data.grid_rowconfigure(0, weight=5)
 
-    for col_index, col_name in enumerate(columns):
-        headers = tk.Label(role_data, text=col_name, bg="dark blue", fg="white")
-        headers.grid(row=0, column=col_index)
+        columns = ["ID", "Name", "Description"]
+        column_widths = [3, 30, 50]
 
-    for row_index, role in enumerate(roles):
-        for col_index, value in enumerate(role):
-            information = tk.Entry(role_data, width=column_widths[col_index], bg="white", fg="black")
-            information.grid(row=row_index + 1, column=col_index)
-            information.insert(0, str(value))
-            information.configure(state="disabled")
+        for col_index, col_name in enumerate(columns):
+            headers = tk.Label(role_data, text=col_name, bg="dark blue", fg="white")
+            headers.grid(row=0, column=col_index)
 
-    role_data.update_idletasks()
-    canvas.configure(scrollregion=canvas.bbox("all"))
+        for row_index, role in enumerate(roles):
+            for col_index, value in enumerate(role):
+                information = tk.Entry(role_data, width=column_widths[col_index], bg="white", fg="black")
+                information.grid(row=row_index + 3, column=col_index)
+                information.insert(0, str(value))
+                information.configure(state="disabled")
+
+        role_data.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+    roles = get_roles()
+    roles_table(roles)
 
 def view_artists_popup():
     view_artists_popup = tk.Toplevel(root)
