@@ -116,7 +116,7 @@ def delete_options_popup():
 
 def view_volunteers_popup():
 
-    def filtered_volunteers(type):
+    def filtered_volunteers(selected):
         type = volunteer_filter.get()
         volunteers_filtered = get_filtered_volunteers(type)
         view_filtered_volunteers(volunteers_filtered)
@@ -135,7 +135,7 @@ def view_volunteers_popup():
     volunteer_filter_label = tk.Label(view_volunteers_popup, text="Filter", font=('Arial', 15), bg='white', fg='black')
     volunteer_filter_label.grid(row=1, column=0, sticky='e')
     type_var = tk.StringVar(view_volunteers_popup)
-    volunteer_filter = ttk.Combobox(view_volunteers_popup, width=20, textvariable=type_var)
+    volunteer_filter = ttk.Combobox(view_volunteers_popup, width=20, textvariable=type_var, state='readonly')
     volunteer_filter['values'] = ("Student", "Volunteer")
     volunteer_filter.grid(row=1, column=1, sticky='w')
     volunteer_filter.bind("<<ComboboxSelected>>", filtered_volunteers)
@@ -201,7 +201,7 @@ def view_volunteers_popup():
         canvas.configure(yscrollcommand=v_scroll.set)
 
         filtered_volunteer_data = tk.Frame(canvas, bg='dark blue')
-        canvas.create_window((0,0), window=volunteer_data, anchor='nw')
+        canvas.create_window((0,0), window=filtered_volunteer_data, anchor='nw')
 
         filtered_volunteer_data.grid_rowconfigure(0, weight=5)
 

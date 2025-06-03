@@ -192,6 +192,11 @@ def get_volunteers():
     connection.commit()
     return cursor.fetchall()
 
+def get_filtered_volunteers(type):
+    cursor.execute('SELECT * FROM volunteers WHERE type = ?', (type,))
+    connection.commit()
+    return cursor.fetchall()
+
 def get_institution_names():
     cursor.execute('SELECT name FROM institutions')
     connection.commit()
@@ -207,6 +212,9 @@ def get_institutions():
     connection.commit()
     return cursor.fetchall()
 
+def get_filtered_institutions(type):
+    pass
+
 def get_role_names():
     cursor.execute('SELECT name FROM roles')
     connection.commit()
@@ -221,6 +229,9 @@ def get_roles():
     cursor.execute('SELECT * FROM roles')
     connection.commit()
     return cursor.fetchall()
+
+def get_filtered_roles(institution):
+    pass
 
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')
