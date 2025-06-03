@@ -119,15 +119,13 @@ def view_volunteers_popup():
     def filtered_volunteers(selected):
         type = volunteer_filter.get()
         volunteers_filtered = get_filtered_volunteers(type)
-        view_filtered_volunteers(volunteers_filtered)
+        volunteer_table(volunteers_filtered)
 
     view_volunteers_popup = tk.Toplevel(root)
     view_volunteers_popup.title("View Volunteers")
     view_volunteers_popup.geometry("905x440")
     view_volunteers_popup.configure(bg="white")
     view_volunteers_popup.resizable(False, False)
-
-    volunteers = get_volunteers()
 
     view_volunteers_popup_label = tk.Label(view_volunteers_popup, text="View Volunteers", font=("Arial", 30), bg="white", fg="dark blue")
     view_volunteers_popup_label.grid(row=0, column=0, sticky="ew", padx=300, pady=20, columnspan=2)
@@ -156,69 +154,27 @@ def view_volunteers_popup():
 
     volunteer_data.grid_rowconfigure(0, weight=5)
 
-    columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
-    column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
-
-    for col_index, col_name in enumerate(columns):
-        headers = tk.Label(volunteer_data, text=col_name, bg="dark blue", fg="white")
-        headers.grid(row=2, column=col_index)
-
-    for row_index, volunteer in enumerate(volunteers):
-        institution_id = volunteer[5]
-        role_id = volunteer[6]
-        institution_name = get_institution_name(institution_id)
-        role_name = get_role_name(role_id)
-        for col_index, value in enumerate(volunteer):
-            information = tk.Entry(volunteer_data, width=column_widths[col_index], bg="white", fg="black")
-            information.grid(row=row_index + 3, column=col_index)
-
-            if col_index == 5:
-                display_value = institution_name
-
-            elif col_index == 6:
-
-                display_value = role_name
-            else:
-                display_value = value
-
-            information.insert(0, str(display_value))
-            information.configure(state="disabled")
-
-    # Update scrollregion to include the full width of the inner frame
-    volunteer_data.update_idletasks()
-    canvas.configure(scrollregion=canvas.bbox("all"))
-
-    def view_filtered_volunteers(volunteers_filtered):
-        canvas = tk.Canvas(view_volunteers_popup, height=300)
-        canvas.grid(row=2, column=0, sticky='nsew', columnspan=2)
-
-        h_scroll = tk.Scrollbar(view_volunteers_popup, orient="horizontal", command=canvas.xview)
-        h_scroll.grid(row=3, column=0, sticky='ew', columnspan=2)
-        canvas.configure(xscrollcommand=h_scroll.set)
-
-        v_scroll = tk.Scrollbar(view_volunteers_popup, orient="vertical", command=canvas.yview)
-        v_scroll.grid(row=2, column=2, sticky='ns')
-        canvas.configure(yscrollcommand=v_scroll.set)
-
-        filtered_volunteer_data = tk.Frame(canvas, bg='dark blue')
-        canvas.create_window((0,0), window=filtered_volunteer_data, anchor='nw')
-
-        filtered_volunteer_data.grid_rowconfigure(0, weight=5)
+    def volunteer_table(volunteers):
+        nonlocal volunteer_data
+        volunteer_data.destroy()
+        volunteer_data = tk.Frame(canvas, bg='dark blue')
+        canvas.create_window((0,0), window=volunteer_data, anchor='nw')
+        volunteer_data.grid_rowconfigure(0, weight=5)
 
         columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
         column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
 
         for col_index, col_name in enumerate(columns):
-            headers = tk.Label(filtered_volunteer_data, text=col_name, bg="dark blue", fg="white")
+            headers = tk.Label(volunteer_data, text=col_name, bg="dark blue", fg="white")
             headers.grid(row=2, column=col_index)
 
-        for row_index, volunteer in enumerate(volunteers_filtered):
+        for row_index, volunteer in enumerate(volunteers):
             institution_id = volunteer[5]
             role_id = volunteer[6]
             institution_name = get_institution_name(institution_id)
             role_name = get_role_name(role_id)
             for col_index, value in enumerate(volunteer):
-                information = tk.Entry(filtered_volunteer_data, width=column_widths[col_index], bg="white", fg="black")
+                information = tk.Entry(volunteer_data, width=column_widths[col_index], bg="white", fg="black")
                 information.grid(row=row_index + 3, column=col_index)
 
                 if col_index == 5:
@@ -234,8 +190,60 @@ def view_volunteers_popup():
                 information.configure(state="disabled")
 
         # Update scrollregion to include the full width of the inner frame
-        filtered_volunteer_data.update_idletasks()
+        volunteer_data.update_idletasks()
         canvas.configure(scrollregion=canvas.bbox("all"))
+
+    volunteers = get_volunteers()
+    volunteer_table(volunteers)
+
+    # def view_filtered_volunteers(volunteers_filtered):
+    #     canvas = tk.Canvas(view_volunteers_popup, height=300)
+    #     canvas.grid(row=2, column=0, sticky='nsew', columnspan=2)
+
+    #     h_scroll = tk.Scrollbar(view_volunteers_popup, orient="horizontal", command=canvas.xview)
+    #     h_scroll.grid(row=3, column=0, sticky='ew', columnspan=2)
+    #     canvas.configure(xscrollcommand=h_scroll.set)
+
+    #     v_scroll = tk.Scrollbar(view_volunteers_popup, orient="vertical", command=canvas.yview)
+    #     v_scroll.grid(row=2, column=2, sticky='ns')
+    #     canvas.configure(yscrollcommand=v_scroll.set)
+
+    #     filtered_volunteer_data = tk.Frame(canvas, bg='dark blue')
+    #     canvas.create_window((0,0), window=filtered_volunteer_data, anchor='nw')
+
+    #     filtered_volunteer_data.grid_rowconfigure(0, weight=5)
+
+    #     columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
+    #     column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
+
+    #     for col_index, col_name in enumerate(columns):
+    #         headers = tk.Label(filtered_volunteer_data, text=col_name, bg="dark blue", fg="white")
+    #         headers.grid(row=2, column=col_index)
+
+    #     for row_index, volunteer in enumerate(volunteers_filtered):
+    #         institution_id = volunteer[5]
+    #         role_id = volunteer[6]
+    #         institution_name = get_institution_name(institution_id)
+    #         role_name = get_role_name(role_id)
+    #         for col_index, value in enumerate(volunteer):
+    #             information = tk.Entry(filtered_volunteer_data, width=column_widths[col_index], bg="white", fg="black")
+    #             information.grid(row=row_index + 3, column=col_index)
+
+    #             if col_index == 5:
+    #                 display_value = institution_name
+
+    #             elif col_index == 6:
+
+    #                 display_value = role_name
+    #             else:
+    #                 display_value = value
+
+    #             information.insert(0, str(display_value))
+    #             information.configure(state="disabled")
+
+    #     # Update scrollregion to include the full width of the inner frame
+    #     filtered_volunteer_data.update_idletasks()
+    #     canvas.configure(scrollregion=canvas.bbox("all"))
 
 
 def view_institutions_popup():
