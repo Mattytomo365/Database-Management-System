@@ -196,73 +196,36 @@ def view_volunteers_popup():
     volunteers = get_volunteers()
     volunteer_table(volunteers)
 
-    # def view_filtered_volunteers(volunteers_filtered):
-    #     canvas = tk.Canvas(view_volunteers_popup, height=300)
-    #     canvas.grid(row=2, column=0, sticky='nsew', columnspan=2)
-
-    #     h_scroll = tk.Scrollbar(view_volunteers_popup, orient="horizontal", command=canvas.xview)
-    #     h_scroll.grid(row=3, column=0, sticky='ew', columnspan=2)
-    #     canvas.configure(xscrollcommand=h_scroll.set)
-
-    #     v_scroll = tk.Scrollbar(view_volunteers_popup, orient="vertical", command=canvas.yview)
-    #     v_scroll.grid(row=2, column=2, sticky='ns')
-    #     canvas.configure(yscrollcommand=v_scroll.set)
-
-    #     filtered_volunteer_data = tk.Frame(canvas, bg='dark blue')
-    #     canvas.create_window((0,0), window=filtered_volunteer_data, anchor='nw')
-
-    #     filtered_volunteer_data.grid_rowconfigure(0, weight=5)
-
-    #     columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
-    #     column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
-
-    #     for col_index, col_name in enumerate(columns):
-    #         headers = tk.Label(filtered_volunteer_data, text=col_name, bg="dark blue", fg="white")
-    #         headers.grid(row=2, column=col_index)
-
-    #     for row_index, volunteer in enumerate(volunteers_filtered):
-    #         institution_id = volunteer[5]
-    #         role_id = volunteer[6]
-    #         institution_name = get_institution_name(institution_id)
-    #         role_name = get_role_name(role_id)
-    #         for col_index, value in enumerate(volunteer):
-    #             information = tk.Entry(filtered_volunteer_data, width=column_widths[col_index], bg="white", fg="black")
-    #             information.grid(row=row_index + 3, column=col_index)
-
-    #             if col_index == 5:
-    #                 display_value = institution_name
-
-    #             elif col_index == 6:
-
-    #                 display_value = role_name
-    #             else:
-    #                 display_value = value
-
-    #             information.insert(0, str(display_value))
-    #             information.configure(state="disabled")
-
-    #     # Update scrollregion to include the full width of the inner frame
-    #     filtered_volunteer_data.update_idletasks()
-    #     canvas.configure(scrollregion=canvas.bbox("all"))
-
 
 def view_institutions_popup():
+
+    def filtered_institutions(selected):
+        type = institution_filter.get()
+        institutions_filtered = get_filtered_institutions(type)
+        institutions_table(institutions_filtered)
+
     view_institutions_popup = tk.Toplevel(root)
     view_institutions_popup.title("View Institutions")
-    view_institutions_popup.geometry("400x300")
+    view_institutions_popup.geometry("400x330")
     view_institutions_popup.configure(bg="white")
     view_institutions_popup.resizable(False, False)
 
-    institutions = get_institutions()
-
     view_institutions_popup_label = tk.Label(view_institutions_popup, text="View Institutions", font=("Arial", 30), bg="white", fg="dark blue")
-    view_institutions_popup_label.grid(row=0, column=0, sticky="ew", padx=0, pady=20)
+    view_institutions_popup_label.grid(row=0, column=0, sticky="ew", padx=0, pady=20, columnspan=2)
+
+    institution_filter_label = tk.Label(view_institutions_popup, text="Filter", font=('Arial', 15), bg='white', fg='black')
+    institution_filter_label.grid(row=1, column=0, sticky='e')
+    type_var = tk.StringVar(view_institutions_popup)
+    institution_filter = ttk.Combobox(view_institutions_popup, width=20, textvariable=type_var, state='readonly')
+    institution_filter['values'] = ("University", "College")
+    institution_filter.grid(row=1, column=1, sticky='w')
+    institution_filter.bind("<<ComboboxSelected>>", filtered_institutions)
 
     canvas = tk.Canvas(view_institutions_popup, height=205)
-    canvas.grid(row=1, column=0, sticky='nsew')
+    canvas.grid(row=2, column=0, sticky='nsew', columnspan=2)
 
     v_scroll = tk.Scrollbar(view_institutions_popup, orient="vertical", command=canvas.yview)
-    v_scroll.grid(row=1, column=1, sticky='ns')
+    v_scroll.grid(row=2, column=2, sticky='ns')
     canvas.configure(yscrollcommand=v_scroll.set)
 
     institution_data = tk.Frame(canvas, bg='dark blue')
@@ -270,22 +233,33 @@ def view_institutions_popup():
 
     institution_data.grid_rowconfigure(0, weight=5)
 
-    columns = ["ID", "Name", "Type", "Postcode"]
-    column_widths = [3, 30, 15, 15]
+    def institutions_table(institutions):
 
-    for col_index, col_name in enumerate(columns):
-        headers = tk.Label(institution_data, text=col_name, bg="dark blue", fg="white")
-        headers.grid(row=0, column=col_index)
+        nonlocal institution_data
+        institution_data.destroy()
+        institution_data = tk.Frame(canvas, bg='dark blue')
+        canvas.create_window((0,0), window=institution_data, anchor='nw')
+        institution_data.grid_rowconfigure(0, weight=5)
 
-    for row_index, institution in enumerate(institutions):
-        for col_index, value in enumerate(institution):
-            information = tk.Entry(institution_data, width=column_widths[col_index], bg="white", fg="black")
-            information.grid(row=row_index + 1, column=col_index)
-            information.insert(0, str(value))
-            information.configure(state="disabled")
+        columns = ["ID", "Name", "Type", "Postcode"]
+        column_widths = [3, 30, 15, 15]
 
-    institution_data.update_idletasks()
-    canvas.configure(scrollregion=canvas.bbox("all"))
+        for col_index, col_name in enumerate(columns):
+            headers = tk.Label(institution_data, text=col_name, bg="dark blue", fg="white")
+            headers.grid(row=0, column=col_index)
+
+        for row_index, institution in enumerate(institutions):
+            for col_index, value in enumerate(institution):
+                information = tk.Entry(institution_data, width=column_widths[col_index], bg="white", fg="black")
+                information.grid(row=row_index + 3, column=col_index)
+                information.insert(0, str(value))
+                information.configure(state="disabled")
+
+        institution_data.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+    institutions = get_institutions()
+    institutions_table(institutions)
 
 def view_roles_popup():
     view_roles_popup = tk.Toplevel(root)
