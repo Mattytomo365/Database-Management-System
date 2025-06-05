@@ -170,7 +170,12 @@ def get_volunteer_names():
 def get_volunteers():
     cursor.execute('SELECT * FROM volunteers')
     connection.commit()
-    return cursor.fetchall()
+    return [row[0] for row in cursor.fetchall()]
+
+def get_volunteer(name):
+    cursor.execute('SELECT * FROM volunteers WHERE name = ?', (name,))
+    connection.commit()
+    return cursor.fetchone()
 
 def get_filtered_volunteers(type):
     cursor.execute('SELECT * FROM volunteers WHERE type = ?', (type,))
