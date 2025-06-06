@@ -154,8 +154,12 @@ def edit_volunteer(volunteer_id, name, email, phone, type, institution, role, st
         WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, volunteer_id))
     connection.commit()
 
-def edit_institution():
-    pass
+def edit_institution(institution_id, name, type, postcode):
+    cursor.execute('''
+        UPDATE institutions
+        SET name = ?, type = ?, postcode = ?
+        WHERE id = ?''', (name, type, postcode, institution_id))
+    connection.commit()
 
 def edit_role():
     pass
@@ -214,6 +218,11 @@ def get_institutions():
     connection.commit()
     return cursor.fetchall()
 
+def get_institution(name):
+    cursor.execute('SELECT * FROM institutions WHERE name = ?', (name,))
+    connection.commit()
+    return cursor.fetchone()
+
 def get_filtered_institutions(type):
     cursor.execute('SELECT * FROM institutions WHERE type = ?', (type,))
     connection.commit()
@@ -233,6 +242,11 @@ def get_roles():
     cursor.execute('SELECT * FROM roles')
     connection.commit()
     return cursor.fetchall()
+
+def get_role(name):
+    cursor.execute('SELECT * FROM roles WHERE name = ?', (name,))
+    connection.commit()
+    return cursor.fetchone()
 
 def get_filtered_roles(institution):
     cursor.execute('SELECT id FROM institutions WHERE name = ?', (institution,))
@@ -263,6 +277,11 @@ def get_artists():
     cursor.execute('SELECT * FROM artists')
     connection.commit()
     return cursor.fetchall()
+
+def get_artist(name):
+    cursor.execute('SELECT * FROM artists WHERE name = ?', (name,))
+    connection.commit()
+    return cursor.fetchone()
 
 # Initialisation of database function
 

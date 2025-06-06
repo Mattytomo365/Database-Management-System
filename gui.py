@@ -653,11 +653,10 @@ def edit_institution_popup():
         type_label.grid(row=3, column=0, pady=10)
         type_var = tk.StringVar(edit_institution_popup)
         type_dropdown = ttk.Combobox(edit_institution_popup, width=34, textvariable=type_var)
-        #type_dropdown.insert(0, institution_details[2])
         type_dropdown['values'] = ("University", "College")
         print(repr(institution_details[2]))
         print(type_dropdown['values'])
-        type_dropdown.set(institution_details[2])
+        type_dropdown.insert(0, institution_details[2])
         type_dropdown.grid(row=3, column=1, pady=10, sticky='w')
 
         postcode_label = tk.Label(edit_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
@@ -672,7 +671,7 @@ def edit_institution_popup():
     header = tk.Label(edit_institution_popup, text= "Edit Institution", font=('Arial', 30), bg="white", fg="dark blue")
     header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
 
-    institution_dropdown_label = tk.Label(edit_institution_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label = tk.Label(edit_institution_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.grid(row=1, column=0, pady=10)
     institution_var = tk.StringVar(edit_institution_popup)
     institution_dropdown = ttk.Combobox(edit_institution_popup, width=34, textvariable=institution_var, state='readonly')
