@@ -134,8 +134,25 @@ def add_artist(name, email, phone):
 
 # Edit functions
 
-def edit_volunteer():
-    pass
+def edit_volunteer(volunteer_id, name, email, phone, type, institution, role, start_date, attending_days, contract_length, status):
+    
+    cursor.execute('''
+        SELECT id FROM institutions WHERE name = ?
+        ''', (institution,))
+    
+    institution_id = cursor.fetchone()[0]
+
+    cursor.execute('''
+        SELECT id FROM roles WHERE name = ?
+        ''', (role,))
+    
+    role_id = cursor.fetchone()[0]
+
+    cursor.execute('''
+        UPDATE volunteers
+        SET name = ?, email = ?, phone = ?, type = ?, institution_id = ?, role_id = ?, start_date = ?, attending_days = ?, contract_length = ?, status = ?
+        WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, volunteer_id))
+    connection.commit()
 
 def edit_institution():
     pass
@@ -170,7 +187,7 @@ def get_volunteer_names():
 def get_volunteers():
     cursor.execute('SELECT * FROM volunteers')
     connection.commit()
-    return [row[0] for row in cursor.fetchall()]
+    return cursor.fetchall()
 
 def get_volunteer(name):
     cursor.execute('SELECT * FROM volunteers WHERE name = ?', (name,))

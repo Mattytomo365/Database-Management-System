@@ -618,7 +618,7 @@ def edit_volunteer_popup():
         status_dropdown.insert(0, str(volunteer_details[10]))
         status_dropdown.grid(row=11, column=1, pady=10, sticky='w')
 
-        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), start_date_chooser.get_date(), institution_dropdown.get(), role_dropdown.get(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), edit_volunteer_popup.destroy()])
+        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), edit_volunteer_popup.destroy()])
         edit_volunteer_button.grid(row=12, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_volunteer_popup, text= "Edit Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
