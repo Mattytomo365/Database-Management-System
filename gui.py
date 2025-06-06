@@ -627,7 +627,7 @@ def edit_volunteer_popup():
     volunteer_dropdown_label = tk.Label(edit_volunteer_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
     volunteer_dropdown_label.grid(row=1, column=0, pady=10)
     volunteer_var = tk.StringVar(edit_volunteer_popup)
-    volunteer_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=volunteer_var)
+    volunteer_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=volunteer_var, state='readonly')
     volunteer_dropdown['values'] = get_volunteer_names() if get_volunteer_names() else ("No Volunteers Available")
     volunteer_dropdown.grid(row=1, column=1, sticky='w', pady=10)
     volunteer_dropdown.bind("<<ComboboxSelected>>", edit_volunteer_popup_specific)
@@ -636,32 +636,49 @@ def edit_volunteer_popup():
 def edit_institution_popup():
     edit_institution_popup = tk.Toplevel(root)
     edit_institution_popup.title("Edit Institution")
-    edit_institution_popup.geometry("470x300")
+    edit_institution_popup.geometry("470x350")
     edit_institution_popup.configure(bg="white")
     edit_institution_popup.resizable(False, False)
+
+    def edit_institution_popup_specific(selected):
+
+        institution_details = get_institution(institution_dropdown.get())
+        name_label = tk.Label(edit_institution_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
+        name_label.grid(row=2, column=0, pady=10)
+        name_entry = tk.Entry(edit_institution_popup, font=('Arial', 15), bg="white", fg="black")
+        name_entry.insert(0, str(institution_details[1]))
+        name_entry.grid(row=2, column=1, pady=10, sticky='w')
+
+        type_label = tk.Label(edit_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
+        type_label.grid(row=3, column=0, pady=10)
+        type_var = tk.StringVar(edit_institution_popup)
+        type_dropdown = ttk.Combobox(edit_institution_popup, width=34, textvariable=type_var)
+        #type_dropdown.insert(0, institution_details[2])
+        type_dropdown['values'] = ("University", "College")
+        print(repr(institution_details[2]))
+        print(type_dropdown['values'])
+        type_dropdown.set(institution_details[2])
+        type_dropdown.grid(row=3, column=1, pady=10, sticky='w')
+
+        postcode_label = tk.Label(edit_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
+        postcode_label.grid(row=4, column=0, pady=10)
+        postcode_entry = tk.Entry(edit_institution_popup, font=('Arial', 15), bg="white", fg="black")
+        postcode_entry.insert(0, str(institution_details[3]))
+        postcode_entry.grid(row=4, column=1, pady=10, sticky='w')
+
+        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: [edit_institution(institution_details[0], name_entry.get(), type_dropdown.get(), postcode_entry.get()), edit_institution_popup.destroy()])
+        edit_institution_button.grid(row=5, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_institution_popup, text= "Edit Institution", font=('Arial', 30), bg="white", fg="dark blue")
     header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
 
-    name_label = tk.Label(edit_institution_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
-    name_label.place(x=100, y=100, anchor=tk.CENTER)
-    name_entry = tk.Entry(edit_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=300, y=100, anchor=tk.CENTER)
-
-    type_label = tk.Label(edit_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
-    type_label.place(x=100, y=150, anchor=tk.CENTER)
-    type_var = tk.StringVar(edit_institution_popup)
-    type_chosen = ttk.Combobox(edit_institution_popup, width=34, textvariable=type_var)
-    type_chosen['values'] = ("University", "College")
-    type_chosen.place(x=300, y=150, anchor=tk.CENTER)
-
-    postcode_label = tk.Label(edit_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
-    postcode_label.place(x=100, y=200, anchor=tk.CENTER)
-    postcode_entry = tk.Entry(edit_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    postcode_entry.place(x=300, y=200, anchor=tk.CENTER)
-
-    edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: [edit_institution(name_entry.get(), type_var.get(), postcode_entry.get()), edit_institution_popup.destroy()])
-    edit_institution_button.place(x=230, y=250, anchor=tk.CENTER)
+    institution_dropdown_label = tk.Label(edit_institution_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label.grid(row=1, column=0, pady=10)
+    institution_var = tk.StringVar(edit_institution_popup)
+    institution_dropdown = ttk.Combobox(edit_institution_popup, width=34, textvariable=institution_var, state='readonly')
+    institution_dropdown['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_dropdown.grid(row=1, column=1, sticky='w', pady=10)
+    institution_dropdown.bind("<<ComboboxSelected>>", edit_institution_popup_specific)
 
 def edit_role_popup():
     edit_role_popup = tk.Toplevel(root)
