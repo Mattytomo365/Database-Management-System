@@ -246,7 +246,24 @@ def get_roles():
 def get_role(name):
     cursor.execute('SELECT * FROM roles WHERE name = ?', (name,))
     connection.commit()
-    return cursor.fetchone()
+    role_details = cursor.fetchone()
+
+    cursor.execute('SELECT institution_id FROM institution_roles WHERE role_id = ?', (role_details[0],))
+    institution_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    institutions = []
+
+    for institution_id in institution_ids:
+        cursor.execute('SELECT name FROM institutions WHERE id = ?', (institution_id,))
+        connection.commit()
+        institution = [row[0] for row in cursor.fetchall()]
+
+        if institution:
+            institutions.append(institution)
+        else:
+            institutions.append('No institutions offer this role')
+
+    return role_details, institutions
 
 def get_filtered_roles(institution):
     cursor.execute('SELECT id FROM institutions WHERE name = ?', (institution,))
