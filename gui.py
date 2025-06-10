@@ -477,24 +477,24 @@ def add_role_popup():
     header.grid(row=0, column=0, padx=140, pady=10, columnspan=2)
 
     name_label = tk.Label(add_role_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
-    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_label.grid(row=1, column=0, pady=10)
     name_entry = tk.Entry(add_role_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=300, y=100, anchor=tk.CENTER)
+    name_entry.grid(row=1, column=1, pady=10, sticky='w')
 
     description_label = tk.Label(add_role_popup, text="Description", font=('Arial', 15), bg="white", fg="black")
-    description_label.place(x=100, y=150, anchor=tk.CENTER)
+    description_label.grid(row=2, column=0, pady=10)
     description_entry = tk.Entry(add_role_popup, font=('Arial', 15), bg="white", fg="black")
-    description_entry.place(x=300, y=150, anchor=tk.CENTER)
+    description_entry.grid(row=2, column=1, pady=10, sticky='w')
 
 
     institution_var = tk.StringVar(add_role_popup)
     values = get_institution_names() if get_institution_names() else ("No Institutions Available")
     institutions_label = tk.Label(add_role_popup, text="Select Institutions:", font=('Arial', 12), bg="white", fg="black")
-    institutions_label.place(x=100, y=230, anchor=tk.CENTER)
+    institutions_label.grid(row=3, column=0, pady=10, sticky='n')
     institutions = tk.Listbox(add_role_popup, listvariable=institution_var, height=5, width=27, selectmode="multiple", bg="white", fg="black", font=('Arial', 12), exportselection=0, selectforeground="white", selectbackground="dark blue")
     for value in values:
         institutions.insert(tk.END, value)
-    institutions.place(x=300, y=270, anchor=tk.CENTER)
+    institutions.grid(row=3, column=1, pady=10, sticky='w')
 
     def get_institutions_chosen():
         selected_indices = institutions.curselection()
@@ -502,7 +502,7 @@ def add_role_popup():
         return (", ".join(selected_values))
 
     add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), get_institutions_chosen()), add_role_popup.destroy()])
-    add_role_button.place(x=230, y=350, anchor=tk.CENTER)
+    add_role_button.grid(row=4, column=0, pady=10, columnspan=2)
 
 def add_artist_popup():
     add_artist_popup = tk.Toplevel(root)
