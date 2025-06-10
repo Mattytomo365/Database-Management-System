@@ -447,24 +447,24 @@ def add_institution_popup():
     header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
 
     name_label = tk.Label(add_institution_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
-    name_label.place(x=100, y=100, anchor=tk.CENTER)
+    name_label.grid(row=1, column=0, pady=10)
     name_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    name_entry.place(x=300, y=100, anchor=tk.CENTER)
+    name_entry.grid(row=1, column=1, pady=10, sticky='w')
 
     type_label = tk.Label(add_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
-    type_label.place(x=100, y=150, anchor=tk.CENTER)
+    type_label.grid(row=2, column=0, pady=10)
     type_var = tk.StringVar(add_institution_popup)
     type_chosen = ttk.Combobox(add_institution_popup, width=34, textvariable=type_var)
     type_chosen['values'] = ("University", "College")
-    type_chosen.place(x=300, y=150, anchor=tk.CENTER)
+    type_chosen.grid(row=2, column=1, pady=10, sticky='w')
 
     postcode_label = tk.Label(add_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
-    postcode_label.place(x=100, y=200, anchor=tk.CENTER)
+    postcode_label.grid(row=3, column=0, pady=10)
     postcode_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
-    postcode_entry.place(x=300, y=200, anchor=tk.CENTER)
+    postcode_entry.grid(row=3, column=1, pady=10, sticky='w')
 
     add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: [add_institution(name_entry.get(), type_var.get(), postcode_entry.get()), add_institution_popup.destroy()])
-    add_institution_button.place(x=230, y=250, anchor=tk.CENTER)
+    add_institution_button.grid(row=4, column=0, pady=10, columnspan=2)
 
 def add_role_popup():
     add_role_popup = tk.Toplevel(root)
