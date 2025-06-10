@@ -1,6 +1,6 @@
 import sqlite3
 
-connection = sqlite3.connect('database.db')
+connection = sqlite3.connect('database-EliteBook.db')
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
 
 # Create tables
@@ -135,7 +135,7 @@ def add_artist(name, email, phone):
 # Edit functions
 
 def edit_volunteer(volunteer_id, name, email, phone, type, institution, role, start_date, attending_days, contract_length, status):
-    
+
     cursor.execute('''
         SELECT id FROM institutions WHERE name = ?
         ''', (institution,))
@@ -161,8 +161,61 @@ def edit_institution(institution_id, name, type, postcode):
         WHERE id = ?''', (name, type, postcode, institution_id))
     connection.commit()
 
-def edit_role():
-    pass
+def edit_role(role_id, name, description, institution_names):
+
+    institution_names = institution_names.split(', ')
+
+    cursor.execute('''
+        UPDATE roles
+        SET name = ?, description = ?
+        WHERE id = ?''', (name, description, role_id))
+    connection.commit()
+
+    institution_ids = []
+    for name in institution_names:
+        cursor.execute('SELECT id FROM institutions WHERE name = ?', (name,))
+        connection.commit()
+        institution_id = cursor.fetchone()[0]
+        
+        if institution_id:
+            institution_ids.append(institution_id)
+
+        else:
+            institution_ids.append('Institution ID not found')
+
+    cursor.execute('SELECT institution_id FROM institution_roles WHERE role_id = ?', (role_id,))
+    connection.commit()
+    original_institution_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    deletable_institution_ids = []
+    for original_institution_id in original_institution_ids:
+
+        for institution_id in institution_ids:
+
+            if original_institution_id == institution_id:
+                delete = False
+                break
+            else:
+                delete = True
+
+        if delete:
+            deletable_institution_ids.append(original_institution_id)
+
+    for institution_id in institution_ids:
+            cursor.execute('''
+                INSERT OR IGNORE INTO institution_roles (institution_id, role_id)
+                VALUES (?, ?)''', (institution_id, role_id))
+            connection.commit()
+
+    for deletable_id in deletable_institution_ids:
+        cursor.execute('DELETE FROM institution_roles WHERE institution_id = ? AND role_id = ?', (deletable_id, role_id))
+    connection.commit()
+
+            
+            
+
+    
+
 
 def edit_artist():
     pass

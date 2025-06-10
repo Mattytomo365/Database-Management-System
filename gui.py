@@ -574,23 +574,23 @@ def edit_volunteer_popup():
         start_date_chooser.set_date(volunteer_details[7])
         start_date_chooser.grid(row=6, column=1, pady=10, sticky='w')
 
-        role_dropdown_label = tk.Label(edit_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
-        role_dropdown_label.grid(row=7, column=0, pady=10)
-        role_var = tk.StringVar(edit_volunteer_popup)
-        role_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=role_var)
-        role_dropdown['values'] = get_role_names() if get_role_names() else ("No Roles Available")
-        role_name = get_role_name(volunteer_details[6])
-        role_dropdown.insert(0, role_name)
-        role_dropdown.grid(row=7, column=1, pady=10, sticky='w')
-
         institution_dropdown_label = tk.Label(edit_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
-        institution_dropdown_label.grid(row=8, column=0, pady=10)
+        institution_dropdown_label.grid(row=7, column=0, pady=10)
         institution_var = tk.StringVar(edit_volunteer_popup)
         institution_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=institution_var)
         institution_dropdown['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
         institution_name = get_institution_name(volunteer_details[5])
         institution_dropdown.insert(0, institution_name)
-        institution_dropdown.grid(row=8, column=1, pady=10, sticky='w')
+        institution_dropdown.grid(row=7, column=1, pady=10, sticky='w')
+
+        role_dropdown_label = tk.Label(edit_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
+        role_dropdown_label.grid(row=8, column=0, pady=10)
+        role_var = tk.StringVar(edit_volunteer_popup)
+        role_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=role_var)
+        role_dropdown['values'] = get_role_names() if get_role_names() else ("No Roles Available")
+        role_name = get_role_name(volunteer_details[6])
+        role_dropdown.insert(0, role_name)
+        role_dropdown.grid(row=8, column=1, pady=10, sticky='w')
 
         attending_days_label = tk.Label(edit_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
         attending_days_label.grid(row=9, column=0, pady=10)
@@ -712,7 +712,7 @@ def edit_role_popup():
             selected_values = [institutions.get(i) for i in selected_indices]
             return (", ".join(selected_values))
 
-        edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(name_entry.get(), description_entry.get(), get_institutions_chosen()), edit_role_popup.destroy()])
+        edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(role_details[0], name_entry.get(), description_entry.get(), get_institutions_chosen()), edit_role_popup.destroy()])
         edit_role_button.grid(row=6, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_role_popup, text= "Edit Role", font=('Arial', 30), bg="white", fg="dark blue")
