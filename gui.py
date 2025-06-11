@@ -100,7 +100,7 @@ def delete_options_popup():
     delete_options_popup.resizable(False, False)
 
     delete_options_popup_label = tk.Label(delete_options_popup, text="What would you like to delete?", font=("Arial", 30), bg="white", fg="dark blue")
-    delete_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=45, pady=20)
+    delete_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=35, pady=20)
 
     delete_volunteer_button = ttk.Button(delete_options_popup, text="Volunteer", style="Blue.TButton", command=lambda: delete_volunteer_popup())
     delete_volunteer_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
@@ -754,7 +754,7 @@ def edit_artist_popup():
         phone_entry.insert(0, str(artist_details[3]))
         phone_entry.grid(row=4, column=1, sticky='w', pady=10)
 
-        edit_artist_button = ttk.Button(edit_artist_popup, text="Save", style="Blue.TButton", command=lambda: [edit_artist(name_entry.get(), email_entry.get(), phone_entry.get()), edit_artist_popup.destroy()])
+        edit_artist_button = ttk.Button(edit_artist_popup, text="Save", style="Blue.TButton", command=lambda: [edit_artist(artist_details[0], name_entry.get(), email_entry.get(), phone_entry.get()), edit_artist_popup.destroy()])
         edit_artist_button.grid(row=5, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_artist_popup, text= "Edit Artist", font=('Arial', 30), bg="white", fg="dark blue")

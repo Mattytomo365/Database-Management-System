@@ -211,14 +211,13 @@ def edit_role(role_id, name, description, institution_names):
         cursor.execute('DELETE FROM institution_roles WHERE institution_id = ? AND role_id = ?', (deletable_id, role_id))
     connection.commit()
 
-            
-            
 
-    
-
-
-def edit_artist():
-    pass
+def edit_artist(artist_id, name, email, phone):
+    cursor.execute('''
+        UPDATE artists
+        SET name = ?, email = ?, phone = ?
+        WHERE id = ?''', (name, email, phone, artist_id))
+    connection.commit()
 
 # Delete functions
 
