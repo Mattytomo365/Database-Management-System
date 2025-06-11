@@ -1,6 +1,6 @@
 import sqlite3
 
-connection = sqlite3.connect('database-EliteBook.db')
+connection = sqlite3.connect('database.db')
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
 
 # Create tables
