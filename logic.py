@@ -71,18 +71,11 @@ def create_artist_table():
 
 # Add functions
 
-def add_volunteer(name, email, phone, type, institution, role, start_date, attending_days, contract_length, status):
-    cursor.execute('''
-        SELECT id FROM institutions WHERE name = ?
-        ''', (institution,))
-    
-    institution_id = cursor.fetchone()[0]
+def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
 
-    cursor.execute('''
-        SELECT id FROM roles WHERE name = ?
-        ''', (role,))
-    
-    role_id = cursor.fetchone()[0]
+    institution_id = get_id('institutions', institution_name)
+
+    role_id = get_id('roles', role_name)
     
     cursor.execute('''
         INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status)
@@ -112,11 +105,8 @@ def add_role(name, description, institution_names):
     role_id = cursor.lastrowid
     
     for institution_name in institution_names:
-        cursor.execute('''
-            SELECT id FROM institutions WHERE name = ?
-        ''', (institution_name,))
-    
-        institution_id = cursor.fetchone()[0]
+
+        institution_id = get_id('institutions', institution_name)
 
         cursor.execute('''
             INSERT INTO institution_roles (role_id, institution_id)
@@ -134,19 +124,11 @@ def add_artist(name, email, phone):
 
 # Edit functions
 
-def edit_volunteer(volunteer_id, name, email, phone, type, institution, role, start_date, attending_days, contract_length, status):
+def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
 
-    cursor.execute('''
-        SELECT id FROM institutions WHERE name = ?
-        ''', (institution,))
-    
-    institution_id = cursor.fetchone()[0]
+    institution_id = get_id('institutions', institution_name)
 
-    cursor.execute('''
-        SELECT id FROM roles WHERE name = ?
-        ''', (role,))
-    
-    role_id = cursor.fetchone()[0]
+    role_id = get_id('roles', role_name)
 
     cursor.execute('''
         UPDATE volunteers
@@ -172,10 +154,8 @@ def edit_role(role_id, name, description, institution_names):
     connection.commit()
 
     institution_ids = []
-    for name in institution_names:
-        cursor.execute('SELECT id FROM institutions WHERE name = ?', (name,))
-        connection.commit()
-        institution_id = cursor.fetchone()[0]
+    for institution_name in institution_names:
+        institution_id = get_id('institutions', institution_name)
         
         if institution_id:
             institution_ids.append(institution_id)
@@ -221,8 +201,11 @@ def edit_artist(artist_id, name, email, phone):
 
 # Delete functions
 
-def delete_volunteer():
-    pass
+def delete_volunteer(name):
+    volunteer_id = get_id('volunteers', name)
+
+    cursor.execute('DELETE FROM volunteers WHERE id = ?', (volunteer_id,))
+    connection.commit()
 
 def delete_institution():
     pass
@@ -234,6 +217,11 @@ def delete_artist():
     pass
 
 # Retrieval functions
+
+def get_id(table_name, record_name):
+    cursor.execute(f'SELECT id from {table_name} WHERE name = ?', (record_name,))
+    connection.commit()
+    return cursor.fetchone()[0]
 
 def get_volunteer_names():
     cursor.execute('SELECT name FROM volunteers')
