@@ -775,23 +775,23 @@ def delete_volunteer_popup():
     delete_volunteer_popup.configure(bg="white")
     delete_volunteer_popup.resizable(False, False)
     header = tk.Label(delete_volunteer_popup, text= "Delete Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=240, y=30, anchor=tk.CENTER)
+    header.grid(row=0, column=0, padx=120, pady=10, columnspan=2)
 
     volunteer_names = get_volunteer_names()
 
     if volunteer_names:
-        dropdown_label = tk.Label(delete_volunteer_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
-        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        volunteer_dropdown_label = tk.Label(delete_volunteer_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
+        volunteer_dropdown_label.grid(row=1, column=0, pady=10)
         volunteer_var = tk.StringVar(delete_volunteer_popup)
-        volunteer_chosen = ttk.Combobox(delete_volunteer_popup, width=34, textvariable=volunteer_var)
-        volunteer_chosen['values'] = volunteer_names
-        volunteer_chosen.place(x=300, y=100, anchor=tk.CENTER)
+        volunteer_dropdown = ttk.Combobox(delete_volunteer_popup, width=34, textvariable=volunteer_var)
+        volunteer_dropdown['values'] = volunteer_names
+        volunteer_dropdown.grid(row=1, column=1, sticky='w', pady=10)
 
-        delete_volunteer_button = ttk.Button(delete_volunteer_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_volunteer(), delete_volunteer_popup.destroy()])
-        delete_volunteer_button.place(x=230, y=170, anchor=tk.CENTER)
+        delete_volunteer_button = ttk.Button(delete_volunteer_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_volunteer(volunteer_dropdown.get()), delete_volunteer_popup.destroy()])
+        delete_volunteer_button.grid(row=2, column=0, pady=10, columnspan=2)
     else:
         no_volunteers_label = tk.Label(delete_volunteer_popup, text="No volunteers to delete", font=('Arial', 15), bg="white", fg="black")
-        no_volunteers_label.place(x=230, y=100, anchor=tk.CENTER)
+        no_volunteers_label.grid(row=1, column=0, pady=10, columnspan=2)
 
 def delete_institution_popup():
     delete_institution_popup = tk.Toplevel(root)
