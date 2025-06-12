@@ -849,7 +849,7 @@ def delete_role_popup():
         delete_role_frame.grid(row=2, column=0, columnspan=2)
 
         if delete_role_eligibility(role_dropdown.get()):
-            delete_role_button = ttk.Button(delete_role_frame, text="Delete", style="Blue.TButton", command=lambda: [delete_role(), delete_role_popup.destroy()])
+            delete_role_button = ttk.Button(delete_role_frame, text="Delete", style="Blue.TButton", command=lambda: [delete_role(role_dropdown.get()), delete_role_popup.destroy()])
             delete_role_button.grid(row=0, column=0, pady=10, columnspan=2)
         else:
             warning_label = tk.Label(delete_role_frame, text='Volunteers in the system are linked to this role, unable to delete', font=('Arial', 10), bg="white", fg="red" )
