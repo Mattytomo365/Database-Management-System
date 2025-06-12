@@ -137,7 +137,7 @@ def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, rol
         SET name = ?, email = ?, phone = ?, type = ?, institution_id = ?, role_id = ?, start_date = ?, attending_days = ?, contract_length = ?, status = ?
         WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, volunteer_id))
     connection.commit()
-    
+
 
 def edit_institution(institution_id, name, type, postcode):
     cursor.execute('''
@@ -229,7 +229,9 @@ def delete_institution_eligibility(institution_name):
 def delete_institution(name):
     connection.execute("PRAGMA foreign_keys = ON")
 
-    cursor.execute('DELETE FROM institutions WHERE name = ?', (name,))
+    institution_id = ('institutions', name)
+
+    cursor.execute('DELETE FROM institutions WHERE id = ?', (institution_id,))
     connection.commit()
 
 
@@ -249,12 +251,17 @@ def delete_role_eligibility(name):
 def delete_role(name):
     connection.execute("PRAGMA foreign_keys = ON")
 
-    cursor.execute('DELETE FROM roles WHERE name = ?', (name,))
+    role_id = get_id('roles', name)
+
+    cursor.execute('DELETE FROM roles WHERE id = ?', (role_id,))
     connection.commit()
 
 
-def delete_artist():
-    pass
+def delete_artist(name):
+    artist_id = get_id('artists', name)
+
+    connection.execute('DELETE FROM artists WHERE id = ?', (artist_id,))
+    connection.commit()
 
 # Retrieval functions
 

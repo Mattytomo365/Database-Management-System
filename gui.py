@@ -774,6 +774,7 @@ def delete_volunteer_popup():
     delete_volunteer_popup.geometry("470x200")
     delete_volunteer_popup.configure(bg="white")
     delete_volunteer_popup.resizable(False, False)
+
     header = tk.Label(delete_volunteer_popup, text= "Delete Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
     header.grid(row=0, column=0, padx=90, pady=10, columnspan=2)
 
@@ -883,24 +884,25 @@ def delete_artist_popup():
     delete_artist_popup.geometry("470x200")
     delete_artist_popup.configure(bg="white")
     delete_artist_popup.resizable(False, False)
+
     header = tk.Label(delete_artist_popup, text= "Delete Artist", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=240, y=30, anchor=tk.CENTER)
+    header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
 
     artist_names = get_artist_names()
 
     if artist_names:
-        dropdown_label = tk.Label(delete_artist_popup, text="Artist", font=('Arial', 15), bg="white", fg="black")
-        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        artist_dropdown_label = tk.Label(delete_artist_popup, text="Artist", font=('Arial', 15), bg="white", fg="black")
+        artist_dropdown_label.grid(row=1, column=0, pady=10)
         artist_var = tk.StringVar(delete_artist_popup)
-        artist_chosen = ttk.Combobox(delete_artist_popup, width=34, textvariable=artist_var)
-        artist_chosen['values'] = artist_names
-        artist_chosen.place(x=300, y=100, anchor=tk.CENTER)
+        artist_dropdown = ttk.Combobox(delete_artist_popup, width=34, textvariable=artist_var)
+        artist_dropdown['values'] = artist_names
+        artist_dropdown.grid(row=1, column=1, sticky='w', pady=10)
 
-        delete_role_button = ttk.Button(delete_artist_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_artist(), delete_artist_popup.destroy()])
-        delete_role_button.place(x=230, y=170, anchor=tk.CENTER)
+        delete_role_button = ttk.Button(delete_artist_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_artist(artist_dropdown.get()), delete_artist_popup.destroy()])
+        delete_role_button.grid(row=2, column=0, pady=10, columnspan=2)
     else:
         no_artists_label = tk.Label(delete_artist_popup, text="No artists to delete", font=('Arial', 15), bg="white", fg="black")
-        no_artists_label.place(x=230, y=100, anchor=tk.CENTER)
+        no_artists_label.grid(row=1, column=0, pady=10, columnspan=2)
 
 
 # Main menu
