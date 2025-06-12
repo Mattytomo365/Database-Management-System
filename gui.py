@@ -820,9 +820,6 @@ def delete_institution_popup():
 
     institution_names = get_institution_names()
 
-    delete_institution_frame = tk.Frame(delete_institution_popup, bg='white')
-    delete_institution_frame.grid(row=2, column=0, pady=10, columnspan=2)
-
     if institution_names:
         institution_dropdown_label = tk.Label(delete_institution_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
         institution_dropdown_label.grid(row=1, column=0, pady=10)
@@ -835,30 +832,50 @@ def delete_institution_popup():
         no_institutions_label = tk.Label(delete_institution_popup, text="No institutions to delete", font=('Arial', 15), bg="white", fg="black")
         no_institutions_label.grid(row=1, column=0, pady=10, columnspan=2)
 
+    delete_institution_frame = tk.Frame(delete_institution_popup, bg='white')
+    delete_institution_frame.grid(row=2, column=0, pady=10, columnspan=2)
+
 def delete_role_popup():
     delete_role_popup = tk.Toplevel(root)
     delete_role_popup.title("Delete Role")
-    delete_role_popup.geometry("470x200")
+    delete_role_popup.geometry("470x250")
     delete_role_popup.configure(bg="white")
     delete_role_popup.resizable(False, False)
+
+    def delete_role_popup_specific(selected):
+        nonlocal delete_role_frame
+        delete_role_frame.destroy()
+        delete_role_frame = tk.Frame(delete_role_popup, bg='white')
+        delete_role_frame.grid(row=2, column=0, columnspan=2)
+
+        if delete_role_eligibility(role_dropdown.get()):
+            delete_role_button = ttk.Button(delete_role_frame, text="Delete", style="Blue.TButton", command=lambda: [delete_role(), delete_role_popup.destroy()])
+            delete_role_button.grid(row=0, column=0, pady=10, columnspan=2)
+        else:
+            warning_label = tk.Label(delete_role_frame, text='Volunteers in the system are linked to this role, unable to delete', font=('Arial', 10), bg="white", fg="red" )
+            warning_label.grid(row=0, column=0, pady=10, columnspan=2)
+            delete_role_button = ttk.Button(delete_role_frame, text="Delete", style="Blue.TButton", state='disabled')
+            delete_role_button.grid(row=1, column=0, pady=10, columnspan=2)
+
     header = tk.Label(delete_role_popup, text= "Delete Role", font=('Arial', 30), bg="white", fg="dark blue")
-    header.place(x=240, y=30, anchor=tk.CENTER)
+    header.grid(row=0, column=0, padx=130, pady=10, columnspan=2)
 
     role_names = get_role_names()
 
     if role_names:
-        dropdown_label = tk.Label(delete_role_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
-        dropdown_label.place(x=100, y=100, anchor=tk.CENTER)
+        role_dropdown_label = tk.Label(delete_role_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
+        role_dropdown_label.grid(row=1, column=0, pady=10)
         role_var = tk.StringVar(delete_role_popup)
-        role_chosen = ttk.Combobox(delete_role_popup, width=34, textvariable=role_var)
-        role_chosen['values'] = role_names
-        role_chosen.place(x=300, y=100, anchor=tk.CENTER)
-
-        delete_role_button = ttk.Button(delete_role_popup, text="Delete", style="Blue.TButton", command=lambda: [delete_role(), delete_role_popup.destroy()])
-        delete_role_button.place(x=230, y=170, anchor=tk.CENTER)
+        role_dropdown = ttk.Combobox(delete_role_popup, width=34, textvariable=role_var)
+        role_dropdown['values'] = role_names
+        role_dropdown.grid(row=1, column=1, sticky='w', pady=10)
+        role_dropdown.bind("<<ComboboxSelected>>", delete_role_popup_specific)
     else:
         no_roles_label = tk.Label(delete_role_popup, text="No roles to delete", font=('Arial', 15), bg="white", fg="black")
-        no_roles_label.place(x=230, y=100, anchor=tk.CENTER)
+        no_roles_label.grid(row=1, column=0, pady=10, columnspan=2)
+
+    delete_role_frame = tk.Frame(delete_role_popup, bg='white')
+    delete_role_frame.grid(row=2, column=0, columnspan=2)
 
 def delete_artist_popup():
     delete_artist_popup = tk.Toplevel(root)

@@ -223,14 +223,22 @@ def delete_institution_eligibility(institution_name):
     return True
 
 def delete_institution(name):
-    
-    #institution_id = get_id('institutions', name)
     connection.execute("PRAGMA foreign_keys = ON")
 
     cursor.execute('DELETE FROM institutions WHERE name = ?', (name,))
     connection.commit()
 
-    # DELETE FROM INSTITUTION_ROLES TABLE
+def delete_role_eligibility(name):
+    role_id = get_id('roles', name)
+
+    cursor.execute('SELECT role_id FROM volunteers')
+    connection.commit()
+    volunteer_role_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    for volunteer_role_id in volunteer_role_ids:
+        if volunteer_role_id == role_id:
+            return False
+    return True
 
 def delete_role():
     pass
