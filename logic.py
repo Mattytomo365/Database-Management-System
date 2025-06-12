@@ -1,6 +1,7 @@
 import sqlite3
 
 connection = sqlite3.connect('database.db')
+connection.execute("PRAGMA foreign_keys = ON")
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
 
 # Create tables
@@ -51,12 +52,13 @@ def create_institution_role_table():
         CREATE TABLE IF NOT EXISTS institution_roles (
             institution_id INTEGER,
             role_id INTEGER,
-            FOREIGN KEY (institution_id) REFERENCES institutions(id),
-            FOREIGN KEY (role_id) REFERENCES roles(id),
-            PRIMARY KEY (institution_id, role_id)
+            PRIMARY KEY (institution_id, role_id),
+            FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
         )
     ''')
     connection.commit()
+
 
 def create_artist_table():
     cursor.execute('''
@@ -207,8 +209,28 @@ def delete_volunteer(name):
     cursor.execute('DELETE FROM volunteers WHERE id = ?', (volunteer_id,))
     connection.commit()
 
-def delete_institution():
-    pass
+def delete_institution_eligibility(institution_name):
+
+    institution_id = get_id('institutions', institution_name)
+
+    cursor.execute('SELECT institution_id FROM volunteers')
+    connection.commit()
+    volunteer_institution_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    for volunteer_institution_id in volunteer_institution_ids:
+        if volunteer_institution_id == institution_id:
+            return False
+    return True
+
+def delete_institution(name):
+    
+    #institution_id = get_id('institutions', name)
+    connection.execute("PRAGMA foreign_keys = ON")
+
+    cursor.execute('DELETE FROM institutions WHERE name = ?', (name,))
+    connection.commit()
+
+    # DELETE FROM INSTITUTION_ROLES TABLE
 
 def delete_role():
     pass
