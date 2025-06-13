@@ -268,7 +268,10 @@ def delete_artist(name):
 def get_id(table_name, record_name):
     cursor.execute(f'SELECT id from {table_name} WHERE name = ?', (record_name,))
     connection.commit()
-    return cursor.fetchone()[0]
+    if cursor.fetchone()[0]:
+        return cursor.fetchone()[0]
+    else:
+        return None
 
 def get_volunteer_names():
     cursor.execute('SELECT name FROM volunteers')

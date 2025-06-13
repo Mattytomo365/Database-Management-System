@@ -365,60 +365,25 @@ def view_artists_popup():
     artist_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
 
-def add_volunteer_popup():
+def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown):
+    type = type_dropdown.get()
+    institution_dropdown.set(" ")
+    role_dropdown.set(" ")
+    institution_dropdown.configure(state='disabled' if type == "Volunteer" else 'normal')
 
-    def type_chosen_population(selected):
+    if is_volunteer:
+        role_dropdown.set("Volunteer")
+        role_dropdown['values'] = ("Volunteer")
+    
 
-        def institution_chosen_population(selected):
-            institution = institution_dropdown.get()
-            role_dropdown_label = tk.Label(add_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
-            role_dropdown_label.grid(row=7, column=0, pady=10)
-            role_var = tk.StringVar(add_volunteer_popup)
-            role_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=role_var, state='readonly')
-            if selected == "null":
-                role_dropdown['values'] = ("Volunteer")
-            else:
-                role_dropdown['values'] = get_filtered_role_names(institution) if get_filtered_role_names(institution) else ("No Roles Available")
-            role_dropdown.grid(row=7, column=1, pady=10, sticky='w')
-
-            attending_days_label = tk.Label(add_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
-            attending_days_label.grid(row=8, column=0, pady=10)
-            attending_days_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-            attending_days_entry.grid(row=8, column=1, pady=10, sticky='w')
-
-            contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
-            contract_length_label.grid(row=9, column=0, pady=10)
-            contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-            contract_length_entry.grid(row=9, column=1, pady=10, sticky='w')
-
-            status_dropdown_label = tk.Label(add_volunteer_popup, text="Status", font=('Arial', 15), bg="white", fg="black")
-            status_dropdown_label.grid(row=10, column=0, pady=10)
-            status_var = tk.StringVar(add_volunteer_popup)
-            status_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=status_var, state='readonly')
-            status_chosen['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
-            status_chosen.grid(row=10, column=1, pady=10, sticky='w')
-
-            add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_chosen.get()), add_volunteer_popup.destroy()])
-            add_volunteer_button.grid(row=11, column=0, pady=10, columnspan=2)
-
-
-        type = type_dropdown.get()
-        start_date_label = tk.Label(add_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
-        start_date_label.grid(row=5, column=0, pady=10)
-        start_date_chooser = DateEntry(add_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
-        start_date_chooser.grid(row=5, column=1, pady=10, sticky='w')
+def on_institution_select(selected, is_volunteer, institution_dropdown, role_dropdown):
+    institution = institution_dropdown.get()
+    role_dropdown.insert(0, str(" "))
+    if not is_volunteer:
+        role_dropdown['values'] = get_filtered_role_names(institution) if get_filtered_role_names(institution) else ("No Roles Available")
         
-        institution_dropdown_label = tk.Label(add_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
-        institution_dropdown_label.grid(row=6, column=0, pady=10)
-        institution_var = tk.StringVar(add_volunteer_popup)
-        institution_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=institution_var, state='disabled' if type_dropdown.get() == "Volunteer" else 'readonly')
-        institution_dropdown['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
-        institution_dropdown.grid(row=6, column=1, pady=10, sticky='w')
-        institution_dropdown.bind("<<ComboboxSelected>>", institution_chosen_population)
 
-        if type == "Volunteer":
-            institution_chosen_population("null")
-
+def add_volunteer_popup():
     add_volunteer_popup = tk.Toplevel(root)
     add_volunteer_popup.title("Add Volunteer")
     add_volunteer_popup.geometry("470x650")
@@ -449,7 +414,50 @@ def add_volunteer_popup():
     type_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=type_var, state='readonly')
     type_dropdown['values'] = ("Student", "Volunteer")
     type_dropdown.grid(row=4, column=1, pady=10, sticky='w')
-    type_dropdown.bind("<<ComboboxSelected>>", type_chosen_population)
+    
+    start_date_label = tk.Label(add_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
+    start_date_label.grid(row=5, column=0, pady=10)
+    start_date_chooser = DateEntry(add_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
+    start_date_chooser.grid(row=5, column=1, pady=10, sticky='w')
+    
+    institution_dropdown_label = tk.Label(add_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
+    institution_dropdown_label.grid(row=6, column=0, pady=10)
+    institution_var = tk.StringVar(add_volunteer_popup)
+    institution_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=institution_var)
+    institution_dropdown['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
+    institution_dropdown.grid(row=6, column=1, pady=10, sticky='w')
+
+    role_dropdown_label = tk.Label(add_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
+    role_dropdown_label.grid(row=7, column=0, pady=10)
+    role_var = tk.StringVar(add_volunteer_popup)
+    role_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=role_var)
+    role_dropdown.grid(row=7, column=1, pady=10, sticky='w')
+
+    attending_days_label = tk.Label(add_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
+    attending_days_label.grid(row=8, column=0, pady=10)
+    attending_days_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    attending_days_entry.grid(row=8, column=1, pady=10, sticky='w')
+
+    contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
+    contract_length_label.grid(row=9, column=0, pady=10)
+    contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    contract_length_entry.grid(row=9, column=1, pady=10, sticky='w')
+
+    status_dropdown_label = tk.Label(add_volunteer_popup, text="Status", font=('Arial', 15), bg="white", fg="black")
+    status_dropdown_label.grid(row=10, column=0, pady=10)
+    status_var = tk.StringVar(add_volunteer_popup)
+    status_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=status_var, state='readonly')
+    status_chosen['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
+    status_chosen.grid(row=10, column=1, pady=10, sticky='w')
+
+    
+
+    type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
+
+    institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
+
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_chosen.get()), add_volunteer_popup.destroy()])
+    add_volunteer_button.grid(row=11, column=0, pady=10, columnspan=2)
 
 
 
@@ -582,7 +590,8 @@ def edit_volunteer_popup():
         type_var = tk.StringVar(edit_volunteer_popup)
         type_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=type_var)
         type_dropdown['values'] = ("Student", "Volunteer")
-        type_dropdown.insert(0, str(volunteer_details[4]))
+        type = volunteer_details[4]
+        type_dropdown.insert(0, type)
         type_dropdown.grid(row=5, column=1, pady=10, sticky='w')
 
         start_date_label = tk.Label(edit_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
@@ -595,7 +604,7 @@ def edit_volunteer_popup():
         institution_dropdown_label = tk.Label(edit_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
         institution_dropdown_label.grid(row=7, column=0, pady=10)
         institution_var = tk.StringVar(edit_volunteer_popup)
-        institution_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=institution_var)
+        institution_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=institution_var, state='disabled' if type == "Volunteer" else 'normal')
         institution_dropdown['values'] = get_institution_names() if get_institution_names() else ("No Institutions Available")
         institution_name = get_institution_name(volunteer_details[5])
         institution_dropdown.insert(0, institution_name)
@@ -605,9 +614,13 @@ def edit_volunteer_popup():
         role_dropdown_label.grid(row=8, column=0, pady=10)
         role_var = tk.StringVar(edit_volunteer_popup)
         role_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=role_var)
-        role_dropdown['values'] = get_role_names() if get_role_names() else ("No Roles Available")
         role_name = get_role_name(volunteer_details[6])
-        role_dropdown.insert(0, role_name)
+        if type == "Student":
+            role_dropdown['values'] = get_filtered_role_names(institution_name) if get_filtered_role_names(institution_name) else ("No Roles Available")
+            role_dropdown.set(role_name)
+        else:
+            role_dropdown['values'] = ("Volunteer")
+            role_dropdown.set("Volunteer")
         role_dropdown.grid(row=8, column=1, pady=10, sticky='w')
 
         attending_days_label = tk.Label(edit_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
@@ -629,6 +642,10 @@ def edit_volunteer_popup():
         status_dropdown['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
         status_dropdown.insert(0, str(volunteer_details[10]))
         status_dropdown.grid(row=11, column=1, pady=10, sticky='w')
+
+        type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
+
+        institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
 
         edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), edit_volunteer_popup.destroy()])
         edit_volunteer_button.grid(row=12, column=0, pady=10, columnspan=2)
