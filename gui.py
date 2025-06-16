@@ -4,7 +4,7 @@ from logic import *
 from tkcalendar import DateEntry
 
 root = tk.Tk()
-root.title("Volunteer Management System")
+root.title("Database Management System")
 root.geometry("570x400")
 root.configure(bg="white")
 root.resizable(False, False)
@@ -682,9 +682,11 @@ def edit_institution_popup():
         type_label.grid(row=3, column=0, pady=10)
         type_var = tk.StringVar(edit_institution_popup)
         type_dropdown = ttk.Combobox(edit_institution_popup, width=34, textvariable=type_var)
-        type_dropdown['values'] = ("University", "College")
-        type_dropdown.insert(0, institution_details[2])
+        type_dropdown['values'] = ('University', 'College')
+        if institution_details[2] in type_dropdown['values']:
+            type_dropdown.set(institution_details[2].strip())
         type_dropdown.grid(row=3, column=1, pady=10, sticky='w')
+        edit_institution_popup.update_idletasks()
 
         postcode_label = tk.Label(edit_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
         postcode_label.grid(row=4, column=0, pady=10)
