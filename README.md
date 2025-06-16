@@ -14,7 +14,10 @@ You can track the project's progress [here](https://www.notion.so/1f918110f1f280
 
 ## What I've Learned
 
-All stages of this project's development have posed problems which I've had to overcome, and therefore learned from. The importance of thorough planning 
+This project presented numerous challenges throughout all stages of development, offering valuable learning outcomes:
+- **Planning & Collaboration**:The importance of efficient planning and collaboration with the stakeholders earlier on and establishing requirements would have avoided problems further down the line, like missing fields in the database.
+- **SQLite**: This was also my first time using SQLite, although I have prior experience with MySQL, SQLite enabled me to utilise my SQL skills to develop and manage a relational database with a real-world purpose.
+- **GitHub & Deployment**: Pre-releasing the application for internal testing and final deployment of my application gave me more exposure to GitHub's tools and improved my confidence using the platform, however, restrictions and security protocols within the NHS’ internal systems had to be resolved in order for the system to be downloadable for the intended members of staff, these are real-world issues I could face during my time in the industry.
 
 ---
 
