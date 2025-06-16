@@ -381,17 +381,20 @@ def on_institution_select(selected, is_volunteer, institution_dropdown, role_dro
     role_dropdown.insert(0, str(" "))
     if not is_volunteer:
         role_dropdown['values'] = get_filtered_role_names(institution) if get_filtered_role_names(institution) else ("No Roles Available")
+
+def on_status_select(selected, status_dropdown, badge_number_entry, project_entry):
+    pass
         
 
 def add_volunteer_popup():
     add_volunteer_popup = tk.Toplevel(root)
     add_volunteer_popup.title("Add Volunteer")
-    add_volunteer_popup.geometry("470x650")
+    add_volunteer_popup.geometry("800x450")
     add_volunteer_popup.configure(bg="white")
     add_volunteer_popup.resizable(False, False)
 
     header = tk.Label(add_volunteer_popup, text= "Add Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
-    header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
+    header.grid(row=0, column=0, padx=270, pady=10, columnspan=5)
 
     name_label = tk.Label(add_volunteer_popup, text="Name", font=('Arial', 15), bg="white", fg="black")
     name_label.grid(row=1, column=0, pady=10)
@@ -428,36 +431,47 @@ def add_volunteer_popup():
     institution_dropdown.grid(row=6, column=1, pady=10, sticky='w')
 
     role_dropdown_label = tk.Label(add_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
-    role_dropdown_label.grid(row=7, column=0, pady=10)
+    role_dropdown_label.grid(row=1, column=3, pady=10)
     role_var = tk.StringVar(add_volunteer_popup)
     role_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=role_var)
-    role_dropdown.grid(row=7, column=1, pady=10, sticky='w')
+    role_dropdown.grid(row=1, column=4, pady=10, sticky='w')
 
     attending_days_label = tk.Label(add_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
-    attending_days_label.grid(row=8, column=0, pady=10)
+    attending_days_label.grid(row=2, column=3, pady=10)
     attending_days_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    attending_days_entry.grid(row=8, column=1, pady=10, sticky='w')
+    attending_days_entry.grid(row=2, column=4, pady=10, sticky='w')
 
     contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
-    contract_length_label.grid(row=9, column=0, pady=10)
+    contract_length_label.grid(row=3, column=3, pady=10)
     contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
-    contract_length_entry.grid(row=9, column=1, pady=10, sticky='w')
+    contract_length_entry.grid(row=3, column=4, pady=10, sticky='w')
 
     status_dropdown_label = tk.Label(add_volunteer_popup, text="Status", font=('Arial', 15), bg="white", fg="black")
-    status_dropdown_label.grid(row=10, column=0, pady=10)
+    status_dropdown_label.grid(row=4, column=3, pady=10)
     status_var = tk.StringVar(add_volunteer_popup)
-    status_chosen = ttk.Combobox(add_volunteer_popup, width=34, textvariable=status_var, state='readonly')
-    status_chosen['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
-    status_chosen.grid(row=10, column=1, pady=10, sticky='w')
+    status_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=status_var, state='readonly')
+    status_dropdown['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
+    status_dropdown.grid(row=4, column=4, pady=10, sticky='w')
 
-    
+    badge_number_label = tk.Label(add_volunteer_popup, text="Badge Number", font=('Arial', 15), bg="white", fg="black")
+    badge_number_label.grid(row=5, column=3, pady=10)
+    badge_number_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    badge_number_entry.grid(row=5, column=4, pady=10, sticky='w')
+
+    project_label = tk.Label(add_volunteer_popup, text="Project", font=('Arial', 15), bg="white", fg="black")
+    project_label.grid(row=6, column=3, pady=10)
+    project_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    project_entry.grid(row=6, column=4, pady=10, sticky='w')
+
 
     type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
 
     institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
 
-    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_chosen.get()), add_volunteer_popup.destroy()])
-    add_volunteer_button.grid(row=11, column=0, pady=10, columnspan=2)
+    status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
+
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), add_volunteer_popup.destroy()])
+    add_volunteer_button.grid(row=7, column=0, pady=10, columnspan=5)
 
 
 
@@ -561,7 +575,7 @@ def add_artist_popup():
 def edit_volunteer_popup():
     edit_volunteer_popup = tk.Toplevel(root)
     edit_volunteer_popup.title("Edit Volunteer")
-    edit_volunteer_popup.geometry("470x700")
+    edit_volunteer_popup.geometry("800x450")
     edit_volunteer_popup.configure(bg="white")
     edit_volunteer_popup.resizable(False, False)
 
