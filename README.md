@@ -12,6 +12,12 @@ You can track the project's progress [here](https://www.notion.so/1f918110f1f280
 
 ---
 
+## What I've Learned
+
+All stages of this project's development have posed problems which I've had to overcome, and therefore learned from. The importance of thorough planning 
+
+---
+
 ## Note
 
 This application was developed and deployed for internal use for HARTS (NHS, Liverpool), but if you wish to download this for personal use, an empty SQLite database is included.
