@@ -75,7 +75,11 @@ def create_artist_table():
 
 def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
 
-    institution_id = get_id('institutions', institution_name)
+    if institution_name == ' ':
+        institution_id = None
+        
+    else:
+        institution_id = get_id('institutions', institution_name)
 
     role_id = get_id('roles', role_name)
     
@@ -268,10 +272,9 @@ def delete_artist(name):
 def get_id(table_name, record_name):
     cursor.execute(f'SELECT id from {table_name} WHERE name = ?', (record_name,))
     connection.commit()
-    if cursor.fetchone()[0]:
-        return cursor.fetchone()[0]
-    else:
-        return None
+    id = cursor.fetchone()[0]
+    return id if id else None
+
 
 def get_volunteer_names():
     cursor.execute('SELECT name FROM volunteers')
@@ -299,7 +302,10 @@ def get_institution_names():
     return [row[0] for row in cursor.fetchall()]
 
 def get_institution_name(id):
-    cursor.execute('SELECT name FROM institutions WHERE id = ?', (id,))
+    if id == None:
+        return "N/A"
+    else:
+        cursor.execute('SELECT name FROM institutions WHERE id = ?', (id,))
     connection.commit()
     return cursor.fetchone()[0]
 

@@ -408,17 +408,17 @@ def add_volunteer_popup():
     phone_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
     phone_entry.grid(row=3, column=1, pady=10, sticky='w')
 
+    start_date_label = tk.Label(add_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
+    start_date_label.grid(row=4, column=0, pady=10)
+    start_date_chooser = DateEntry(add_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
+    start_date_chooser.grid(row=4, column=1, pady=10, sticky='w')
+
     type_dropdown_label = tk.Label(add_volunteer_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
-    type_dropdown_label.grid(row=4, column=0, pady=10)
+    type_dropdown_label.grid(row=5, column=0, pady=10)
     type_var = tk.StringVar(add_volunteer_popup)
     type_dropdown = ttk.Combobox(add_volunteer_popup, width=34, textvariable=type_var, state='readonly')
     type_dropdown['values'] = ("Student", "Volunteer")
-    type_dropdown.grid(row=4, column=1, pady=10, sticky='w')
-    
-    start_date_label = tk.Label(add_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
-    start_date_label.grid(row=5, column=0, pady=10)
-    start_date_chooser = DateEntry(add_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='dd-mm-yyyy')
-    start_date_chooser.grid(row=5, column=1, pady=10, sticky='w')
+    type_dropdown.grid(row=5, column=1, pady=10, sticky='w')
     
     institution_dropdown_label = tk.Label(add_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
     institution_dropdown_label.grid(row=6, column=0, pady=10)
@@ -585,21 +585,21 @@ def edit_volunteer_popup():
         phone_entry.insert(0, str(volunteer_details[3]))
         phone_entry.grid(row=4, column=1, pady=10, sticky='w')
 
+        start_date_label = tk.Label(edit_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
+        start_date_label.grid(row=5, column=0, pady=10)
+        start_date_chooser = DateEntry(edit_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
+        start_date_chooser.delete(0, "end")
+        start_date_chooser.set_date(volunteer_details[7])
+        start_date_chooser.grid(row=5, column=1, pady=10, sticky='w')
+
         type_dropdown_label = tk.Label(edit_volunteer_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
-        type_dropdown_label.grid(row=5, column=0, pady=10)
+        type_dropdown_label.grid(row=6, column=0, pady=10)
         type_var = tk.StringVar(edit_volunteer_popup)
         type_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=type_var)
         type_dropdown['values'] = ("Student", "Volunteer")
         type = volunteer_details[4]
         type_dropdown.insert(0, type)
-        type_dropdown.grid(row=5, column=1, pady=10, sticky='w')
-
-        start_date_label = tk.Label(edit_volunteer_popup, text="Start Date", font=('Arial', 15), bg="white", fg="black")
-        start_date_label.grid(row=6, column=0, pady=10)
-        start_date_chooser = DateEntry(edit_volunteer_popup, width=34, background='dark blue', foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
-        start_date_chooser.delete(0, "end")
-        start_date_chooser.set_date(volunteer_details[7])
-        start_date_chooser.grid(row=6, column=1, pady=10, sticky='w')
+        type_dropdown.grid(row=6, column=1, pady=10, sticky='w')
 
         institution_dropdown_label = tk.Label(edit_volunteer_popup, text="Institution", font=('Arial', 15), bg="white", fg="black")
         institution_dropdown_label.grid(row=7, column=0, pady=10)
