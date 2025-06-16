@@ -14,7 +14,7 @@ You can track the project's progress [here](https://www.notion.so/1f918110f1f280
 
 ## Note
 
-This application was developed and deployed for internal use for HARTS (NHS, Liverpool), but if you wish to download this for personal use, an empty database containing the necessary fields is included.
+This application was developed and deployed for internal use for HARTS (NHS, Liverpool), but if you wish to download this for personal use, an empty SQLite database is included.
 
 ---
 
@@ -43,17 +43,17 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 
 ### Key Files
 
-- `gui.py`: Holds all tkinter code, handling the construction of the Graphical User Interface (GUI), calling and passing data into logic functions when necessary.
-- `logic.py`: Handles the database connection, holds all SQL code in modular functions called through the GUI.
-- `database.db`: An SQLite database which holds all data which is managed in this project.
+- `gui.py`: All GUI-related code, sends necessary data to the logic layer.
+- `logic.py`: Holds the connection to the database, handles core application logic and SQL queries.
+- `database.db`: Locally stored SQLite databse holding all application data.
 
 ### Branches Overview
 
-- `viewing-logic` (merged): All viewing logic implementation.
-- `add-logic` (merged): All add logic implementation.
-- `editing-logic` (merged): All edit logic implementation.
-- `deleting-logic` (merged): All delete logic implementation.
-- `validation-improvements`: All data entry validation and error handling
+- `viewing-logic` (merged): Viewing functionality
+- `add-logic` (merged): Add functionality
+- `editing-logic` (merged): Editing functionality
+- `deleting-logic` (merged): Delete functionality
+- `validation-improvements`: Input validation & error handling
 
 ---
 
@@ -69,11 +69,11 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 
 ### Installation
 
-#### Packaged Application Installation:
+#### Option 1 - Packaged Executable:
 
 Download the latest executable file (`.exe`) displayed in the **Releases** tab.
 
-#### Source Code Installation:
+#### Option 2 - Source Code:
 
 1. Clone the repository:
 
