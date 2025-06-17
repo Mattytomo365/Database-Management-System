@@ -86,7 +86,7 @@ def add_volunteer(name, email, phone, type, institution_name, role_name, start_d
     role_id = get_id('roles', role_name)
     
     cursor.execute('''
-        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status)
+        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project))
     connection.commit()

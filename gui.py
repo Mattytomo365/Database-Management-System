@@ -161,8 +161,8 @@ def view_volunteers_popup():
         canvas.create_window((0,0), window=volunteer_data, anchor='nw')
         volunteer_data.grid_rowconfigure(0, weight=5)
 
-        columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status"]
-        column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 35, 20, 25]
+        columns = ["ID", "Name", "E-Mail", "Phone", "Type", "Institution", "Role", "Start Date", "Attending Days", "Contract Length", "Status", "Badge Number", "Project"]
+        column_widths = [3, 30, 25, 15, 12, 35, 25, 15, 45, 20, 25, 15, 50]
 
         for col_index, col_name in enumerate(columns):
             headers = tk.Label(volunteer_data, text=col_name, bg="dark blue", fg="white")
@@ -384,7 +384,8 @@ def on_institution_select(selected, is_volunteer, institution_dropdown, role_dro
 
 def on_status_select(selected, status_dropdown, badge_number_entry, project_entry):
     status = status_dropdown.get()
-    badge_number_entry.configure(state='normal' if status == 'Awaiting Badge' or 'Badged' else 'disabled')
+    badge_number_entry.configure(state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
+    project_entry.configure(state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
     
         
 
@@ -462,7 +463,7 @@ def add_volunteer_popup():
 
     project_label = tk.Label(add_volunteer_popup, text="Project", font=('Arial', 15), bg="white", fg="black")
     project_label.grid(row=6, column=3, pady=10)
-    project_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    project_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black", state='disabled')
     project_entry.grid(row=6, column=4, pady=10, sticky='w')
 
 
@@ -658,22 +659,27 @@ def edit_volunteer_popup():
         status_dropdown['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
         status_dropdown.insert(0, str(volunteer_details[10]))
         status_dropdown.grid(row=5, column=4, pady=10, sticky='w')
+        status = status_dropdown.get()
 
         badge_number_label = tk.Label(edit_volunteer_popup, text="Badge Number", font=('Arial', 15), bg="white", fg="black")
         badge_number_label.grid(row=6, column=3, pady=10)
-        badge_number_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black", state='disabled')
+        badge_number_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black", state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
+        badge_number_entry.insert(0, str(volunteer_details[11]))
         badge_number_entry.grid(row=6, column=4, pady=10, sticky='w')
 
         project_label = tk.Label(edit_volunteer_popup, text="Project", font=('Arial', 15), bg="white", fg="black")
         project_label.grid(row=7, column=3, pady=10)
-        project_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+        project_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black", state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
+        project_entry.insert(0, str(volunteer_details[12]))
         project_entry.grid(row=7, column=4, pady=10, sticky='w')
 
         type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
 
         institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
 
-        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), edit_volunteer_popup.destroy()])
+        status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
+
+        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get(), badge_number_entry.get(), project_entry.get()), edit_volunteer_popup.destroy()])
         edit_volunteer_button.grid(row=8, column=0, pady=10, columnspan=5)
 
     header = tk.Label(edit_volunteer_popup, text= "Edit Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
