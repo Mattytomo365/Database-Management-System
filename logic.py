@@ -77,13 +77,15 @@ def create_artist_table():
 
 def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
-    if institution_name == ' ':
+    if institution_name == '':
         institution_id = None
-        
     else:
         institution_id = get_id('institutions', institution_name)
-
-    role_id = get_id('roles', role_name)
+    
+    if role_name == 'Volunteer':
+        role_id = None
+    else:
+        role_id = get_id('roles', role_name)
     
     cursor.execute('''
         INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project)
@@ -134,9 +136,15 @@ def add_artist(name, email, phone):
 
 def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
-    institution_id = get_id('institutions', institution_name)
-
-    role_id = get_id('roles', role_name)
+    if institution_name == '':
+        institution_id = None
+    else:
+        institution_id = get_id('institutions', institution_name)
+    
+    if role_name == 'Volunteer':
+        role_id = None
+    else:
+        role_id = get_id('roles', role_name)
 
     cursor.execute('''
         UPDATE volunteers

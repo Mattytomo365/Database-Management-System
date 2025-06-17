@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from logic import *
 from tkcalendar import DateEntry
-import datetime
+from datetime import datetime
 
 root = tk.Tk()
 root.title("Database Management System")
@@ -22,8 +22,7 @@ style.configure("Blue.TButton",
                 font=("Helvetica", 20),
                 padding=6)
 
-header = tk.Label(root, text="Welcome", font=("Arial", 60), bg="white", fg="dark blue")
-header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)
+
 
 # Popup functions
 
@@ -367,15 +366,17 @@ def view_artists_popup():
     artist_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
 
+
+
 def entry_validation(**kwargs): #Not empty
-    for entry_name, entry_value in kwargs.items:
+    for entry_name, entry_value in kwargs.items():
         if entry_value == "":
             messagebox.showinfo(title='Error', message=f'{entry_name} must be filled')
             return False
     return True
 
-def dropdown_validation(**kwargs): #Matches dropdown values
-    for dropdown_name, dropdown_value, dropdown_values in kwargs.items:
+def dropdown_validation(dropdowns): #Matches dropdown values
+    for dropdown_name, dropdown_value, dropdown_values in dropdowns:
         if dropdown_value == "":
             messagebox.showinfo(title='Error', message=f'{dropdown_name} must be selected')
             return False
@@ -387,7 +388,7 @@ def dropdown_validation(**kwargs): #Matches dropdown values
 
 
 def date_validation(date): #Valid date
-    if datetime.strptime(date, '%d/%m/%Y'):
+    if not datetime.strptime(str(date), "%Y-%m-%d"):
         messagebox.showinfo(title='Error', message='Date is invalid')
         return False
     else:
@@ -399,6 +400,38 @@ def listbox_validation(selected):
         return False
     return True
 
+def on_volunteer_submit(name, email, phone, type_dropdown, institution_dropdown, role_dropdown, start_date, attending_days, contract_length, status_dropdown, badge_number, project, submit_type, popup):
+    valid = True
+
+    if not entry_validation(name=name, email=email, phone=phone, attending_days=attending_days, contract_length=contract_length):
+        valid = False
+    
+    if type_dropdown.get() == 'Student':
+        if not dropdown_validation([('Type', type_dropdown.get(), type_dropdown['values']), ('Institution', institution_dropdown.get(), institution_dropdown['values']), ('Role', role_dropdown.get(), role_dropdown['values']), ('Status', status_dropdown.get(), status_dropdown['values'])]):
+            valid = False
+    else:
+        if not dropdown_validation([('Type', type_dropdown.get(), type_dropdown['values']), ('Role', role_dropdown.get(), role_dropdown['values']), ('Status', status_dropdown.get(), status_dropdown['values'])]):
+            valid = False
+    
+    if not date_validation(start_date):
+        valid = False
+    
+    if valid:
+        if submit_type == 'Add':
+            add_volunteer(name, email, phone, type_dropdown.get(), institution_dropdown.get(), role_dropdown.get(), start_date, attending_days, contract_length, status_dropdown.get(), badge_number, project)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_volunteer(name, email, phone, type_dropdown.get(), institution_dropdown.get(), role_dropdown.get(), start_date, attending_days, contract_length, status_dropdown.get(), badge_number, project)
+            popup.destroy()
+
+def on_institution_submit():
+    pass
+
+def on_role_submit():
+    pass
+
+def on_artist_submit():
+    pass
 
 def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
     type = type_dropdown.get()
@@ -511,7 +544,7 @@ def add_volunteer_popup():
 
     status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
 
-    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get(), badge_number_entry.get(), project_entry.get()), add_volunteer_popup.destroy()])
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: on_volunteer_submit(name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Add', add_volunteer_popup))                                                                                               
     add_volunteer_button.grid(row=7, column=0, pady=10, columnspan=5)
 
 
@@ -1015,16 +1048,19 @@ def delete_artist_popup():
 
 # Main menu
 
-view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: view_options_popup())
+header = tk.Label(root, text="Welcome", font=("Arial", 60), bg="white", fg="dark blue")
+header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)
+
+view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: [view_options_popup()])
 view_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
 
-add_button = ttk.Button(root, text="Add", style="Blue.TButton", command=lambda: add_options_popup())
+add_button = ttk.Button(root, text="Add", style="Blue.TButton", command=lambda: [add_options_popup()])
 add_button.grid(row=1, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
-edit_button = ttk.Button(root, text="Edit", style="Blue.TButton", command=lambda: edit_options_popup())
+edit_button = ttk.Button(root, text="Edit", style="Blue.TButton", command=lambda: [edit_options_popup()])
 edit_button.grid(row=2, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
 
-delete_button = ttk.Button(root, text="Delete", style="Blue.TButton", command=lambda: delete_options_popup())
+delete_button = ttk.Button(root, text="Delete", style="Blue.TButton", command=lambda: [delete_options_popup()])
 delete_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 root.mainloop()
