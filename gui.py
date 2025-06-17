@@ -365,15 +365,17 @@ def view_artists_popup():
     artist_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
 
-def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown):
+def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
     type = type_dropdown.get()
-    institution_dropdown.set(" ")
-    role_dropdown.set(" ")
+    institution_dropdown.set("")
+    role_dropdown.set("")
+    contract_length.set("")
     institution_dropdown.configure(state='disabled' if type == "Volunteer" else 'normal')
 
     if is_volunteer:
         role_dropdown.set("Volunteer")
         role_dropdown['values'] = ("Volunteer")
+        contract_length.set("Indefinite")
     
 
 def on_institution_select(selected, is_volunteer, institution_dropdown, role_dropdown):
@@ -446,7 +448,8 @@ def add_volunteer_popup():
 
     contract_length_label = tk.Label(add_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
     contract_length_label.grid(row=3, column=3, pady=10)
-    contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    contract_length = tk.StringVar(add_volunteer_popup)
+    contract_length_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black", textvariable=contract_length)
     contract_length_entry.grid(row=3, column=4, pady=10, sticky='w')
 
     status_dropdown_label = tk.Label(add_volunteer_popup, text="Status", font=('Arial', 15), bg="white", fg="black")
@@ -467,7 +470,7 @@ def add_volunteer_popup():
     project_entry.grid(row=6, column=4, pady=10, sticky='w')
 
 
-    type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
+    type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown, contract_length) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown, contract_length))
 
     institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
 
@@ -648,7 +651,8 @@ def edit_volunteer_popup():
 
         contract_length_label = tk.Label(edit_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
         contract_length_label.grid(row=4, column=3, pady=10)
-        contract_length_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+        contract_length = tk.StringVar(edit_volunteer_popup)
+        contract_length_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black", textvariable=contract_length)
         contract_length_entry.insert(0, str(volunteer_details[9]))
         contract_length_entry.grid(row=4, column=4, pady=10, sticky='w')
 
@@ -673,7 +677,7 @@ def edit_volunteer_popup():
         project_entry.insert(0, str(volunteer_details[12]))
         project_entry.grid(row=7, column=4, pady=10, sticky='w')
 
-        type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
+        type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown, contract_length) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown, contract_length))
 
         institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
 
