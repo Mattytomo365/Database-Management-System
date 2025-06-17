@@ -222,7 +222,7 @@ def delete_institution_eligibility(institution_name):
 
     institution_id = get_id('institutions', institution_name)
 
-    cursor.execute('SELECT institution_id FROM volunteers')
+    cursor.execute('SELECT institution_id FROM volunteers WHERE type = ?', ('Student',))
     connection.commit()
     volunteer_institution_ids = [int(row[0]) for row in cursor.fetchall()]
 

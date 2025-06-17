@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from logic import *
 from tkcalendar import DateEntry
+import datetime
 
 root = tk.Tk()
 root.title("Database Management System")
@@ -364,6 +366,39 @@ def view_artists_popup():
 
     artist_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
+
+def entry_validation(**kwargs): #Not empty
+    for entry_name, entry_value in kwargs.items:
+        if entry_value == "":
+            messagebox.showinfo(title='Error', message=f'{entry_name} must be filled')
+            return False
+    return True
+
+def dropdown_validation(**kwargs): #Matches dropdown values
+    for dropdown_name, dropdown_value, dropdown_values in kwargs.items:
+        if dropdown_value == "":
+            messagebox.showinfo(title='Error', message=f'{dropdown_name} must be selected')
+            return False
+
+        elif dropdown_value != "" and dropdown_value not in dropdown_values:
+            messagebox.showinfo(title='Error', message=f'Invalid value in {dropdown_name} dropdown')
+            return False
+    return True
+
+
+def date_validation(date): #Valid date
+    if datetime.strptime(date, '%d/%m/%Y'):
+        messagebox.showinfo(title='Error', message='Date is invalid')
+        return False
+    else:
+        return True
+    
+def listbox_validation(selected):
+    if selected == "":
+        messagebox.showinfo(title='Error', message='No institutions were selected')
+        return False
+    return True
+
 
 def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
     type = type_dropdown.get()
