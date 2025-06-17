@@ -20,6 +20,8 @@ def create_volunteer_table():
             attending_days TEXT,
             contract_length TEXT,
             status TEXT,
+            badge_number TEXT,
+            project TEXT,
             FOREIGN KEY (institution_id) REFERENCES institutions(id),
             FOREIGN KEY (role_id) REFERENCES roles(id)
         )
@@ -73,7 +75,7 @@ def create_artist_table():
 
 # Add functions
 
-def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
+def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
     if institution_name == ' ':
         institution_id = None
@@ -85,8 +87,8 @@ def add_volunteer(name, email, phone, type, institution_name, role_name, start_d
     
     cursor.execute('''
         INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status))
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project))
     connection.commit()
 
 
@@ -130,7 +132,7 @@ def add_artist(name, email, phone):
 
 # Edit functions
 
-def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
+def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
     institution_id = get_id('institutions', institution_name)
 
@@ -138,8 +140,8 @@ def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, rol
 
     cursor.execute('''
         UPDATE volunteers
-        SET name = ?, email = ?, phone = ?, type = ?, institution_id = ?, role_id = ?, start_date = ?, attending_days = ?, contract_length = ?, status = ?
-        WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, volunteer_id))
+        SET name = ?, email = ?, phone = ?, type = ?, institution_id = ?, role_id = ?, start_date = ?, attending_days = ?, contract_length = ?, status = ?, badge_number = ?, project = ?
+        WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project, volunteer_id))
     connection.commit()
 
 

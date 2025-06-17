@@ -383,7 +383,9 @@ def on_institution_select(selected, is_volunteer, institution_dropdown, role_dro
         role_dropdown['values'] = get_filtered_role_names(institution) if get_filtered_role_names(institution) else ("No Roles Available")
 
 def on_status_select(selected, status_dropdown, badge_number_entry, project_entry):
-    pass
+    status = status_dropdown.get()
+    badge_number_entry.configure(state='normal' if status == 'Awaiting Badge' or 'Badged' else 'disabled')
+    
         
 
 def add_volunteer_popup():
@@ -455,7 +457,7 @@ def add_volunteer_popup():
 
     badge_number_label = tk.Label(add_volunteer_popup, text="Badge Number", font=('Arial', 15), bg="white", fg="black")
     badge_number_label.grid(row=5, column=3, pady=10)
-    badge_number_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+    badge_number_entry = tk.Entry(add_volunteer_popup, font=('Arial', 15), bg="white", fg="black", state='disabled')
     badge_number_entry.grid(row=5, column=4, pady=10, sticky='w')
 
     project_label = tk.Label(add_volunteer_popup, text="Project", font=('Arial', 15), bg="white", fg="black")
@@ -470,7 +472,7 @@ def add_volunteer_popup():
 
     status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
 
-    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), add_volunteer_popup.destroy()])
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: [add_volunteer(name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get(), badge_number_entry.get(), project_entry.get()), add_volunteer_popup.destroy()])
     add_volunteer_button.grid(row=7, column=0, pady=10, columnspan=5)
 
 
@@ -575,7 +577,7 @@ def add_artist_popup():
 def edit_volunteer_popup():
     edit_volunteer_popup = tk.Toplevel(root)
     edit_volunteer_popup.title("Edit Volunteer")
-    edit_volunteer_popup.geometry("800x450")
+    edit_volunteer_popup.geometry("800x500")
     edit_volunteer_popup.configure(bg="white")
     edit_volunteer_popup.resizable(False, False)
 
@@ -625,7 +627,7 @@ def edit_volunteer_popup():
         institution_dropdown.grid(row=7, column=1, pady=10, sticky='w')
 
         role_dropdown_label = tk.Label(edit_volunteer_popup, text="Role", font=('Arial', 15), bg="white", fg="black")
-        role_dropdown_label.grid(row=8, column=0, pady=10)
+        role_dropdown_label.grid(row=2, column=3, pady=10)
         role_var = tk.StringVar(edit_volunteer_popup)
         role_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=role_var)
         role_name = get_role_name(volunteer_details[6])
@@ -635,44 +637,54 @@ def edit_volunteer_popup():
         else:
             role_dropdown['values'] = ("Volunteer")
             role_dropdown.set("Volunteer")
-        role_dropdown.grid(row=8, column=1, pady=10, sticky='w')
+        role_dropdown.grid(row=2, column=4, pady=10, sticky='w')
 
         attending_days_label = tk.Label(edit_volunteer_popup, text="Attending Days", font=('Arial', 15), bg="white", fg="black")
-        attending_days_label.grid(row=9, column=0, pady=10)
+        attending_days_label.grid(row=3, column=3, pady=10)
         attending_days_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
         attending_days_entry.insert(0, str(volunteer_details[8]))
-        attending_days_entry.grid(row=9, column=1, pady=10, sticky='w')
+        attending_days_entry.grid(row=3, column=4, pady=10, sticky='w')
 
         contract_length_label = tk.Label(edit_volunteer_popup, text="Contract Length", font=('Arial', 15), bg="white", fg="black")
-        contract_length_label.grid(row=10, column=0, pady=10)
+        contract_length_label.grid(row=4, column=3, pady=10)
         contract_length_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
         contract_length_entry.insert(0, str(volunteer_details[9]))
-        contract_length_entry.grid(row=10, column=1, pady=10, sticky='w')
+        contract_length_entry.grid(row=4, column=4, pady=10, sticky='w')
 
         status_dropdown_label = tk.Label(edit_volunteer_popup, text="Status", font=('Arial', 15), bg="white", fg="black")
-        status_dropdown_label.grid(row=11, column=0, pady=10)
+        status_dropdown_label.grid(row=5, column=3, pady=10)
         status_var = tk.StringVar(edit_volunteer_popup)
         status_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=status_var)
         status_dropdown['values'] = ("Signing Forms", "Ready to Start", "Awaiting Badge", "Badged")
         status_dropdown.insert(0, str(volunteer_details[10]))
-        status_dropdown.grid(row=11, column=1, pady=10, sticky='w')
+        status_dropdown.grid(row=5, column=4, pady=10, sticky='w')
+
+        badge_number_label = tk.Label(edit_volunteer_popup, text="Badge Number", font=('Arial', 15), bg="white", fg="black")
+        badge_number_label.grid(row=6, column=3, pady=10)
+        badge_number_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black", state='disabled')
+        badge_number_entry.grid(row=6, column=4, pady=10, sticky='w')
+
+        project_label = tk.Label(edit_volunteer_popup, text="Project", font=('Arial', 15), bg="white", fg="black")
+        project_label.grid(row=7, column=3, pady=10)
+        project_entry = tk.Entry(edit_volunteer_popup, font=('Arial', 15), bg="white", fg="black")
+        project_entry.grid(row=7, column=4, pady=10, sticky='w')
 
         type_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_type_select(selected, False, type_dropdown, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_type_select(selected, True, type_dropdown, institution_dropdown, role_dropdown))
 
         institution_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_institution_select(selected, False, institution_dropdown, role_dropdown) if type_dropdown.get() == "Student" else on_institution_select(selected, True, institution_dropdown, role_dropdown))
 
         edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get()), edit_volunteer_popup.destroy()])
-        edit_volunteer_button.grid(row=12, column=0, pady=10, columnspan=2)
+        edit_volunteer_button.grid(row=8, column=0, pady=10, columnspan=5)
 
     header = tk.Label(edit_volunteer_popup, text= "Edit Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
-    header.grid(row=0, column=0, padx=110, pady=10, columnspan=2)
+    header.grid(row=0, column=0, padx=270, pady=10, columnspan=5)
 
     volunteer_dropdown_label = tk.Label(edit_volunteer_popup, text="Volunteer", font=('Arial', 15), bg="white", fg="black")
-    volunteer_dropdown_label.grid(row=1, column=0, pady=10)
+    volunteer_dropdown_label.grid(row=1, column=1, pady=10)
     volunteer_var = tk.StringVar(edit_volunteer_popup)
     volunteer_dropdown = ttk.Combobox(edit_volunteer_popup, width=34, textvariable=volunteer_var, state='readonly')
     volunteer_dropdown['values'] = get_volunteer_names() if get_volunteer_names() else ("No Volunteers Available")
-    volunteer_dropdown.grid(row=1, column=1, sticky='w', pady=10)
+    volunteer_dropdown.grid(row=1, column=2, sticky='w', pady=10, columnspan=5)
     volunteer_dropdown.bind("<<ComboboxSelected>>", edit_volunteer_popup_specific)
     
 
