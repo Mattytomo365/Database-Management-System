@@ -812,7 +812,7 @@ def edit_institution_popup():
         postcode_entry.insert(0, str(institution_details[3]))
         postcode_entry.grid(row=4, column=1, pady=10, sticky='w')
 
-        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: [edit_institution(institution_details[0], name_entry.get(), type_dropdown.get(), postcode_entry.get()), edit_institution_popup.destroy()])
+        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: on_institution_submit(name_entry.get(), type_dropdown, 'Edit', edit_institution_popup))
         edit_institution_button.grid(row=5, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_institution_popup, text= "Edit Institution", font=('Arial', 30), bg="white", fg="dark blue")
