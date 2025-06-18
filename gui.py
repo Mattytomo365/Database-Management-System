@@ -424,8 +424,22 @@ def on_volunteer_submit(name, email, phone, type_dropdown, institution_dropdown,
             edit_volunteer(name, email, phone, type_dropdown.get(), institution_dropdown.get(), role_dropdown.get(), start_date, attending_days, contract_length, status_dropdown.get(), badge_number, project)
             popup.destroy()
 
-def on_institution_submit():
-    pass
+def on_institution_submit(name, type_dropdown, postcode, submit_type, popup):
+    valid = True
+
+    if not entry_validation(name=name, postcode=postcode):
+        valid = False
+    
+    if not dropdown_validation([('Type', type_dropdown.get(), type_dropdown['values'])]):
+        valid = False
+    
+    if valid:
+        if submit_type == 'Add':
+            add_institution(name, postcode, type_dropdown.get())
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_institution(name, postcode, type_dropdown.get())
+            popup.destroy()
 
 def on_role_submit():
     pass
@@ -565,19 +579,19 @@ def add_institution_popup():
     name_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
     name_entry.grid(row=1, column=1, pady=10, sticky='w')
 
-    type_label = tk.Label(add_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
-    type_label.grid(row=2, column=0, pady=10)
+    type_dropdown_label = tk.Label(add_institution_popup, text="Type", font=('Arial', 15), bg="white", fg="black")
+    type_dropdown_label.grid(row=2, column=0, pady=10)
     type_var = tk.StringVar(add_institution_popup)
-    type_chosen = ttk.Combobox(add_institution_popup, width=34, textvariable=type_var, state='readonly')
-    type_chosen['values'] = ("University", "College")
-    type_chosen.grid(row=2, column=1, pady=10, sticky='w')
+    type_dropdown = ttk.Combobox(add_institution_popup, width=34, textvariable=type_var, state='readonly')
+    type_dropdown['values'] = ("University", "College")
+    type_dropdown.grid(row=2, column=1, pady=10, sticky='w')
 
     postcode_label = tk.Label(add_institution_popup, text="Postcode", font=('Arial', 15), bg="white", fg="black")
     postcode_label.grid(row=3, column=0, pady=10)
     postcode_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
     postcode_entry.grid(row=3, column=1, pady=10, sticky='w')
 
-    add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: [add_institution(name_entry.get(), type_var.get(), postcode_entry.get()), add_institution_popup.destroy()])
+    add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: on_institution_submit(name_entry.get(), type_dropdown, 'Add', add_institution_popup))
     add_institution_button.grid(row=4, column=0, pady=10, columnspan=2)
 
 def add_role_popup():
@@ -615,7 +629,7 @@ def add_role_popup():
         selected_values = [institutions.get(i) for i in selected_indices]
         return (", ".join(selected_values))
 
-    add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: [add_role(name_entry.get(), description_entry.get(), get_institutions_chosen()), add_role_popup.destroy()])
+    add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: on_role_submit())
     add_role_button.grid(row=4, column=0, pady=10, columnspan=2)
 
 def add_artist_popup():
@@ -751,7 +765,7 @@ def edit_volunteer_popup():
 
         status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
 
-        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: [edit_volunteer(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_var.get(), institution_dropdown.get(), role_dropdown.get(), start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown.get(), badge_number_entry.get(), project_entry.get()), edit_volunteer_popup.destroy()])
+        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: on_volunteer_submit(name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Edit', edit_volunteer_popup))
         edit_volunteer_button.grid(row=8, column=0, pady=10, columnspan=5)
 
     header = tk.Label(edit_volunteer_popup, text= "Edit Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
