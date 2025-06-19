@@ -11,6 +11,7 @@ root.geometry("570x400")
 root.configure(bg="white")
 root.resizable(False, False)
 
+
 initialise_database()
 
 
@@ -49,13 +50,13 @@ def view_options_popup():
     view_artists_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 
-def add_options_popup():  # Can only add role after institutions have been added
+def add_options_popup():
     add_options_popup = tk.Toplevel(root)
     add_options_popup.title("Add Options")
     add_options_popup.geometry("600x330")
     add_options_popup.configure(bg="white")
     add_options_popup.resizable(False, False)
-
+    
     add_options_popup_label = tk.Label(add_options_popup, text="What would you like to add?", font=("Arial", 30), bg="white", fg="dark blue")
     add_options_popup_label.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=55, pady=20)
 
@@ -70,6 +71,8 @@ def add_options_popup():  # Can only add role after institutions have been added
 
     add_artist_button = ttk.Button(add_options_popup, text="Artist", style="Blue.TButton", command=lambda: add_artist_popup())
     add_artist_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
+    add_options_popup.protocol("WM_DELETE_WINDOW", root.deiconify())
+    
 
 def edit_options_popup():
     edit_options_popup = tk.Toplevel(root)
@@ -427,9 +430,11 @@ def on_volunteer_submit(volunteer_id, name, email, phone, type_dropdown, institu
         if submit_type == 'Add':
             add_volunteer(name, email, phone, (type_dropdown.get()), (institution_dropdown.get()), (role_dropdown.get()), start_date, attending_days, contract_length, (status_dropdown.get()), badge_number, project)
             popup.destroy()
+            root.deiconify()
         elif submit_type == 'Edit':
             edit_volunteer(volunteer_id, name, email, phone, (type_dropdown.get()), (institution_dropdown.get()), (role_dropdown.get()), start_date, attending_days, contract_length, (status_dropdown.get()), badge_number, project)
             popup.destroy()
+            root.deiconify()
 
 def on_institution_submit(institution_id, name, type_dropdown, postcode, submit_type, popup):
     valid = True
@@ -444,9 +449,11 @@ def on_institution_submit(institution_id, name, type_dropdown, postcode, submit_
         if submit_type == 'Add':
             add_institution(name, type_dropdown.get(), postcode)
             popup.destroy()
+            root.deiconify()
         elif submit_type == 'Edit':
             edit_institution(institution_id, name, type_dropdown.get(), postcode)
             popup.destroy()
+            root.deiconify()
 
 def on_role_submit(role_id, name, description, institutions_listbox, submit_type, popup):
     valid = True
@@ -464,9 +471,11 @@ def on_role_submit(role_id, name, description, institutions_listbox, submit_type
         if submit_type == 'Add':
             add_role(name, description, institution_names)
             popup.destroy()
+            root.deiconify()
         elif submit_type == 'Edit':
             edit_role(role_id, name, description, institution_names)
             popup.destroy()
+            root.deiconify()
 
 def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
     valid = True
@@ -478,9 +487,11 @@ def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
         if submit_type == 'Add':
             add_artist(name, email, phone)
             popup.destroy()
+            root.deiconify()
         elif submit_type == 'Edit':
             edit_artist(artist_id, name, email, phone)
             popup.destroy()
+            root.deiconify()
 
 
 def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
@@ -1091,16 +1102,16 @@ def delete_artist_popup():
 header = tk.Label(root, text="Welcome", font=("Arial", 60), bg="white", fg="dark blue")
 header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)
 
-view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: [view_options_popup()])
+view_button = ttk.Button(root, text="View", style="Blue.TButton", command=lambda: [view_options_popup(), root.iconify()])
 view_button.grid(row=1, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
 
-add_button = ttk.Button(root, text="Add", style="Blue.TButton", command=lambda: [add_options_popup()])
+add_button = ttk.Button(root, text="Add", style="Blue.TButton", command=lambda: [add_options_popup(), root.iconify()])
 add_button.grid(row=1, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
-edit_button = ttk.Button(root, text="Edit", style="Blue.TButton", command=lambda: [edit_options_popup()])
+edit_button = ttk.Button(root, text="Edit", style="Blue.TButton", command=lambda: [edit_options_popup(), root.iconify()])
 edit_button.grid(row=2, column=0, ipadx=30, ipady=20, padx=10, pady=10, sticky="nse")
 
-delete_button = ttk.Button(root, text="Delete", style="Blue.TButton", command=lambda: [delete_options_popup()])
+delete_button = ttk.Button(root, text="Delete", style="Blue.TButton", command=lambda: [delete_options_popup(), root.iconify()])
 delete_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
 
 root.mainloop()

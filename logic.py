@@ -468,8 +468,6 @@ def get_artist(name):
     connection.commit()
     return cursor.fetchone()
 
-# Validation functions
-
 
 # Initialisation of database function
 
