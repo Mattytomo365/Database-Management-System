@@ -249,9 +249,6 @@ def edit_role_eligibility(role_id, institution_names):
     else:
         return True
     
-
-
-
 def edit_artist(artist_id, name, email, phone):
     cursor.execute('''
         UPDATE artists
@@ -470,6 +467,9 @@ def get_artist(name):
     cursor.execute('SELECT * FROM artists WHERE name = ?', (name,))
     connection.commit()
     return cursor.fetchone()
+
+# Validation functions
+
 
 # Initialisation of database function
 

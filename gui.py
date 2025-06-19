@@ -468,8 +468,20 @@ def on_role_submit(role_id, name, description, institutions_listbox, submit_type
             edit_role(role_id, name, description, institution_names)
             popup.destroy()
 
-def on_artist_submit(artist_id):
-    pass
+def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
+    valid = True
+
+    if not entry_validation(name=name, email=email, phone=phone):
+        valid = False
+    
+    if valid:
+        if submit_type == 'Add':
+            add_artist(name, email, phone)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_artist(artist_id, name, email, phone)
+            popup.destroy()
+
 
 def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
     type = type_dropdown.get()
@@ -676,7 +688,7 @@ def add_artist_popup():
     phone_entry = tk.Entry(add_artist_popup, font=('Arial', 15), bg="white", fg="black")
     phone_entry.grid(row=3, column=1, pady=10, sticky='w')
 
-    add_artist_button = ttk.Button(add_artist_popup, text="Add", style="Blue.TButton", command=lambda: [add_artist(name_entry.get(), email_entry.get(), phone_entry.get()), add_artist_popup.destroy()])
+    add_artist_button = ttk.Button(add_artist_popup, text="Add", style="Blue.TButton", command=lambda: on_artist_submit(None, name_entry.get(), email_entry.get(), phone_entry.get(), "Add", add_artist_popup))
     add_artist_button.place(x=230, y=250, anchor=tk.CENTER)
 
 def edit_volunteer_popup():
@@ -881,14 +893,6 @@ def edit_role_popup():
             index = list(institutions.get(0, "end")).index(f'{name}')
             institutions.select_set(index)
 
-        # def get_institutions_chosen():
-        #     selected_indices = institutions.curselection()
-        #     selected_values = [institutions.get(i) for i in selected_indices]
-        #     return (", ".join(selected_values))
-
-        # edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(role_details[0], name_entry.get(), description_entry.get(), get_institutions_chosen()), edit_role_popup.destroy()])
-        # edit_role_button.grid(row=6, column=0, pady=10, columnspan=2)
-
         edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: on_role_submit(role_details[0], name_entry.get(), description_entry.get(), institutions, "Edit", edit_role_popup))
         edit_role_button.grid(row=6, column=0, pady=10, columnspan=2)
 
@@ -931,7 +935,7 @@ def edit_artist_popup():
         phone_entry.insert(0, str(artist_details[3]))
         phone_entry.grid(row=4, column=1, sticky='w', pady=10)
 
-        edit_artist_button = ttk.Button(edit_artist_popup, text="Save", style="Blue.TButton", command=lambda: [edit_artist(artist_details[0], name_entry.get(), email_entry.get(), phone_entry.get()), edit_artist_popup.destroy()])
+        edit_artist_button = ttk.Button(edit_artist_popup, text="Save", style="Blue.TButton", command=lambda: on_artist_submit(artist_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), "Edit", edit_artist_popup))
         edit_artist_button.grid(row=5, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_artist_popup, text= "Edit Artist", font=('Arial', 30), bg="white", fg="dark blue")
