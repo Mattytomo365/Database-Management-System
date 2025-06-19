@@ -170,10 +170,14 @@ def view_volunteers_popup():
             headers.grid(row=0, column=col_index)
 
         for row_index, volunteer in enumerate(volunteers):
-            institution_id = volunteer[5]
-            role_id = volunteer[6]
-            institution_name = get_institution_name(institution_id)
-            role_name = get_role_name(role_id)
+            if volunteer[4] == 'Student':
+                institution_id = volunteer[5]
+                role_id = volunteer[6]
+                institution_name = get_institution_name(institution_id)
+                role_name = get_role_name(role_id)
+            else:
+                role_name = "Volunteer"
+                institution_name = "N/A"
             for col_index, value in enumerate(volunteer):
                 information = tk.Entry(volunteer_data, width=column_widths[col_index], bg="white", fg="black")
                 information.grid(row=row_index + 3, column=col_index)
@@ -394,13 +398,16 @@ def date_validation(date): #Valid date
     else:
         return True
     
-def listbox_validation(selected):
-    if selected == "":
+def listbox_validation(role_id, selected_institutions):
+    if selected_institutions == "":
         messagebox.showinfo(title='Error', message='No institutions were selected')
+        return False
+    elif not edit_role_eligibility(role_id, selected_institutions):
+        messagebox.showinfo(title='Error', message='Unable to remove institutions that have students with this role')
         return False
     return True
 
-def on_volunteer_submit(name, email, phone, type_dropdown, institution_dropdown, role_dropdown, start_date, attending_days, contract_length, status_dropdown, badge_number, project, submit_type, popup):
+def on_volunteer_submit(volunteer_id, name, email, phone, type_dropdown, institution_dropdown, role_dropdown, start_date, attending_days, contract_length, status_dropdown, badge_number, project, submit_type, popup):
     valid = True
 
     if not entry_validation(name=name, email=email, phone=phone, attending_days=attending_days, contract_length=contract_length):
@@ -418,13 +425,13 @@ def on_volunteer_submit(name, email, phone, type_dropdown, institution_dropdown,
     
     if valid:
         if submit_type == 'Add':
-            add_volunteer(name, email, phone, type_dropdown.get(), institution_dropdown.get(), role_dropdown.get(), start_date, attending_days, contract_length, status_dropdown.get(), badge_number, project)
+            add_volunteer(name, email, phone, (type_dropdown.get()), (institution_dropdown.get()), (role_dropdown.get()), start_date, attending_days, contract_length, (status_dropdown.get()), badge_number, project)
             popup.destroy()
         elif submit_type == 'Edit':
-            edit_volunteer(name, email, phone, type_dropdown.get(), institution_dropdown.get(), role_dropdown.get(), start_date, attending_days, contract_length, status_dropdown.get(), badge_number, project)
+            edit_volunteer(volunteer_id, name, email, phone, (type_dropdown.get()), (institution_dropdown.get()), (role_dropdown.get()), start_date, attending_days, contract_length, (status_dropdown.get()), badge_number, project)
             popup.destroy()
 
-def on_institution_submit(name, type_dropdown, postcode, submit_type, popup):
+def on_institution_submit(institution_id, name, type_dropdown, postcode, submit_type, popup):
     valid = True
 
     if not entry_validation(name=name, postcode=postcode):
@@ -435,16 +442,33 @@ def on_institution_submit(name, type_dropdown, postcode, submit_type, popup):
     
     if valid:
         if submit_type == 'Add':
-            add_institution(name, postcode, type_dropdown.get())
+            add_institution(name, type_dropdown.get(), postcode)
             popup.destroy()
         elif submit_type == 'Edit':
-            edit_institution(name, postcode, type_dropdown.get())
+            edit_institution(institution_id, name, type_dropdown.get(), postcode)
             popup.destroy()
 
-def on_role_submit():
-    pass
+def on_role_submit(role_id, name, description, institutions_listbox, submit_type, popup):
+    valid = True
 
-def on_artist_submit():
+    if not entry_validation(name=name, description=description):
+        valid = False
+
+    selected_values = [institutions_listbox.get(i) for i in (institutions_listbox.curselection())]
+    institution_names = (", ".join(selected_values))
+
+    if not listbox_validation(role_id, institution_names):
+        valid = False
+
+    if valid:
+        if submit_type == 'Add':
+            add_role(name, description, institution_names)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_role(role_id, name, description, institution_names)
+            popup.destroy()
+
+def on_artist_submit(artist_id):
     pass
 
 def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
@@ -558,7 +582,7 @@ def add_volunteer_popup():
 
     status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
 
-    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: on_volunteer_submit(name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Add', add_volunteer_popup))                                                                                               
+    add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: on_volunteer_submit(None, name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Add', add_volunteer_popup))                                                                                               
     add_volunteer_button.grid(row=7, column=0, pady=10, columnspan=5)
 
 
@@ -591,7 +615,7 @@ def add_institution_popup():
     postcode_entry = tk.Entry(add_institution_popup, font=('Arial', 15), bg="white", fg="black")
     postcode_entry.grid(row=3, column=1, pady=10, sticky='w')
 
-    add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: on_institution_submit(name_entry.get(), type_dropdown, 'Add', add_institution_popup))
+    add_institution_button = ttk.Button(add_institution_popup, text="Add", style="Blue.TButton", command=lambda: on_institution_submit(None, name_entry.get(), type_dropdown, postcode_entry.get(), 'Add', add_institution_popup))
     add_institution_button.grid(row=4, column=0, pady=10, columnspan=2)
 
 def add_role_popup():
@@ -624,12 +648,7 @@ def add_role_popup():
         institutions.insert(tk.END, value)
     institutions.grid(row=3, column=1, pady=10, sticky='w')
 
-    def get_institutions_chosen():
-        selected_indices = institutions.curselection()
-        selected_values = [institutions.get(i) for i in selected_indices]
-        return (", ".join(selected_values))
-
-    add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: on_role_submit())
+    add_role_button = ttk.Button(add_role_popup, text="Add", style="Blue.TButton", command=lambda: on_role_submit(None, name_entry.get(), description_entry.get(), institutions, "Add", add_role_popup))
     add_role_button.grid(row=4, column=0, pady=10, columnspan=2)
 
 def add_artist_popup():
@@ -765,7 +784,7 @@ def edit_volunteer_popup():
 
         status_dropdown.bind("<<ComboboxSelected>>", lambda selected: on_status_select(selected, status_dropdown, badge_number_entry, project_entry))
 
-        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: on_volunteer_submit(name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Edit', edit_volunteer_popup))
+        edit_volunteer_button = ttk.Button(edit_volunteer_popup, text="Save", style="Blue.TButton", command=lambda: on_volunteer_submit(volunteer_details[0], name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Edit', edit_volunteer_popup))
         edit_volunteer_button.grid(row=8, column=0, pady=10, columnspan=5)
 
     header = tk.Label(edit_volunteer_popup, text= "Edit Volunteer", font=('Arial', 30), bg="white", fg="dark blue")
@@ -812,7 +831,7 @@ def edit_institution_popup():
         postcode_entry.insert(0, str(institution_details[3]))
         postcode_entry.grid(row=4, column=1, pady=10, sticky='w')
 
-        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: on_institution_submit(name_entry.get(), type_dropdown, 'Edit', edit_institution_popup))
+        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: on_institution_submit(institution_details[0], name_entry.get(), type_dropdown, 'Edit', edit_institution_popup))
         edit_institution_button.grid(row=5, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_institution_popup, text= "Edit Institution", font=('Arial', 30), bg="white", fg="dark blue")
@@ -862,12 +881,15 @@ def edit_role_popup():
             index = list(institutions.get(0, "end")).index(f'{name}')
             institutions.select_set(index)
 
-        def get_institutions_chosen():
-            selected_indices = institutions.curselection()
-            selected_values = [institutions.get(i) for i in selected_indices]
-            return (", ".join(selected_values))
+        # def get_institutions_chosen():
+        #     selected_indices = institutions.curselection()
+        #     selected_values = [institutions.get(i) for i in selected_indices]
+        #     return (", ".join(selected_values))
 
-        edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(role_details[0], name_entry.get(), description_entry.get(), get_institutions_chosen()), edit_role_popup.destroy()])
+        # edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: [edit_role(role_details[0], name_entry.get(), description_entry.get(), get_institutions_chosen()), edit_role_popup.destroy()])
+        # edit_role_button.grid(row=6, column=0, pady=10, columnspan=2)
+
+        edit_role_button = ttk.Button(edit_role_popup, text="Save", style="Blue.TButton", command=lambda: on_role_submit(role_details[0], name_entry.get(), description_entry.get(), institutions, "Edit", edit_role_popup))
         edit_role_button.grid(row=6, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_role_popup, text= "Edit Role", font=('Arial', 30), bg="white", fg="dark blue")
