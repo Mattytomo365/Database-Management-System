@@ -1,6 +1,15 @@
 import sqlite3
+import sys
+import os
 
-connection = sqlite3.connect('database.db')
+if hasattr(sys, '_MEIPASS'):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.abspath(".")
+
+db_path = os.path.join(base_path, 'database.db')
+connection = sqlite3.connect(db_path)
+
 connection.execute("PRAGMA foreign_keys = ON") # Allows for the use of foreign keys
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
 
