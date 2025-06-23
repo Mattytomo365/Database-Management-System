@@ -412,15 +412,19 @@ def listbox_validation(role_id, selected_institutions):
 
 def on_volunteer_submit(volunteer_id, name, email, phone, type_dropdown, institution_dropdown, role_dropdown, start_date, attending_days, contract_length, status_dropdown, badge_number, project, submit_type, popup):
     valid = True
+    type = type_dropdown.get()
+    institution = institution_dropdown.get()
+    role = role_dropdown.get()
+    status = status_dropdown.get()
 
     if not entry_validation(name=name, email=email, phone=phone, attending_days=attending_days, contract_length=contract_length):
         valid = False
     
     if type_dropdown.get() == 'Student':
-        if not dropdown_validation([('Type', type_dropdown.get(), type_dropdown['values']), ('Institution', institution_dropdown.get(), institution_dropdown['values']), ('Role', role_dropdown.get(), role_dropdown['values']), ('Status', status_dropdown.get(), status_dropdown['values'])]):
+        if not dropdown_validation([('Type', type, type_dropdown['values']), ('Institution', institution, institution_dropdown['values']), ('Role', role, role_dropdown['values']), ('Status', status, status_dropdown['values'])]):
             valid = False
     else:
-        if not dropdown_validation([('Type', type_dropdown.get(), type_dropdown['values']), ('Role', role_dropdown.get(), role_dropdown['values']), ('Status', status_dropdown.get(), status_dropdown['values'])]):
+        if not dropdown_validation([('Type', type, type_dropdown['values']), ('Role', role, role_dropdown['values']), ('Status', status, status_dropdown['values'])]):
             valid = False
     
     if not date_validation(start_date):
@@ -428,32 +432,29 @@ def on_volunteer_submit(volunteer_id, name, email, phone, type_dropdown, institu
     
     if valid:
         if submit_type == 'Add':
-            add_volunteer(name, email, phone, (type_dropdown.get()), (institution_dropdown.get()), (role_dropdown.get()), start_date, attending_days, contract_length, (status_dropdown.get()), badge_number, project)
+            add_volunteer(name, email, phone, type, institution, role, start_date, attending_days, contract_length, status, badge_number, project)
             popup.destroy()
-            root.deiconify()
         elif submit_type == 'Edit':
-            edit_volunteer(volunteer_id, name, email, phone, (type_dropdown.get()), (institution_dropdown.get()), (role_dropdown.get()), start_date, attending_days, contract_length, (status_dropdown.get()), badge_number, project)
+            edit_volunteer(volunteer_id, name, email, phone, type, institution, role, start_date, attending_days, contract_length, status, badge_number, project)
             popup.destroy()
-            root.deiconify()
 
 def on_institution_submit(institution_id, name, type_dropdown, postcode, submit_type, popup):
     valid = True
+    type = type_dropdown.get()
 
     if not entry_validation(name=name, postcode=postcode):
         valid = False
     
-    if not dropdown_validation([('Type', type_dropdown.get(), type_dropdown['values'])]):
+    if not dropdown_validation([('Type', type, type_dropdown['values'])]):
         valid = False
     
     if valid:
         if submit_type == 'Add':
-            add_institution(name, type_dropdown.get(), postcode)
+            add_institution(name, type, postcode)
             popup.destroy()
-            root.deiconify()
         elif submit_type == 'Edit':
-            edit_institution(institution_id, name, type_dropdown.get(), postcode)
+            edit_institution(institution_id, name, type, postcode)
             popup.destroy()
-            root.deiconify()
 
 def on_role_submit(role_id, name, description, institutions_listbox, submit_type, popup):
     valid = True
@@ -471,11 +472,9 @@ def on_role_submit(role_id, name, description, institutions_listbox, submit_type
         if submit_type == 'Add':
             add_role(name, description, institution_names)
             popup.destroy()
-            root.deiconify()
         elif submit_type == 'Edit':
             edit_role(role_id, name, description, institution_names)
             popup.destroy()
-            root.deiconify()
 
 def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
     valid = True
@@ -487,11 +486,9 @@ def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
         if submit_type == 'Add':
             add_artist(name, email, phone)
             popup.destroy()
-            root.deiconify()
         elif submit_type == 'Edit':
             edit_artist(artist_id, name, email, phone)
             popup.destroy()
-            root.deiconify()
 
 
 def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
@@ -854,7 +851,7 @@ def edit_institution_popup():
         postcode_entry.insert(0, str(institution_details[3]))
         postcode_entry.grid(row=4, column=1, pady=10, sticky='w')
 
-        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: on_institution_submit(institution_details[0], name_entry.get(), type_dropdown, 'Edit', edit_institution_popup))
+        edit_institution_button = ttk.Button(edit_institution_popup, text="Save", style="Blue.TButton", command=lambda: on_institution_submit(institution_details[0], name_entry.get(), type_dropdown, postcode_entry.get(), 'Edit', edit_institution_popup))
         edit_institution_button.grid(row=5, column=0, pady=10, columnspan=2)
 
     header = tk.Label(edit_institution_popup, text= "Edit Institution", font=('Arial', 30), bg="white", fg="dark blue")
