@@ -20,6 +20,8 @@ def create_volunteer_table():
             attending_days TEXT,
             contract_length TEXT,
             status TEXT,
+            badge_number TEXT,
+            project TEXT,
             FOREIGN KEY (institution_id) REFERENCES institutions(id),
             FOREIGN KEY (role_id) REFERENCES roles(id)
         )
@@ -73,16 +75,22 @@ def create_artist_table():
 
 # Add functions
 
-def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
+def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
-    institution_id = get_id('institutions', institution_name)
-
-    role_id = get_id('roles', role_name)
+    if institution_name == '' or institution_name == 'N/A':
+        institution_id = None
+    else:
+        institution_id = get_id('institutions', institution_name)
+    
+    if role_name == 'Volunteer':
+        role_id = None
+    else:
+        role_id = get_id('roles', role_name)
     
     cursor.execute('''
-        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status))
+        INSERT INTO volunteers (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        , (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project))
     connection.commit()
 
 
@@ -126,16 +134,22 @@ def add_artist(name, email, phone):
 
 # Edit functions
 
-def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status):
+def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
-    institution_id = get_id('institutions', institution_name)
-
-    role_id = get_id('roles', role_name)
+    if institution_name == '' or institution_name == 'N/A':
+        institution_id = None
+    else:
+        institution_id = get_id('institutions', institution_name)
+    
+    if type == 'Volunteer':
+        role_id = None
+    else:
+        role_id = get_id('roles', role_name)
 
     cursor.execute('''
         UPDATE volunteers
-        SET name = ?, email = ?, phone = ?, type = ?, institution_id = ?, role_id = ?, start_date = ?, attending_days = ?, contract_length = ?, status = ?
-        WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, volunteer_id))
+        SET name = ?, email = ?, phone = ?, type = ?, institution_id = ?, role_id = ?, start_date = ?, attending_days = ?, contract_length = ?, status = ?, badge_number = ?, project = ?
+        WHERE id = ?''', (name, email, phone, type, institution_id, role_id, start_date, attending_days, contract_length, status, badge_number, project, volunteer_id))
     connection.commit()
 
 
@@ -196,6 +210,45 @@ def edit_role(role_id, name, description, institution_names):
     connection.commit()
 
 
+def edit_role_eligibility(role_id, institution_names):
+    institution_names = institution_names.split(', ')
+    
+    institution_ids = []
+    for institution_name in institution_names:
+        institution_id = get_id('institutions', institution_name)
+        
+        if institution_id:
+            institution_ids.append(institution_id)
+
+        else:
+            institution_ids.append('Institution ID not found')
+
+    cursor.execute('SELECT institution_id FROM institution_roles WHERE role_id = ?', (role_id,))
+    connection.commit()
+    original_institution_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    deletable_institution_ids = []
+    for original_institution_id in original_institution_ids:
+
+        for institution_id in institution_ids:
+
+            if original_institution_id == institution_id:
+                delete = False
+                break
+            else:
+                delete = True
+
+        if delete:
+            deletable_institution_ids.append(original_institution_id)
+    
+    for deletable_institution_id in deletable_institution_ids:
+        cursor.execute('SELECT id from volunteers WHERE institution_id = ? AND role_id = ?', (deletable_institution_id, role_id,))
+    connection.commit()
+    if [int(row[0]) for row in cursor.fetchall()]:
+        return False
+    else:
+        return True
+    
 def edit_artist(artist_id, name, email, phone):
     cursor.execute('''
         UPDATE artists
@@ -216,7 +269,7 @@ def delete_institution_eligibility(institution_name):
 
     institution_id = get_id('institutions', institution_name)
 
-    cursor.execute('SELECT institution_id FROM volunteers')
+    cursor.execute('SELECT institution_id FROM volunteers WHERE type = ?', ('Student',))
     connection.commit()
     volunteer_institution_ids = [int(row[0]) for row in cursor.fetchall()]
 
@@ -229,7 +282,7 @@ def delete_institution_eligibility(institution_name):
 def delete_institution(name):
     connection.execute("PRAGMA foreign_keys = ON")
 
-    institution_id = ('institutions', name)
+    institution_id = get_id('institutions', name)
 
     cursor.execute('DELETE FROM institutions WHERE id = ?', (institution_id,))
     connection.commit()
@@ -238,7 +291,7 @@ def delete_institution(name):
 def delete_role_eligibility(name):
     role_id = get_id('roles', name)
 
-    cursor.execute('SELECT role_id FROM volunteers')
+    cursor.execute('SELECT role_id FROM volunteers WHERE type = ?', ('Student',))
     connection.commit()
     volunteer_role_ids = [int(row[0]) for row in cursor.fetchall()]
 
@@ -246,6 +299,7 @@ def delete_role_eligibility(name):
         if volunteer_role_id == role_id:
             return False
     return True
+
 
 
 def delete_role(name):
@@ -268,7 +322,9 @@ def delete_artist(name):
 def get_id(table_name, record_name):
     cursor.execute(f'SELECT id from {table_name} WHERE name = ?', (record_name,))
     connection.commit()
-    return cursor.fetchone()[0]
+    id = cursor.fetchone()[0]
+    return id if id else None
+
 
 def get_volunteer_names():
     cursor.execute('SELECT name FROM volunteers')
@@ -296,9 +352,12 @@ def get_institution_names():
     return [row[0] for row in cursor.fetchall()]
 
 def get_institution_name(id):
-    cursor.execute('SELECT name FROM institutions WHERE id = ?', (id,))
-    connection.commit()
-    return cursor.fetchone()[0]
+    if id == None:
+        return "N/A"
+    else:
+        cursor.execute('SELECT name FROM institutions WHERE id = ?', (id,))
+        connection.commit()
+        return cursor.fetchone()[0]
 
 def get_institutions():
     cursor.execute('SELECT * FROM institutions')
@@ -321,9 +380,12 @@ def get_role_names():
     return [row[0] for row in cursor.fetchall()]
 
 def get_role_name(id):
-    cursor.execute('SELECT name FROM roles WHERE id = ?', (id,))
-    connection.commit()
-    return cursor.fetchone()[0]
+    if id == None:
+        return "Volunteer"
+    else:
+        cursor.execute('SELECT name FROM roles WHERE id = ?', (id,))
+        connection.commit()
+        return cursor.fetchone()[0]
 
 def get_roles():
     cursor.execute('SELECT * FROM roles')
@@ -371,6 +433,25 @@ def get_filtered_roles(institution):
 
     return roles
 
+def get_filtered_role_names(institution):
+    cursor.execute('SELECT id FROM institutions WHERE name = ?', (institution,))
+    connection.commit()
+    institution_id = cursor.fetchone()[0]
+
+    cursor.execute('SELECT role_id FROM institution_roles WHERE institution_id = ?', (institution_id,))
+    connection.commit()
+    role_ids = [int(row[0]) for row in cursor.fetchall()]
+
+    role_names = []
+
+    for role_id in role_ids:
+        cursor.execute('SELECT name FROM roles WHERE id = ?', (role_id,))
+        role_name = cursor.fetchone()[0]
+        if role_name:
+            role_names.append(role_name)
+
+    return role_names
+
 def get_artist_names():
     cursor.execute('SELECT name FROM artists')
     connection.commit()
@@ -386,6 +467,7 @@ def get_artist(name):
     cursor.execute('SELECT * FROM artists WHERE name = ?', (name,))
     connection.commit()
     return cursor.fetchone()
+
 
 # Initialisation of database function
 
