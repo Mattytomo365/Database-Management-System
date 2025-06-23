@@ -1,7 +1,7 @@
 import sqlite3
 
 connection = sqlite3.connect('database.db')
-connection.execute("PRAGMA foreign_keys = ON")
+connection.execute("PRAGMA foreign_keys = ON") # Allows for the use of foreign keys
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
 
 '''Create table queries & functions'''

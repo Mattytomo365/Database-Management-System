@@ -5,15 +5,13 @@ from logic import *
 from tkcalendar import DateEntry
 from datetime import datetime
 
+initialise_database() # Creates tables in database schema if they don't already exist
+
 root = tk.Tk()
 root.title("Database Management System")
 root.geometry("570x400")
 root.configure(bg="white")
 root.resizable(False, False)
-
-
-initialise_database()
-
 
 style = ttk.Style(root)
 style.theme_use("clam")  # Change theme to allow background color changes
