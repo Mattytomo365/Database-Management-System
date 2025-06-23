@@ -23,9 +23,149 @@ style.configure("Blue.TButton",
                 font=("Helvetica", 20),
                 padding=6)
 
+'''Validation Functions'''
+
+def entry_validation(**kwargs):
+    for entry_name, entry_value in kwargs.items():
+        if entry_value == "":
+            messagebox.showinfo(title='Error', message=f'{entry_name} must be filled')
+            return False
+    return True
+
+def dropdown_validation(dropdowns):
+    for dropdown_name, dropdown_value, dropdown_values in dropdowns:
+        if dropdown_value == "":
+            messagebox.showinfo(title='Error', message=f'{dropdown_name} must be selected')
+            return False
+
+        elif dropdown_value != "" and dropdown_value not in dropdown_values:
+            messagebox.showinfo(title='Error', message=f'Invalid value in {dropdown_name} dropdown')
+            return False
+    return True
 
 
-# Popup functions
+def date_validation(date):
+    if not datetime.strptime(str(date), "%Y-%m-%d"):
+        messagebox.showinfo(title='Error', message='Date is invalid')
+        return False
+    else:
+        return True
+    
+def listbox_validation(role_id, selected_institutions):
+    if selected_institutions == "":
+        messagebox.showinfo(title='Error', message='No institutions were selected')
+        return False
+    elif not edit_role_eligibility(role_id, selected_institutions):
+        messagebox.showinfo(title='Error', message='Unable to remove institutions that have students with this role')
+        return False
+    return True
+
+def on_volunteer_submit(volunteer_id, name, email, phone, type_dropdown, institution_dropdown, role_dropdown, start_date, attending_days, contract_length, status_dropdown, badge_number, project, submit_type, popup):
+    valid = True
+    type = type_dropdown.get()
+    institution = institution_dropdown.get()
+    role = role_dropdown.get()
+    status = status_dropdown.get()
+
+    if not entry_validation(name=name, email=email, phone=phone, attending_days=attending_days, contract_length=contract_length):
+        valid = False
+    
+    if type_dropdown.get() == 'Student':
+        if not dropdown_validation([('Type', type, type_dropdown['values']), ('Institution', institution, institution_dropdown['values']), ('Role', role, role_dropdown['values']), ('Status', status, status_dropdown['values'])]):
+            valid = False
+    else:
+        if not dropdown_validation([('Type', type, type_dropdown['values']), ('Role', role, role_dropdown['values']), ('Status', status, status_dropdown['values'])]):
+            valid = False
+    
+    if not date_validation(start_date):
+        valid = False
+    
+    if valid:
+        if submit_type == 'Add':
+            add_volunteer(name, email, phone, type, institution, role, start_date, attending_days, contract_length, status, badge_number, project)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_volunteer(volunteer_id, name, email, phone, type, institution, role, start_date, attending_days, contract_length, status, badge_number, project)
+            popup.destroy()
+
+def on_institution_submit(institution_id, name, type_dropdown, postcode, submit_type, popup):
+    valid = True
+    type = type_dropdown.get()
+
+    if not entry_validation(name=name, postcode=postcode):
+        valid = False
+    
+    if not dropdown_validation([('Type', type, type_dropdown['values'])]):
+        valid = False
+    
+    if valid:
+        if submit_type == 'Add':
+            add_institution(name, type, postcode)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_institution(institution_id, name, type, postcode)
+            popup.destroy()
+
+def on_role_submit(role_id, name, description, institutions_listbox, submit_type, popup):
+    valid = True
+
+    if not entry_validation(name=name, description=description):
+        valid = False
+
+    selected_values = [institutions_listbox.get(i) for i in (institutions_listbox.curselection())]
+    institution_names = (", ".join(selected_values))
+
+    if not listbox_validation(role_id, institution_names):
+        valid = False
+
+    if valid:
+        if submit_type == 'Add':
+            add_role(name, description, institution_names)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_role(role_id, name, description, institution_names)
+            popup.destroy()
+
+def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
+    valid = True
+
+    if not entry_validation(name=name, email=email, phone=phone):
+        valid = False
+    
+    if valid:
+        if submit_type == 'Add':
+            add_artist(name, email, phone)
+            popup.destroy()
+        elif submit_type == 'Edit':
+            edit_artist(artist_id, name, email, phone)
+            popup.destroy()
+
+
+def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
+    type = type_dropdown.get()
+    institution_dropdown.set("")
+    role_dropdown.set("")
+    contract_length.set("")
+    institution_dropdown.configure(state='disabled' if type == "Volunteer" else 'normal')
+
+    if is_volunteer:
+        role_dropdown.set("Volunteer")
+        role_dropdown['values'] = ("Volunteer")
+        contract_length.set("Indefinite")
+    
+
+def on_institution_select(selected, is_volunteer, institution_dropdown, role_dropdown):
+    institution = institution_dropdown.get()
+    role_dropdown.insert(0, str(" "))
+    if not is_volunteer:
+        role_dropdown['values'] = get_filtered_role_names(institution) if get_filtered_role_names(institution) else ("No Roles Available")
+
+def on_status_select(selected, status_dropdown, badge_number_entry, project_entry):
+    status = status_dropdown.get()
+    badge_number_entry.configure(state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
+    project_entry.configure(state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
+
+'''Options Popups'''
 
 def view_options_popup():
     view_options_popup = tk.Toplevel(root)
@@ -117,6 +257,8 @@ def delete_options_popup():
 
     delete_artist_button = ttk.Button(delete_options_popup, text="Artist", style="Blue.TButton", command=lambda: delete_artist_popup())
     delete_artist_button.grid(row=2, column=1, ipadx=30, ipady=20, padx=10, pady=10, sticky="nsw")
+
+'''Viewing Popups'''
 
 def view_volunteers_popup():
 
@@ -373,149 +515,7 @@ def view_artists_popup():
     artist_data.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
 
-
-
-def entry_validation(**kwargs): #Not empty
-    for entry_name, entry_value in kwargs.items():
-        if entry_value == "":
-            messagebox.showinfo(title='Error', message=f'{entry_name} must be filled')
-            return False
-    return True
-
-def dropdown_validation(dropdowns): #Matches dropdown values
-    for dropdown_name, dropdown_value, dropdown_values in dropdowns:
-        if dropdown_value == "":
-            messagebox.showinfo(title='Error', message=f'{dropdown_name} must be selected')
-            return False
-
-        elif dropdown_value != "" and dropdown_value not in dropdown_values:
-            messagebox.showinfo(title='Error', message=f'Invalid value in {dropdown_name} dropdown')
-            return False
-    return True
-
-
-def date_validation(date): #Valid date
-    if not datetime.strptime(str(date), "%Y-%m-%d"):
-        messagebox.showinfo(title='Error', message='Date is invalid')
-        return False
-    else:
-        return True
-    
-def listbox_validation(role_id, selected_institutions):
-    if selected_institutions == "":
-        messagebox.showinfo(title='Error', message='No institutions were selected')
-        return False
-    elif not edit_role_eligibility(role_id, selected_institutions):
-        messagebox.showinfo(title='Error', message='Unable to remove institutions that have students with this role')
-        return False
-    return True
-
-def on_volunteer_submit(volunteer_id, name, email, phone, type_dropdown, institution_dropdown, role_dropdown, start_date, attending_days, contract_length, status_dropdown, badge_number, project, submit_type, popup):
-    valid = True
-    type = type_dropdown.get()
-    institution = institution_dropdown.get()
-    role = role_dropdown.get()
-    status = status_dropdown.get()
-
-    if not entry_validation(name=name, email=email, phone=phone, attending_days=attending_days, contract_length=contract_length):
-        valid = False
-    
-    if type_dropdown.get() == 'Student':
-        if not dropdown_validation([('Type', type, type_dropdown['values']), ('Institution', institution, institution_dropdown['values']), ('Role', role, role_dropdown['values']), ('Status', status, status_dropdown['values'])]):
-            valid = False
-    else:
-        if not dropdown_validation([('Type', type, type_dropdown['values']), ('Role', role, role_dropdown['values']), ('Status', status, status_dropdown['values'])]):
-            valid = False
-    
-    if not date_validation(start_date):
-        valid = False
-    
-    if valid:
-        if submit_type == 'Add':
-            add_volunteer(name, email, phone, type, institution, role, start_date, attending_days, contract_length, status, badge_number, project)
-            popup.destroy()
-        elif submit_type == 'Edit':
-            edit_volunteer(volunteer_id, name, email, phone, type, institution, role, start_date, attending_days, contract_length, status, badge_number, project)
-            popup.destroy()
-
-def on_institution_submit(institution_id, name, type_dropdown, postcode, submit_type, popup):
-    valid = True
-    type = type_dropdown.get()
-
-    if not entry_validation(name=name, postcode=postcode):
-        valid = False
-    
-    if not dropdown_validation([('Type', type, type_dropdown['values'])]):
-        valid = False
-    
-    if valid:
-        if submit_type == 'Add':
-            add_institution(name, type, postcode)
-            popup.destroy()
-        elif submit_type == 'Edit':
-            edit_institution(institution_id, name, type, postcode)
-            popup.destroy()
-
-def on_role_submit(role_id, name, description, institutions_listbox, submit_type, popup):
-    valid = True
-
-    if not entry_validation(name=name, description=description):
-        valid = False
-
-    selected_values = [institutions_listbox.get(i) for i in (institutions_listbox.curselection())]
-    institution_names = (", ".join(selected_values))
-
-    if not listbox_validation(role_id, institution_names):
-        valid = False
-
-    if valid:
-        if submit_type == 'Add':
-            add_role(name, description, institution_names)
-            popup.destroy()
-        elif submit_type == 'Edit':
-            edit_role(role_id, name, description, institution_names)
-            popup.destroy()
-
-def on_artist_submit(artist_id, name, email, phone, submit_type, popup):
-    valid = True
-
-    if not entry_validation(name=name, email=email, phone=phone):
-        valid = False
-    
-    if valid:
-        if submit_type == 'Add':
-            add_artist(name, email, phone)
-            popup.destroy()
-        elif submit_type == 'Edit':
-            edit_artist(artist_id, name, email, phone)
-            popup.destroy()
-
-
-def on_type_select(selected, is_volunteer, type_dropdown, institution_dropdown, role_dropdown, contract_length):
-    type = type_dropdown.get()
-    institution_dropdown.set("")
-    role_dropdown.set("")
-    contract_length.set("")
-    institution_dropdown.configure(state='disabled' if type == "Volunteer" else 'normal')
-
-    if is_volunteer:
-        role_dropdown.set("Volunteer")
-        role_dropdown['values'] = ("Volunteer")
-        contract_length.set("Indefinite")
-    
-
-def on_institution_select(selected, is_volunteer, institution_dropdown, role_dropdown):
-    institution = institution_dropdown.get()
-    role_dropdown.insert(0, str(" "))
-    if not is_volunteer:
-        role_dropdown['values'] = get_filtered_role_names(institution) if get_filtered_role_names(institution) else ("No Roles Available")
-
-def on_status_select(selected, status_dropdown, badge_number_entry, project_entry):
-    status = status_dropdown.get()
-    badge_number_entry.configure(state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
-    project_entry.configure(state='normal' if status in ['Awaiting Badge', 'Badged'] else 'disabled')
-    
-        
+'''Adding Popups'''
 
 def add_volunteer_popup():
     add_volunteer_popup = tk.Toplevel(root)
@@ -604,8 +604,6 @@ def add_volunteer_popup():
 
     add_volunteer_button = ttk.Button(add_volunteer_popup, text="Add", style="Blue.TButton", command=lambda: on_volunteer_submit(None, name_entry.get(), email_entry.get(), phone_entry.get(), type_dropdown, institution_dropdown, role_dropdown, start_date_chooser.get_date(), attending_days_entry.get(), contract_length_entry.get(), status_dropdown, badge_number_entry.get(), project_entry.get(), 'Add', add_volunteer_popup))                                                                                               
     add_volunteer_button.grid(row=7, column=0, pady=10, columnspan=5)
-
-
 
 
 def add_institution_popup():
@@ -698,6 +696,8 @@ def add_artist_popup():
 
     add_artist_button = ttk.Button(add_artist_popup, text="Add", style="Blue.TButton", command=lambda: on_artist_submit(None, name_entry.get(), email_entry.get(), phone_entry.get(), "Add", add_artist_popup))
     add_artist_button.place(x=230, y=250, anchor=tk.CENTER)
+
+'''Editing Popups'''    
 
 def edit_volunteer_popup():
     edit_volunteer_popup = tk.Toplevel(root)
@@ -957,6 +957,8 @@ def edit_artist_popup():
     artist_dropdown.grid(row=1, column=1, sticky='w', pady=10)
     artist_dropdown.bind("<<ComboboxSelected>>", edit_artist_popup_specific)
 
+'''Deleting Popups'''
+
 def delete_volunteer_popup():
     delete_volunteer_popup = tk.Toplevel(root)
     delete_volunteer_popup.title("Delete Volunteer")
@@ -1094,7 +1096,7 @@ def delete_artist_popup():
         no_artists_label.grid(row=1, column=0, pady=10, columnspan=2)
 
 
-# Main menu
+'''Main Menu'''
 
 header = tk.Label(root, text="Welcome", font=("Arial", 60), bg="white", fg="dark blue")
 header.grid(row=0, column=0, columnspan=2, sticky="nsw", padx=120, pady=35)

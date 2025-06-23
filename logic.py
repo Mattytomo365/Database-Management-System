@@ -4,7 +4,7 @@ connection = sqlite3.connect('database.db')
 connection.execute("PRAGMA foreign_keys = ON")
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
 
-# Create tables
+'''Create table queries & functions'''
 
 def create_volunteer_table():
     cursor.execute('''
@@ -73,7 +73,7 @@ def create_artist_table():
     ''')
     connection.commit()
 
-# Add functions
+'''Adding queries & functions'''
 
 def add_volunteer(name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
@@ -132,7 +132,7 @@ def add_artist(name, email, phone):
     ''', (name, email, phone))
     connection.commit()
 
-# Edit functions
+'''Editing queries & functions'''
 
 def edit_volunteer(volunteer_id, name, email, phone, type, institution_name, role_name, start_date, attending_days, contract_length, status, badge_number, project):
 
@@ -256,7 +256,7 @@ def edit_artist(artist_id, name, email, phone):
         WHERE id = ?''', (name, email, phone, artist_id))
     connection.commit()
 
-# Delete functions
+'''Deleting queries & functions'''
 
 def delete_volunteer(name):
     volunteer_id = get_id('volunteers', name)
@@ -317,7 +317,7 @@ def delete_artist(name):
     connection.execute('DELETE FROM artists WHERE id = ?', (artist_id,))
     connection.commit()
 
-# Retrieval functions
+'''Retrieval queries & functions'''
 
 def get_id(table_name, record_name):
     cursor.execute(f'SELECT id from {table_name} WHERE name = ?', (record_name,))
