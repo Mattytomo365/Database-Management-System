@@ -10,6 +10,10 @@ This application will connects to and manages an SQLite database storing adminis
 
 You can track the project's progress [here](https://www.notion.so/1f918110f1f2805cadbcc1a2231c5f75?v=1f918110f1f2813da01c000cd25c6666&pvs=4)
 
+## Entity Relationship Diagram
+
+![alt text](ERD.png)
+
 ---
 
 ## What I've Learned
