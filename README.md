@@ -63,6 +63,7 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 - `editing-logic` (merged): Editing functionality
 - `deleting-logic` (merged): Delete functionality
 - `validation-improvements`: Input validation & error handling
+- `final-additions`: Final improvements and corrections before deployment
 
 ---
 
