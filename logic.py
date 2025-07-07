@@ -1,14 +1,29 @@
 import sqlite3
+import shutil
 import sys
 import os
 
-if hasattr(sys, '_MEIPASS'):
-    base_path = sys._MEIPASS
+# Get the directory where the executable is running
+if getattr(sys, 'frozen', False):
+    # Running as a bundled app
+    base_dir = sys._MEIPASS
 else:
-    base_path = os.path.abspath(".")
+    # Running as script
+    base_dir = os.path.dirname(os.path.abspath(__file__))
 
-db_path = os.path.join(base_path, 'database.db')
-connection = sqlite3.connect(db_path)
+# Path to bundled (read-only) blank database
+bundled_db_path = os.path.join(base_dir, 'database.db')
+
+# Path to working (writable) database — stored next to .exe
+working_dir = os.path.dirname(os.path.abspath(sys.executable if getattr(sys, 'frozen', False) else __file__))
+working_db_path = os.path.join(working_dir, 'database.db')
+
+# If working DB doesn't exist, copy from bundled blank DB
+if not os.path.exists(working_db_path):
+    shutil.copyfile(bundled_db_path, working_db_path)
+
+# Use working_db_path for all your connections
+connection = sqlite3.connect(working_db_path)
 
 connection.execute("PRAGMA foreign_keys = ON") # Allows for the use of foreign keys
 cursor = connection.cursor() # A mechanism that enables traversal of records in a database
