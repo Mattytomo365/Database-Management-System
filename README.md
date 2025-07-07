@@ -87,6 +87,8 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 
 Download the latest executable file (`.exe`) displayed in the **Releases** tab.
 
+**Note** Upon the first startup of the application, a new `database.db` file will be created, this file **must** remain within the same folder as the `.exe`, all data will be lost otherwise.
+
 #### Option 2 - Source Code:
 
 1. Clone the repository:
