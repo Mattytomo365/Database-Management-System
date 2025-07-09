@@ -45,6 +45,7 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 ---
 
 ## Technologies Used
+
 - [Python 3.13.2](https://www.python.org/): Langauge used for GUI and application logic.
 - [Visual Studio Code](https://code.visualstudio.com/): Primary IDE used throughout development.
 - [SQLite 3](https://sqlite.org/): Used for storing and managing data for this application.
@@ -74,6 +75,7 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 ## Setup Instructions
 
 ### Prerequisites
+
 - Python 3.12+
 - pip (Python package manager)
 - DB Browser for SQLite
