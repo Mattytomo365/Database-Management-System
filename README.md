@@ -62,12 +62,12 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 
 ### Branches Overview
 
-- `viewing-logic` (merged): Viewing functionality
-- `add-logic` (merged): Add functionality
-- `editing-logic` (merged): Editing functionality
-- `deleting-logic` (merged): Delete functionality
-- `validation-improvements` (merged): Input validation & error handling
-- `final-additions` (merged): Final improvements and corrections before deployment
+- `viewing-logic` (merged): Viewing functionality.
+- `add-logic` (merged): Add functionality.
+- `editing-logic` (merged): Editing functionality.
+- `deleting-logic` (merged): Delete functionality.
+- `validation-improvements` (merged): Input validation & error handling.
+- `final-additions` (merged): Final improvements and corrections before deployment.
 
 ---
 
@@ -76,8 +76,6 @@ This application was developed and deployed for internal use for HARTS (NHS, Liv
 ### Prerequisites
 - Python 3.12+
 - pip (Python package manager)
-- Tkinter (usually included with Python)
-- SQLite 3
 - DB Browser for SQLite
 - IDE of your choice
 
