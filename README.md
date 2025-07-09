@@ -124,9 +124,15 @@ Download the latest executable file (`.exe`) displayed in the **Releases** tab.
 
 ---
 
+## License
+
+This project is licensed under the MIT license, please see `LICENSE` for details.
+
+---
+
 ## Contributing
 
-**Contributions are welcome!**
+**Contributions are welcome!**  
 Please fork the repository and submit a pull request with your changes.
 
 ---
