@@ -109,6 +109,7 @@ Download the latest executable file (`.exe`) displayed in the **Releases** tab.
     ```
     python -m venv venv
     .\venv\Scripts\activate (Windows)
+    source venv/bin/activate (MacOS)
     pip install -r requirements.txt
     ```
 
