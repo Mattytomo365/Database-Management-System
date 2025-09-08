@@ -4,11 +4,9 @@
 
 ## Overview
 
-This is a project I completed as part of my role as a Junior Business Systems Developer at HARTS (Hospital Arts, Liverpool). My `Student-Planner` project was being developed simultaneously to this, so I chose to reuse Python and Tkinter for this project, improving my efficiency and the quality of work produced.
+Built during my Junior Business Systems Developer role at Hospital Arts (HARTS), Liverpool: Python & Tkinter desktop application centralising admin data, reducing the manual workload for members of staff.
 
-This application will connects to and manages an SQLite database storing administrative information, such as volunteers currently working for HARTS, universities offering placement opportunities through HARTS, roles available within the foundation, and information regarding artists HARTS sources from, reducing manual workload associated with managing this data.
-
-You can track the project's progress [here](https://www.notion.so/1f918110f1f2805cadbcc1a2231c5f75?v=1f918110f1f2813da01c000cd25c6666&pvs=4)
+Consolidates volunteers, partner universities, available roles, and artists into a single SQLite database with a clean user interface. Validated CRUD forms with quick search/filter & structured views for entities remove the need for spreadsheets and manual tracking, improving data accuracy and retrieval speed.
 
 ## Entity Relationship Diagram
 
